@@ -46,8 +46,9 @@ class OpenWikiArtifactsTests(unittest.TestCase):
         workflow = (ROOT / ".github/workflows/openwiki-update.yml").read_text(
             encoding="utf-8"
         )
-        for trigger in ("pull_request_target:", "workflow_run:", "issue_comment:"):
-            self.assertNotIn(trigger, workflow)
+        trigger_block = workflow.split("\non:\n", 1)[1].split("\npermissions:", 1)[0]
+        triggers = re.findall(r"^  ([a-z_]+):", trigger_block, re.MULTILINE)
+        self.assertEqual(triggers, ["workflow_dispatch", "schedule"])
         self.assertNotIn("${{ github.event", workflow)
 
         action_references = re.findall(r"uses:\s*[^@\s]+@([^\s]+)", workflow)
