@@ -58,6 +58,8 @@ WHERE MODULE_NAME = 'ALERT' AND CONFIG_KEY = 'ENABLED';
 4. Resume children/finalizer, execute `FINOPS_ROOT_TASK AWAIT`, and inspect run tables.
 5. Resume the production schedule only after the smoke run is understood.
 
+The context-confirmed `GG_APP_CC_REC_DATAWARE_DMO` role receives only object-scoped FinOps read and monitor grants. The team must identify the single Task Graph owner before applying the account-level template in `sql/00_setup/03_finops_task_owner_grants.template.sql`.
+
 ## Daily interpretation
 
 ```text
