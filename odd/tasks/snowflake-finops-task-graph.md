@@ -27,7 +27,7 @@ Forecast: more than 400 authored lines across SQL, tests, deployment scripts, Ob
 - T5 · S1,S8,S11 · inline · complete; live proof pending · Serverless graph and finalizer committed in `debb6f2`.
 - T6 · S3,S10,S11 · inline · complete; live proof pending · Reporting, scoped access, deployment, and operations committed through `d229de4` and `76456b3`.
 - T7 · S1-S11 · inline · complete locally; live check unavailable · RED/GREEN contract tests, independent high-risk verification, and deployment-order probes pass through `9e0ef81`; no authorized Snowflake session was available.
-- T8 · S6 · inline · complete · OpenWiki initialized, six source-backed pages and Claims finalized, and generated artifacts committed in `2d4b305`.
+- T8 · S6 · inline · complete · OpenWiki initialized, six source-backed pages and Claims finalized in `2d4b305`; maintenance hardening and regression coverage completed through `b7018aa`.
 
 ## Log
 
@@ -41,6 +41,6 @@ reporudicir el organigrma adecucuado para las carpetas Se trata de un modelo Fin
 - L7 · 2026-11-15 · The user selected `feature-branch-chain` for delivery because the forecast exceeds 400 authored changed lines.
 - L8 · 2026-11-15 · Engram task-document mirror remains pending because the new project identity was rejected as ambiguous by the server despite repository-local detection; local progress is authoritative until resynchronization succeeds.
 - L9 · 2026-11-16 · Independent security verification rejected blanket and runtime-owner grants to `GG_APP_CC_REC_DATAWARE_DMO`; `d229de4` now limits it to named FinOps read/monitor access and leaves owner privileges in an explicit template.
-- L10 · 2026-11-16 · Local verification passes 12 deterministic tests, deployment-order mocking, shell syntax, and diff checks. Live Snowflake compilation, privileges, smoke execution, notification, and finalizer behavior remain unavailable without an explicitly authorized session.
+- L10 · 2026-11-16 · Local verification passes 15 deterministic tests, deployment-order mocking, shell syntax, and diff checks. Live Snowflake compilation, privileges, smoke execution, notification, and finalizer behavior remain unavailable without an explicitly authorized session.
 - L11 · 2026-11-16 · OpenWiki run `edcf391c-817b-4895-bd74-54330d281a1d` finalized six pages with 29 source-backed Claims; generated indexes, manifests, and maintenance workflow were committed in `2d4b305`.
 - L12 · 2026-11-16 · Generated workflow hardening keeps trusted schedule/manual triggers, full-SHA action pins, non-persisted checkout credentials, and environment-mediated PR URL annotation. Deterministic npm transitive locking remains an advisory.
