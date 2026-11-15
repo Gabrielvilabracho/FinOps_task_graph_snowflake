@@ -26,7 +26,7 @@ Forecast: more than 400 authored lines across SQL, tests, deployment scripts, Ob
 - T4 · S1,S2,S9,S10 · inline · complete; live proof pending · Foundation, policy, lifecycle, and analyzers committed in `9b1d97d`, `2208992`, and `f41d08d`.
 - T5 · S1,S8,S11 · inline · complete; live proof pending · Serverless graph and finalizer committed in `debb6f2`.
 - T6 · S3,S10,S11 · inline · complete; live proof pending · Reporting, scoped access, deployment, and operations committed through `d229de4` and `76456b3`.
-- T7 · S1-S11 · inline · complete locally; live check unavailable · RED/GREEN contract tests, independent high-risk verification, and deployment-order probes pass through `9e0ef81`; no authorized Snowflake session was available.
+- T7 · S1-S11 · inline · complete locally; live validation deferred by user · RED/GREEN contract tests, independent high-risk verification, and deployment-order probes pass; owner and runtime configuration will be edited manually before any activation.
 - T8 · S6 · inline · complete · OpenWiki initialized, six source-backed pages and Claims finalized in `2d4b305`; maintenance hardening and regression coverage completed through `b7018aa`.
 
 ## Log
@@ -44,3 +44,4 @@ reporudicir el organigrma adecucuado para las carpetas Se trata de un modelo Fin
 - L10 · 2026-11-16 · Local verification passes 15 deterministic tests, deployment-order mocking, shell syntax, and diff checks. Live Snowflake compilation, privileges, smoke execution, notification, and finalizer behavior remain unavailable without an explicitly authorized session.
 - L11 · 2026-11-16 · OpenWiki run `edcf391c-817b-4895-bd74-54330d281a1d` finalized six pages with 29 source-backed Claims; generated indexes, manifests, and maintenance workflow were committed in `2d4b305`.
 - L12 · 2026-11-16 · Generated workflow hardening keeps trusted schedule/manual triggers, full-SHA action pins, non-persisted checkout credentials, and environment-mediated PR URL annotation. Deterministic npm transitive locking remains an advisory.
+- L13 · 2026-11-16 · User decision (verbatim): “no no es necesario ejecutar el smoke test , DEJALE EN MODO ADITABLE PAR YO MODIFICARLO PERSONALMENTE CUANDO TENGA QUIEN VA SER EL PROPIETARIO Y COO SER ALA CONFIGURACION.” The repository remains suspended and editable; no live smoke test or remote Snowflake operation is authorized.
