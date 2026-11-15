@@ -1,0 +1,50 @@
+{
+  "schemaVersion": 1,
+  "pageVersion": "sha256:849ac454c8949e67e7238ebb8720675ee50140d80c5b8caed9dec6be5193d031",
+  "claims": [
+    {
+      "id": "claim_2851bb98aa34402abb41115091cd2a5f",
+      "statement": "The repository implements a serverless Snowflake FinOps Task Graph with modular procedures, durable findings, daily reports, conditional notifications, and a resilient finalizer.",
+      "evidence": [
+        {
+          "resource": "repo://README.md#L1-L4",
+          "version": "repo-lines-v1:sha256:0faf3e5090742483fd8271e6760f7bd7eabab5e3cdd3dda66c635a128a895539:eyJzZWxlY3RlZExpbmVDb3VudCI6NCwiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiZGEyOTZiYTA2MTdlYjFkZDk2Y2E5MWRiYWExYTdhZThkMmVhNjE2MjM1MjY2MDc3ODZhZmI1MjMwNTVhY2U2ZSIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiMDFiYTQ3MTljODBiNmZlOTExYjA5MWE3YzA1MTI0YjY0ZWVlY2U5NjRlMDljMDU4ZWY4Zjk4MDVkYWNhNTQ2YiIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjAsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiZTNiMGM0NDI5OGZjMWMxNDlhZmJmNGM4OTk2ZmI5MjQyN2FlNDFlNDY0OWI5MzRjYTQ5NTk5MWI3ODUyYjg1NSIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjMsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiZGNiNWRhZWMxYjNhYjg5MTRiOGMyMDc2MDQ2ZjhiYWJlOTk5ZmQ3NTk1NWI5ZDkyYWViMzg0NDFiMTYyY2Y0ZSJ9"
+        }
+      ]
+    },
+    {
+      "id": "claim_b0cfe0ca964b414e9005e52b2ad3f17a",
+      "statement": "Repository implementation is locally tested while target-account objects, grants, reports, alerts, and live Task Graph behavior remain pending or independently unverified.",
+      "evidence": [
+        {
+          "resource": "repo://README.md#L5-L13",
+          "version": "repo-lines-v1:sha256:349708ab8d645a73e9d3cb6d64f85c45267d3b88482b86b33783ad3d8a9ff7ff:eyJzZWxlY3RlZExpbmVDb3VudCI6OSwiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiOWY1ZmU5Y2JhMDFiZjlkNTkwMjQ0Zjg5MzA5MzkxYmZhMTgxZDJmMmNlODcxOGQ3NDFhNWVhNGI0YTA4OGMzYiIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiYjgwYmFjYWFjNmZlYTc1NGMyODY5ODNiNDhiYTM3ZjhlODNhMWJhNzkwM2RjOTMzYjA4OWEwNWExYWM4N2YyOSIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjMsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiNTgyNjFiYTgyODM3YjdmMDMyNTQzNDQzZjM2NGUzMTE4ZDAxYTk3M2JhNDM2MGRkYmMxMzg2OTIyMDVmMjYyMCIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjMsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiZDgwZDI1YzBmZjQ1NjRmM2VlZDU0YzhmYjY0ODQzMjNkODRjYjY5NTY4NDE2ZWY0ODExMzM3MjNmMzRmM2FhMSJ9"
+        }
+      ]
+    },
+    {
+      "id": "claim_896bade91d28428f98a284f6cd92a1d3",
+      "statement": "Only the cost module has approved anomaly thresholds; other analyzers collect evidence and remain RULE_NOT_CONFIGURED until their rules are approved.",
+      "evidence": [
+        {
+          "resource": "repo://README.md#L15-L21",
+          "version": "repo-lines-v1:sha256:4195dcb7449292cfd5174a955c5562f46a7f78cc1bf47979988b16b1cfc3c14f:eyJzZWxlY3RlZExpbmVDb3VudCI6NywiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiMjc5ZDE1NDZmMWQxYTE4YTczNTY3MmIxODM0M2MyOGM3OTdhZjNiYjQ5YzRkNDYyYWIzMDE4NWNlYWQ0OGZmOCIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiNjFmOGNlZTYyNmMyOTQwYjkzZTk2ZTI5NWVmMDBkNjExODk2ODUwN2NkN2UzZWI2MjdmZGVlN2YwMDlmZjg3ZCIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjMsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiZjZjZGE3ZWRkNmViNDRiYjk4YTA2YTU5NDRjNmYxMTM5YTU3NzA2NzMyNmFjMmIwYTc1MjI2OGMwMTc3MWJhMSIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjMsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiMGQwMzkyOTk3ZDIwODAzNGZjOWFiY2ZiNzhmZTVjMzA4ODU1Mjg5ZmU1ZGFkYzYyNjQwMmVhOTYyOWM5MTdlZCJ9"
+        }
+      ]
+    },
+    {
+      "id": "claim_1eeb15b060bc4bdebf7af9c395ff5537",
+      "statement": "The safe deployment path keeps the root suspended through structural changes, validates before resume, and requires approved notification configuration before relying on the schedule.",
+      "evidence": [
+        {
+          "resource": "repo://docs/operations/runbook.md#L11-L61",
+          "version": "repo-lines-v1:sha256:273a87404b7ca7b075872148e92c696205d595995f33e895d09da9fa5c5e94f4:eyJzZWxlY3RlZExpbmVDb3VudCI6NTEsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6ImM2YjBlNGY5ZWE1M2I2MGI4MjQyOTg0NmEwODU2NWUxMjU4MTY2Y2JlMTA1YjBiNjgwMTVkNTRiZTA2ZjhjYTkiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6Ijc2MjEzYWZjMmVkMDg0M2JhNjcxNDNlNGM0NTQwMjVhY2IzMmMxYWE5Njc3NjhmYzkxMDJhOTU4ZWFkZjRhMDIiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6ImFlODlmZTczN2ZiNjAyMzAyYzQ2MGEwOTVlMjc4N2ExNTRiYmI2M2YwODY3Y2FjZDcxMDNjZWZkYTUzZDg5NzciLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6ImNiYTdhYWY0Y2Y4NGMyZTZhNTJjYWY0NDMwOWFkOTI5NzFjYzYzMTczMjU3Zjk0ZjgwZGNlYjhlODU4MTA2MjYifQ"
+        }
+      ]
+    }
+  ],
+  "verification": {
+    "by": "openwiki/0.9.0",
+    "at": "2026-11-15T23:16:32.229Z"
+  }
+}

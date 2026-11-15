@@ -1,0 +1,47 @@
+{
+  "schemaVersion": 1,
+  "pages": {
+    "/openwiki/architecture/task-graph.md": {
+      "pageVersion": "sha256:716aa3b6b01488e7f35f0dd7d167bd7acd7f782729d2ffa22a5de5f460396d3f",
+      "completedBy": "opencode",
+      "completedRunId": "edcf391c-817b-4895-bd74-54330d281a1d",
+      "gitHead": "9e0ef8109b94b2149eb796694a791bc02bab47fa",
+      "sourceFingerprint": "sha256:3b00eaf64fef134422919eb4062dc4ae58007167bb7af3f35dcf3fbd01fd9cdf"
+    },
+    "/openwiki/concepts/state-and-cost-policy.md": {
+      "pageVersion": "sha256:6a7774feae7295e1a45f7dae7147e5614fdb081ac377cc9ebb716ec042137964",
+      "completedBy": "opencode",
+      "completedRunId": "edcf391c-817b-4895-bd74-54330d281a1d",
+      "gitHead": "9e0ef8109b94b2149eb796694a791bc02bab47fa",
+      "sourceFingerprint": "sha256:3b00eaf64fef134422919eb4062dc4ae58007167bb7af3f35dcf3fbd01fd9cdf"
+    },
+    "/openwiki/operations/deployment-and-access.md": {
+      "pageVersion": "sha256:53dfa1fa597ee6710741edead39df6150f731a5bafc3c3e9df0fdc83a0a29b4a",
+      "completedBy": "opencode",
+      "completedRunId": "edcf391c-817b-4895-bd74-54330d281a1d",
+      "gitHead": "9e0ef8109b94b2149eb796694a791bc02bab47fa",
+      "sourceFingerprint": "sha256:3b00eaf64fef134422919eb4062dc4ae58007167bb7af3f35dcf3fbd01fd9cdf"
+    },
+    "/openwiki/quickstart.md": {
+      "pageVersion": "sha256:849ac454c8949e67e7238ebb8720675ee50140d80c5b8caed9dec6be5193d031",
+      "completedBy": "opencode",
+      "completedRunId": "edcf391c-817b-4895-bd74-54330d281a1d",
+      "gitHead": "9e0ef8109b94b2149eb796694a791bc02bab47fa",
+      "sourceFingerprint": "sha256:3b00eaf64fef134422919eb4062dc4ae58007167bb7af3f35dcf3fbd01fd9cdf"
+    },
+    "/openwiki/testing/verification.md": {
+      "pageVersion": "sha256:e71365756d8554235580078852ba3590201d6504b8ede88e8da2425b0f66f562",
+      "completedBy": "opencode",
+      "completedRunId": "edcf391c-817b-4895-bd74-54330d281a1d",
+      "gitHead": "9e0ef8109b94b2149eb796694a791bc02bab47fa",
+      "sourceFingerprint": "sha256:3b00eaf64fef134422919eb4062dc4ae58007167bb7af3f35dcf3fbd01fd9cdf"
+    },
+    "/openwiki/workflows/daily-finops-run.md": {
+      "pageVersion": "sha256:9830963c00635ff23aacf0bfc0a16910139a66f3e287ad413fd682ad589d54aa",
+      "completedBy": "opencode",
+      "completedRunId": "edcf391c-817b-4895-bd74-54330d281a1d",
+      "gitHead": "9e0ef8109b94b2149eb796694a791bc02bab47fa",
+      "sourceFingerprint": "sha256:3b00eaf64fef134422919eb4062dc4ae58007167bb7af3f35dcf3fbd01fd9cdf"
+    }
+  }
+}

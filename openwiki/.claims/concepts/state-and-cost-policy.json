@@ -1,0 +1,60 @@
+{
+  "schemaVersion": 1,
+  "pageVersion": "sha256:6a7774feae7295e1a45f7dae7147e5614fdb081ac377cc9ebb716ec042137964",
+  "claims": [
+    {
+      "id": "claim_cd8ea3995f674e8b8cbed24030f0494c",
+      "statement": "The persistence model separates configuration, graph runs, module runs, findings, daily reports, and alert-delivery attempts into dedicated Snowflake objects.",
+      "evidence": [
+        {
+          "resource": "repo://sql/00_setup/01_finops_objects.sql#L4-L112",
+          "version": "repo-lines-v1:sha256:79cb0507c444772ae21f9b2b9d333c5c296535be8eaa74d45d4e0864eac59889:eyJzZWxlY3RlZExpbmVDb3VudCI6MTA5LCJmaXJzdFNlbGVjdGVkTGluZUhhc2giOiJmYWRlYjlhYTRhYzVhN2RjYmE0MWZmNDUwZTgwNTliMzllZDVhZWE1YjRlYTg0OWE0MDQ3ZGU2ZTFiYmVjMjhkIiwibGFzdFNlbGVjdGVkTGluZUhhc2giOiI0OTk2N2VjMWVkMzgzNmY4ZWIxN2FmZjE3MmI1YmZlZjdkZTYwNDg1YTQzOWM2Y2ExMWM1OTFlMTc1NTczOWFlIiwicHJlY2VkaW5nQ29udGV4dExpbmVDb3VudCI6MywicHJlY2VkaW5nQ29udGV4dEhhc2giOiI1YWZiMDlkMGNkMzgzMGY1ODc5OTM3NjM0MGJhYjYyOTZiYTlkYmM4NTg3YjZjYTA5YWEzNzk0Y2NlNzhhZWVjIiwiZm9sbG93aW5nQ29udGV4dExpbmVDb3VudCI6MywiZm9sbG93aW5nQ29udGV4dEhhc2giOiI3Yzg1MTZmZWUwNGU1NjkyYzMwMTg3MDg1YmUyNzNjNDJjOWQ3ZTE0YWE1ZTY5YTRjYzY3MWNiMGFjNGUwNjMxIn0"
+        }
+      ]
+    },
+    {
+      "id": "claim_8b175b388d524c00a80b349b7a90e62f",
+      "statement": "Beginning a run upserts RUNNING run state and initializes exactly six PENDING analyzer modules before child analysis starts.",
+      "evidence": [
+        {
+          "resource": "repo://sql/20_procedures/20_finops_run_lifecycle.sql#L8-L64",
+          "version": "repo-lines-v1:sha256:e75a8dfa5239285e22dd4d7d1325ac6c0de7b43ba8464a5cd1b559798b36b579:eyJzZWxlY3RlZExpbmVDb3VudCI6NTcsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjllNzMwNTRmMTQxYTZlZTEyNjc2NTM3NDUyNDc1NDZiYmE0MWNkYTJhMGVlNDJjZjViOGU4MTc5ZmRmMjc5MWQiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjZjNzgyZTQ4MGQ0NDNlMzM5ODk3NzljNjJjOTQ4Njg0OTliYTU2MmRhYTI5NzdiNWQ4ZWJkMmE0N2JmOGM0MDMiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6ImE4MjIxYzc4ZmM1Yjg0OWVkMzk2OTExZDhiYWI5OWRkMmJkMGRhM2IzZjFmNTQ5YzhmOThhOGJiODBlNzVjNTciLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjU0MGI1NGQyYzU0ZTczZTY4YjY3N2FmNTQyZjQ1MWI4NDUyZWNiNTg4ZmU4NjE5NTAyZjMwMGE3NmY2MGIyODYifQ"
+        }
+      ]
+    },
+    {
+      "id": "claim_df6bcc1e30274d218f83fdd36be3a9ef",
+      "statement": "The approved cost policy classifies only values strictly above 25 credits or strictly above 30 percent growth as ATTENTION, and ignores growth when no positive baseline exists.",
+      "evidence": [
+        {
+          "resource": "repo://sql/10_core/10_finops_cost_policy.sql#L4-L54",
+          "version": "repo-lines-v1:sha256:4dfd5491f02d4f6c90845e56917b59212e75f7776f3fe41e904870b628948f10:eyJzZWxlY3RlZExpbmVDb3VudCI6NTEsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6ImI3NmVjMjllOTBiODM2OTNiYWVkZmY1YjI0NjgwYjAxNDI0ZGI3MjQ1ZjIxNmYzZTE0Y2QzMTVmODcxZWY5ZTciLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6ImVlMzQ2YjNlYzhlNDY1Zjc5MTMzZTQxYjU0NzdhNzRkZGNmNTc3YzE1YjNmNWUzZDczOTRhOTEyZDE5Zjc0ZmYiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjVhZmIwOWQwY2QzODMwZjU4Nzk5Mzc2MzQwYmFiNjI5NmJhOWRiYzg1ODdiNmNhMDlhYTM3OTRjY2U3OGFlZWMiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjowLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6ImUzYjBjNDQyOThmYzFjMTQ5YWZiZjRjODk5NmZiOTI0MjdhZTQxZTQ2NDliOTM0Y2E0OTU5OTFiNzg1MmI4NTUifQ"
+        }
+      ]
+    },
+    {
+      "id": "claim_ee18e30dcf6c45159af39c450b5b261e",
+      "statement": "A missing business rule is persisted as an informational RULE_NOT_CONFIGURED finding and terminal module state rather than NORMAL or FAILED.",
+      "evidence": [
+        {
+          "resource": "repo://sql/20_procedures/20_finops_run_lifecycle.sql#L173-L218",
+          "version": "repo-lines-v1:sha256:3170823983364dc4215efa3389e5e32d7c6aeb40837f040fc399560a71d6e44e:eyJzZWxlY3RlZExpbmVDb3VudCI6NDYsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6ImViMDc5ZmFjMTBiMjA3N2QwNGVmMzhkZDllYTcyM2RjZjdhNTlmMThiMGUyZmYwNmQ4OGQ4M2IxNDJlNzNhNmYiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjZjNzgyZTQ4MGQ0NDNlMzM5ODk3NzljNjJjOTQ4Njg0OTliYTU2MmRhYTI5NzdiNWQ4ZWJkMmE0N2JmOGM0MDMiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjE0YmNlYjFiZThjNWIyYTAxYjVkNzFhOTZkYzI2ZjJkOTk0ZjZiZjVlNzIzY2E4NmY1OWIxZmQzYjljMjlhZjMiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjoxLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6ImVlMzQ2YjNlYzhlNDY1Zjc5MTMzZTQxYjU0NzdhNzRkZGNmNTc3YzE1YjNmNWUzZDczOTRhOTEyZDE5Zjc0ZmYifQ"
+        }
+      ]
+    },
+    {
+      "id": "claim_de4c392333fa45a29bae260a5db8ba53",
+      "statement": "Finalization converts unfinished modules to FAILED, records technical findings, rebuilds report and alert outputs, and marks whether finalization completed successfully.",
+      "evidence": [
+        {
+          "resource": "repo://sql/20_procedures/29_finops_finalizer.sql#L4-L89",
+          "version": "repo-lines-v1:sha256:c3cb805fcdea670d29af1f4d9160bd936063b1278b064e7d4c2431b612537b96:eyJzZWxlY3RlZExpbmVDb3VudCI6ODYsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjllZTNkODYxMjVkODk5NTVmZDA5ZDk4NzYwN2MwNGY4MzQ0YzI2ZTE2ODk0OWIzNGUzYjg5ZTlkZmEwNzAzYzMiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6ImVlMzQ2YjNlYzhlNDY1Zjc5MTMzZTQxYjU0NzdhNzRkZGNmNTc3YzE1YjNmNWUzZDczOTRhOTEyZDE5Zjc0ZmYiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjVhZmIwOWQwY2QzODMwZjU4Nzk5Mzc2MzQwYmFiNjI5NmJhOWRiYzg1ODdiNmNhMDlhYTM3OTRjY2U3OGFlZWMiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjowLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6ImUzYjBjNDQyOThmYzFjMTQ5YWZiZjRjODk5NmZiOTI0MjdhZTQxZTQ2NDliOTM0Y2E0OTU5OTFiNzg1MmI4NTUifQ"
+        }
+      ]
+    }
+  ],
+  "verification": {
+    "by": "openwiki/0.9.0",
+    "at": "2026-11-15T23:16:32.229Z"
+  }
+}

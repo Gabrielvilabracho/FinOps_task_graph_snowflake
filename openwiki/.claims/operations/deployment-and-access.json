@@ -1,0 +1,64 @@
+{
+  "schemaVersion": 1,
+  "pageVersion": "sha256:53dfa1fa597ee6710741edead39df6150f731a5bafc3c3e9df0fdc83a0a29b4a",
+  "claims": [
+    {
+      "id": "claim_a1b4580e67f94a08adda950a8c2cb181",
+      "statement": "The deployment helper applies core SQL in dependency order and deliberately leaves administrative grants and graph activation as explicit manual operations.",
+      "evidence": [
+        {
+          "resource": "repo://scripts/deploy.sh#L12-L39",
+          "version": "repo-lines-v1:sha256:f596bf7bfbe73281149669d05ad44de9be84f346889fabd3b37a71242e32a1d2:eyJzZWxlY3RlZExpbmVDb3VudCI6MjgsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjRlMTE3MGQ0MGJmNzUwYmQ4YzE5ZGNkNjY4M2EwNjhmZDRkMDM1YjA3NmJmYjI4M2ExNjkxOGZlNWUzZDY1MDkiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjJhMjFjNWIzYmZmMDI5OWMwMTYxNDcwNDY4ZjM1NWU1YjRhZmNmMTdhNWY1OTNhYjY4Mzk0ZWY3YWYzMTljZGMiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjdkNDYzYzdjMzUwMDBkYjViOGQ1Y2MyMGI0NjIwZTZlM2VjYjc4MGU1Zjg2NGIxMzU0OWIwMDM5NTYwZDgzMTYiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjowLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6ImUzYjBjNDQyOThmYzFjMTQ5YWZiZjRjODk5NmZiOTI0MjdhZTQxZTQ2NDliOTM0Y2E0OTU5OTFiNzg1MmI4NTUifQ"
+        }
+      ]
+    },
+    {
+      "id": "claim_0f44651cc2f242efa0d7a69104277416",
+      "statement": "The confirmed access role receives database and schema usage plus object-scoped SELECT and task MONITOR privileges, without blanket or account-level runtime grants.",
+      "evidence": [
+        {
+          "resource": "repo://sql/00_setup/02_finops_grants.sql#L1-L30",
+          "version": "repo-lines-v1:sha256:011330271b52c6022e1f7f00edb8b23c5c72ef3957c7ddccb88d44d36afed6b8:eyJzZWxlY3RlZExpbmVDb3VudCI6MzAsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjhkMmU1ZWI1ZTRjOWEyNWI5MzY4OWIyYzIwZjkxNTliMDFlNDMzZjc1YWQ4MWMyYWI1Yzc5ODVmMDFlNzBkYjIiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6Ijg5YTEzNjk3N2IzNDc4MGNmYjA0YjQwMjIwZjk0NTY1Njk1Y2NhMDllMzFjNTdjZTYyZWFkYWJiMjRlZGJhNGQiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjowLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6ImUzYjBjNDQyOThmYzFjMTQ5YWZiZjRjODk5NmZiOTI0MjdhZTQxZTQ2NDliOTM0Y2E0OTU5OTFiNzg1MmI4NTUiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjowLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6ImUzYjBjNDQyOThmYzFjMTQ5YWZiZjRjODk5NmZiOTI0MjdhZTQxZTQ2NDliOTM0Y2E0OTU5OTFiNzg1MmI4NTUifQ"
+        }
+      ]
+    },
+    {
+      "id": "claim_bd30c73fc0904a8cbb4a4cee5cb4033e",
+      "statement": "Account-level serverless execution, Account Usage, and notification-integration privileges remain a commented template until the team confirms the single Task Graph owner role.",
+      "evidence": [
+        {
+          "resource": "repo://sql/00_setup/03_finops_task_owner_grants.template.sql#L1-L12",
+          "version": "repo-lines-v1:sha256:ef91b97920e66d746b26c3517fb39c7a974e9c14eb2d36939307666b85c698a6:eyJzZWxlY3RlZExpbmVDb3VudCI6MTIsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6ImY1OTQxYThlNDQ3OTA3MWY0ZmY2MjNmNWM4N2VhMjkwYTYzMTM0YmY2MGVmNWRjOTA2ZGY2ZmNkY2RlY2YyZDAiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjE5MGQzNDY0ZjZmZDZlM2ZjZDQwZTcwNTZlYTc5NmE5Y2U4NjI2NzE4ZWM0ZWU2YTY4MDQyMTM3MjI4NTdjYTciLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjowLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6ImUzYjBjNDQyOThmYzFjMTQ5YWZiZjRjODk5NmZiOTI0MjdhZTQxZTQ2NDliOTM0Y2E0OTU5OTFiNzg1MmI4NTUiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjowLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6ImUzYjBjNDQyOThmYzFjMTQ5YWZiZjRjODk5NmZiOTI0MjdhZTQxZTQ2NDliOTM0Y2E0OTU5OTFiNzg1MmI4NTUifQ"
+        }
+      ]
+    },
+    {
+      "id": "claim_35ad4a7c7b454d5d94e3e8eafaa70b4a",
+      "statement": "Operational activation requires validation and alert review before resuming the graph, followed by a manual smoke run whose persisted evidence is inspected before relying on the schedule.",
+      "evidence": [
+        {
+          "resource": "repo://docs/operations/runbook.md#L11-L61",
+          "version": "repo-lines-v1:sha256:273a87404b7ca7b075872148e92c696205d595995f33e895d09da9fa5c5e94f4:eyJzZWxlY3RlZExpbmVDb3VudCI6NTEsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6ImM2YjBlNGY5ZWE1M2I2MGI4MjQyOTg0NmEwODU2NWUxMjU4MTY2Y2JlMTA1YjBiNjgwMTVkNTRiZTA2ZjhjYTkiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6Ijc2MjEzYWZjMmVkMDg0M2JhNjcxNDNlNGM0NTQwMjVhY2IzMmMxYWE5Njc3NjhmYzkxMDJhOTU4ZWFkZjRhMDIiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6ImFlODlmZTczN2ZiNjAyMzAyYzQ2MGEwOTVlMjc4N2ExNTRiYmI2M2YwODY3Y2FjZDcxMDNjZWZkYTUzZDg5NzciLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6ImNiYTdhYWY0Y2Y4NGMyZTZhNTJjYWY0NDMwOWFkOTI5NzFjYzYzMTczMjU3Zjk0ZjgwZGNlYjhlODU4MTA2MjYifQ"
+        }
+      ]
+    },
+    {
+      "id": "claim_5f73d5f9a40944c9aa7a442e72ce5f77",
+      "statement": "Safe stop suspends the root, preserves historical tables, and allows already-running child tasks to finish while operators inspect persisted and task-history evidence.",
+      "evidence": [
+        {
+          "resource": "repo://docs/operations/runbook.md#L78-L87",
+          "version": "repo-lines-v1:sha256:03e2ce4d6575b55db175bed0079056f50f971e994f81755a0560c9189ea46154:eyJzZWxlY3RlZExpbmVDb3VudCI6MTAsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6ImQ5OGZkOTIwNmI1MjllOTIyZmQyZmE1MmJiMDQzYmE3N2IxNTU1Njg5ZDljMDQ2MzljZTI0ZDcwMzBjYzdiMzIiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6ImZjNTY4NmY4NDc2NjcxMTE1NGI0YzNmY2IwMjg2MmE4MTM3ZDc0YzE5NTliZjhhNGM0MzlkZWQ0ZjllNmVjMzkiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjJhODg4NWYwZjIxZDBlYTBkYTI1M2FiM2NkODEwMTA4NzY2NTVmNjJmNWM2MTg4OGQ3N2YzM2I0NzRmYWU5YzgiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjowLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6ImUzYjBjNDQyOThmYzFjMTQ5YWZiZjRjODk5NmZiOTI0MjdhZTQxZTQ2NDliOTM0Y2E0OTU5OTFiNzg1MmI4NTUifQ"
+        },
+        {
+          "resource": "repo://sql/30_tasks/32_suspend_finops_task_graph.sql#L4-L6",
+          "version": "repo-lines-v1:sha256:3d8086b9fe0e0a5301e8cfc6d8861e920baa00f2d90573b1b04e9fd1aaf4b172:eyJzZWxlY3RlZExpbmVDb3VudCI6MywiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiMGNmMmJmZjAxZjMyZjkwODJkNzRlN2RiZDc2Mzk1ZTEzZDM3ZThiMTI1ODJlNmRmZjAxMzczOGE2YjZlOTgyNiIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiYmRhMmQwZmU1MzBjZWFjOGJhZDQ4MjI0YWVlN2UxNTliZDkxNmZmYzBkMWMzYzE3N2ZjNjgwYzYzNDhjNjY5MCIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjMsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiNWFmYjA5ZDBjZDM4MzBmNTg3OTkzNzYzNDBiYWI2Mjk2YmE5ZGJjODU4N2I2Y2EwOWFhMzc5NGNjZTc4YWVlYyIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjAsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiZTNiMGM0NDI5OGZjMWMxNDlhZmJmNGM4OTk2ZmI5MjQyN2FlNDFlNDY0OWI5MzRjYTQ5NTk5MWI3ODUyYjg1NSJ9"
+        }
+      ]
+    }
+  ],
+  "verification": {
+    "by": "openwiki/0.9.0",
+    "at": "2026-11-15T23:16:32.229Z"
+  }
+}

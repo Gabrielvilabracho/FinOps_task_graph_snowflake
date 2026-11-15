@@ -1,0 +1,60 @@
+{
+  "schemaVersion": 1,
+  "pageVersion": "sha256:e71365756d8554235580078852ba3590201d6504b8ede88e8da2425b0f66f562",
+  "claims": [
+    {
+      "id": "claim_ef20a5ba4d8f49eab9689013c20cc725",
+      "statement": "Repository contract tests verify approved thresholds, absence of invented non-cost thresholds, serverless acyclic graph structure, status separation, and balanced Snowflake scripting delimiters.",
+      "evidence": [
+        {
+          "resource": "repo://tests/test_repository_contract.py#L46-L163",
+          "version": "repo-lines-v1:sha256:64782e6fea06cc2ba8e5984cc6ffcc3826d064fd9d6d053a8d9803723f9e722c:eyJzZWxlY3RlZExpbmVDb3VudCI6MTE4LCJmaXJzdFNlbGVjdGVkTGluZUhhc2giOiJmMDA2ZWEwMzY3NjNlMWRjMmQ1MzNiYmRiM2E1YmI1Zjc2MTIzOTE3N2FmMTM5NTE4NjE2OTIzMTVmNzg2NDAwIiwibGFzdFNlbGVjdGVkTGluZUhhc2giOiI5NDZkZWU3ZDBhMWE1OTE2OGM2MDI3MzAxNTM2NmJmZTBkNzdjZTlkMDg4MTAxNDc2ZjIxZDk3OGIxMGEyODFjIiwicHJlY2VkaW5nQ29udGV4dExpbmVDb3VudCI6MywicHJlY2VkaW5nQ29udGV4dEhhc2giOiJkY2M3OWI4OWUyOTZkMDk2NzA2YzA0Zjk5MjcxMjRkYmQxYzRjNWViYmZlOWQ4NDQ3NGRiZWQ0YmMyZmQ2YWM2IiwiZm9sbG93aW5nQ29udGV4dExpbmVDb3VudCI6MywiZm9sbG93aW5nQ29udGV4dEhhc2giOiIzZDQxMzQwY2MyMzlhMTU5Y2U5YjYwMjJlOWY2MzIyODMyZTJlYWQ3NmNhZTllNDc1NGQyMTBlYjhmYjZkNWU4In0"
+        }
+      ]
+    },
+    {
+      "id": "claim_378341421df744f1bbc44d999226409b",
+      "statement": "Grant-security tests prevent the confirmed access role from receiving unconfirmed runtime privileges, blanket shared-schema grants, or a parent-database grant under the wrong administrative role.",
+      "evidence": [
+        {
+          "resource": "repo://tests/test_finops_grants_security.py#L12-L40",
+          "version": "repo-lines-v1:sha256:ef2e79701e78acb52e38a4b76b63d754b7e582f6c509fd663e069669db5e235f:eyJzZWxlY3RlZExpbmVDb3VudCI6MjksImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjcwNTg1YzY2ZGU4NzdmNTIwNzdlNTBlNjc0N2ZhMWQ5OGQxZDhiMjljZjkxOWY3MTc2MDdkZmQyZGExM2E1ZmIiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6ImE5NTVmZjdkZTBjNzAzMzM3Yjc1NjhiYzhjZDRkMDFiMmNiYjk3ZjZlZGUzMDFjMmNmYzJmY2I2ZTViYTAzNzIiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6ImU0MzA0NTc1Y2Q3ZDI5YzEyZDE4Y2QxYjU5ZTA2ODI4NTZmOTg5OTcxOWU3NmVjNGQ1NjUyNDNjZjU4MWE4MzUiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjNkNDEzNDBjYzIzOWExNTljZTliNjAyMmU5ZjYzMjI4MzJlMmVhZDc2Y2FlOWU0NzU0ZDIxMGViOGZiNmQ1ZTgifQ"
+        }
+      ]
+    },
+    {
+      "id": "claim_787ca50cbc504d0e8471210fa5bcac4a",
+      "statement": "The deployment-script test executes the public shell helper with a temporary mock Snowflake CLI and verifies exact core-file ordering plus manual grant and resume instructions.",
+      "evidence": [
+        {
+          "resource": "repo://tests/test_deploy_script.py#L8-L64",
+          "version": "repo-lines-v1:sha256:3b0411330734c78b5cc21bf1b1599a7a4e33d991479819c1dc55f930005afd37:eyJzZWxlY3RlZExpbmVDb3VudCI6NTcsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjZjMGNhZjQ0MWExYWFkMjI0MGU3YWFjY2JiMmE3MzkxNWZjNWNlNjJhOTBlYjg1NzgzNmQ5MDVjNjg3NjBjN2QiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6ImJhYzA0MzhjODkzMmZkZGIxMDNkN2NhMWJlMmM2YjFkYzJhNzU1Zjk3YTU0OTg2M2NlNDg0NGEwOGU5OGY0ZWYiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjgyZjUyZDhhNTRmNzc3Y2Y4MmI3M2IyM2YxZmUzYzk4ZGJhYmFlMzU3MTdhZmJiZjE3ODQ1NDhkOWFjNWFiNTciLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjNkNDEzNDBjYzIzOWExNTljZTliNjAyMmU5ZjYzMjI4MzJlMmVhZDc2Y2FlOWU0NzU0ZDIxMGViOGZiNmQ1ZTgifQ"
+        }
+      ]
+    },
+    {
+      "id": "claim_ac0bf5aca79f44e5ab3d2947ed534b26",
+      "statement": "Snowflake-side cost tests assert normal, credit-threshold, growth-threshold, missing-baseline, and exact-boundary behavior through the public classification function.",
+      "evidence": [
+        {
+          "resource": "repo://tests/sql/00_cost_policy_test.sql#L1-L26",
+          "version": "repo-lines-v1:sha256:334f6ff1a3ca1ecb298e21fbcaadf9a393177076c21a592afd0a1b9852a32e06:eyJzZWxlY3RlZExpbmVDb3VudCI6MjYsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjlkZTBhZTY5ODBmNzIyOGRjYTZjMjI3M2NjNDU5Zjg1NjA3NDhmODBmOWFlMjYwYmVhZjY2MmM3N2IzYTlkZjQiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6ImVlMzQ2YjNlYzhlNDY1Zjc5MTMzZTQxYjU0NzdhNzRkZGNmNTc3YzE1YjNmNWUzZDczOTRhOTEyZDE5Zjc0ZmYiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjowLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6ImUzYjBjNDQyOThmYzFjMTQ5YWZiZjRjODk5NmZiOTI0MjdhZTQxZTQ2NDliOTM0Y2E0OTU5OTFiNzg1MmI4NTUiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjowLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6ImUzYjBjNDQyOThmYzFjMTQ5YWZiZjRjODk5NmZiOTI0MjdhZTQxZTQ2NDliOTM0Y2E0OTU5OTFiNzg1MmI4NTUifQ"
+        }
+      ]
+    },
+    {
+      "id": "claim_c0bd2738c48149b9ad363027aa59cc7b",
+      "statement": "Post-deployment validation inspects graph inventory, policy boundaries, configuration, and recent persisted run evidence but currently displays rather than asserts graph-row completeness.",
+      "evidence": [
+        {
+          "resource": "repo://sql/90_validation/90_validate_deployment.sql#L4-L51",
+          "version": "repo-lines-v1:sha256:de599e3ab583eb3093c2b12da1748692b81b68374a19dae4fa0c8ef528b0713a:eyJzZWxlY3RlZExpbmVDb3VudCI6NDgsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6ImNjOGM5NmI2NGYxOWZmZjExM2FhYmE0ZDQzODZlMGY5YmI5NzAxZTMzNjU2MmNhOGJjNjIyMzMxY2JmM2JmNTUiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjQ5MjE4MjhhZTk0M2QwMWEyYWI1NjYwNDI3MTFjOWYyM2M5ODkxMGFiOWQ4YmEzYjVlYzZjZmRlNDRiZTVjM2UiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjVhZmIwOWQwY2QzODMwZjU4Nzk5Mzc2MzQwYmFiNjI5NmJhOWRiYzg1ODdiNmNhMDlhYTM3OTRjY2U3OGFlZWMiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjowLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6ImUzYjBjNDQyOThmYzFjMTQ5YWZiZjRjODk5NmZiOTI0MjdhZTQxZTQ2NDliOTM0Y2E0OTU5OTFiNzg1MmI4NTUifQ"
+        }
+      ]
+    }
+  ],
+  "verification": {
+    "by": "openwiki/0.9.0",
+    "at": "2026-11-15T23:16:32.229Z"
+  }
+}

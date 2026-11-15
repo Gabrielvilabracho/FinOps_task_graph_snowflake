@@ -1,0 +1,76 @@
+{
+  "schemaVersion": 1,
+  "pageVersion": "sha256:9830963c00635ff23aacf0bfc0a16910139a66f3e287ad413fd682ad589d54aa",
+  "claims": [
+    {
+      "id": "claim_13f93013bbcb4cd59cf2bdcdf15ad38c",
+      "statement": "The cost analyzer reads current and prior Account Usage metering, applies configured cost thresholds, records matched warning findings, and persists NORMAL or ATTENTION module state.",
+      "evidence": [
+        {
+          "resource": "repo://sql/20_procedures/21_finops_check_cost.sql#L13-L94",
+          "version": "repo-lines-v1:sha256:c468fca36ce773af20c035919972990dc29ab7b99f3b9ce47eb502b4309a8146:eyJzZWxlY3RlZExpbmVDb3VudCI6ODIsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6ImYyMTYyOTQ0N2ExYWI5NWY2NGEwNjM4YWJjMDAzOTY0ZDhlOGI4NDNmYjFjZDkzODllM2U4NjNlNTcyNjFmOGMiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjZjNzgyZTQ4MGQ0NDNlMzM5ODk3NzljNjJjOTQ4Njg0OTliYTU2MmRhYTI5NzdiNWQ4ZWJkMmE0N2JmOGM0MDMiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjA2Njc3MTkwMjYzZjQ0ZmVlMmY4MzFmODVjOWMxYzNkYzYzOTAxMWI1NTQ3ZmIwZWRjMTBiYWU1YjhiY2Q1NjkiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjoxLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6ImVlMzQ2YjNlYzhlNDY1Zjc5MTMzZTQxYjU0NzdhNzRkZGNmNTc3YzE1YjNmNWUzZDczOTRhOTEyZDE5Zjc0ZmYifQ"
+        }
+      ]
+    },
+    {
+      "id": "claim_6d341ea412464acd851211661d8cfa90",
+      "statement": "The errors, warehouse, queries, AI, and other-cost analyzers persist measured evidence as RULE_NOT_CONFIGURED with an explicit pending business decision instead of inventing anomaly thresholds.",
+      "evidence": [
+        {
+          "resource": "repo://sql/20_procedures/22_finops_check_errors.sql#L18-L48",
+          "version": "repo-lines-v1:sha256:dfa3114c03eb2838af173291abe1d7a6f3d02d0b3ac64bef7cf651627fd3fff8:eyJzZWxlY3RlZExpbmVDb3VudCI6MzEsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjIzOGRiN2UyMGI0MDY3NWU4ODU1OGY0NzMzNWZjZWU1NDIxNDZhZGYxYjE0MDk3NzVlMjFlZGZkMDQ3N2RhZjYiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjZjNzgyZTQ4MGQ0NDNlMzM5ODk3NzljNjJjOTQ4Njg0OTliYTU2MmRhYTI5NzdiNWQ4ZWJkMmE0N2JmOGM0MDMiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6Ijg3YjQ0OTJkNTM4MWM4NDQ1ZmRkNjdiMGVjMTVmMDFkNWNiYzE4OTdkN2RkNmI0MzZmODI1ZWJhZjBhNjU5ZTkiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjoxLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6ImVlMzQ2YjNlYzhlNDY1Zjc5MTMzZTQxYjU0NzdhNzRkZGNmNTc3YzE1YjNmNWUzZDczOTRhOTEyZDE5Zjc0ZmYifQ"
+        },
+        {
+          "resource": "repo://sql/20_procedures/23_finops_check_warehouse.sql#L20-L57",
+          "version": "repo-lines-v1:sha256:828ec6de8ab51d134c61b0af0130d057c9572f13b13587edbcfbdf9bd274de33:eyJzZWxlY3RlZExpbmVDb3VudCI6MzgsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjIzOGRiN2UyMGI0MDY3NWU4ODU1OGY0NzMzNWZjZWU1NDIxNDZhZGYxYjE0MDk3NzVlMjFlZGZkMDQ3N2RhZjYiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjZjNzgyZTQ4MGQ0NDNlMzM5ODk3NzljNjJjOTQ4Njg0OTliYTU2MmRhYTI5NzdiNWQ4ZWJkMmE0N2JmOGM0MDMiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6ImRmYzNmMTZkZGJhMTIwM2Y4ZGFmYTAwM2Y2MzlkNGI2OGViOWU5NGI5ZjdlY2VmYjE3ZjE0M2YxMTVhOWI0N2YiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjoxLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6ImVlMzQ2YjNlYzhlNDY1Zjc5MTMzZTQxYjU0NzdhNzRkZGNmNTc3YzE1YjNmNWUzZDczOTRhOTEyZDE5Zjc0ZmYifQ"
+        },
+        {
+          "resource": "repo://sql/20_procedures/24_finops_check_queries.sql#L20-L59",
+          "version": "repo-lines-v1:sha256:eb36b7ce0a7045a17ad9fecb01d9e5bb9e366d2291b22f582e764d0ac1c9d7de:eyJzZWxlY3RlZExpbmVDb3VudCI6NDAsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjIzOGRiN2UyMGI0MDY3NWU4ODU1OGY0NzMzNWZjZWU1NDIxNDZhZGYxYjE0MDk3NzVlMjFlZGZkMDQ3N2RhZjYiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjZjNzgyZTQ4MGQ0NDNlMzM5ODk3NzljNjJjOTQ4Njg0OTliYTU2MmRhYTI5NzdiNWQ4ZWJkMmE0N2JmOGM0MDMiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjM0Njg1Y2JiOWUzMmMzOWM1NDliNmU4MDE4NjI3NzMyZThhMGJmZjY5NmNhNzM1NDk2NDI5ZDNhYjQxYjUxOTAiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjoxLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6ImVlMzQ2YjNlYzhlNDY1Zjc5MTMzZTQxYjU0NzdhNzRkZGNmNTc3YzE1YjNmNWUzZDczOTRhOTEyZDE5Zjc0ZmYifQ"
+        },
+        {
+          "resource": "repo://sql/20_procedures/25_finops_check_ai.sql#L19-L51",
+          "version": "repo-lines-v1:sha256:8a513626d377c28be384ac8a0bb8f25c2086b9373d86298bdb064d5b2c050b48:eyJzZWxlY3RlZExpbmVDb3VudCI6MzMsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjIzOGRiN2UyMGI0MDY3NWU4ODU1OGY0NzMzNWZjZWU1NDIxNDZhZGYxYjE0MDk3NzVlMjFlZGZkMDQ3N2RhZjYiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjZjNzgyZTQ4MGQ0NDNlMzM5ODk3NzljNjJjOTQ4Njg0OTliYTU2MmRhYTI5NzdiNWQ4ZWJkMmE0N2JmOGM0MDMiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6ImM1YjEwODU5ZTM2MGQxYTFhYTRjNTUwNzcxZTIzNDYyYWZiNTgxM2UxYzFiY2ZmNjY3ZDE3Y2E1YTRlMzFmYmIiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjoxLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6ImVlMzQ2YjNlYzhlNDY1Zjc5MTMzZTQxYjU0NzdhNzRkZGNmNTc3YzE1YjNmNWUzZDczOTRhOTEyZDE5Zjc0ZmYifQ"
+        },
+        {
+          "resource": "repo://sql/20_procedures/26_finops_check_other_costs.sql#L18-L48",
+          "version": "repo-lines-v1:sha256:7e4bf97e97f68a4f1986f877127e04a4df2c3ad2b96ea4ce31ff4d66a7738bb1:eyJzZWxlY3RlZExpbmVDb3VudCI6MzEsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjIzOGRiN2UyMGI0MDY3NWU4ODU1OGY0NzMzNWZjZWU1NDIxNDZhZGYxYjE0MDk3NzVlMjFlZGZkMDQ3N2RhZjYiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjZjNzgyZTQ4MGQ0NDNlMzM5ODk3NzljNjJjOTQ4Njg0OTliYTU2MmRhYTI5NzdiNWQ4ZWJkMmE0N2JmOGM0MDMiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjczZDVjOGIyYjQ3YjMwM2M3NmNiN2Q4NDI1YjUwYzYwZTk2MjA4NTMxOTg0ZjAzOTQyZjdmYTJiNjQ1YjdlNmEiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjoxLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6ImVlMzQ2YjNlYzhlNDY1Zjc5MTMzZTQxYjU0NzdhNzRkZGNmNTc3YzE1YjNmNWUzZDczOTRhOTEyZDE5Zjc0ZmYifQ"
+        }
+      ]
+    },
+    {
+      "id": "claim_85a2cef7e1d64263b43aa2238f1b6675",
+      "statement": "Report generation aggregates all module states, maps attention or failures to ATTENTION_REQUIRED, maps remaining rule gaps to REVIEW_REQUIRED, and upserts one report per run.",
+      "evidence": [
+        {
+          "resource": "repo://sql/20_procedures/27_finops_report.sql#L19-L106",
+          "version": "repo-lines-v1:sha256:78d976cc0661cfaddba55c564542fc3ead97653c252bfc8d2e6e95f5daacf1b3:eyJzZWxlY3RlZExpbmVDb3VudCI6ODgsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjIzOGRiN2UyMGI0MDY3NWU4ODU1OGY0NzMzNWZjZWU1NDIxNDZhZGYxYjE0MDk3NzVlMjFlZGZkMDQ3N2RhZjYiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6Ijk1ZWYwMWJjMDhkYmMzYjYzZTRlNzVlYTNkMjZhNWI5NDE4OTE4NzdlMjdhZDg5MTMyOWM4NDExZDdkOGRjNGQiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjMyOTRjYzc3YzJjOWVlZmFkZTlmNTE5Y2FlN2U2MTFkMWYzZjAzOWY4NTI2ODM1NzFlOGJhNTdkNGYwY2E1ZDkiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjoyLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6Ijg4ZWUzZGIzODQ0NmRkNzVlYTBkNzQ0Y2Y5Nzk4ZWM3MzhiZTQ1MDkyMjhhYjVlMWQyZmYwNDEwOWU1YmI4ZjcifQ"
+        }
+      ]
+    },
+    {
+      "id": "claim_e7c79aa057a04f42aa232b6e9827bbe5",
+      "statement": "Alert delivery avoids duplicate email, records NOT_REQUIRED for non-attention reports, records NOT_CONFIGURED for incomplete configuration, and persists both successful and failed delivery attempts.",
+      "evidence": [
+        {
+          "resource": "repo://sql/20_procedures/28_finops_alert.sql#L18-L140",
+          "version": "repo-lines-v1:sha256:3e18be61da11e40b19a483a8d7ba9117ee44dd70faf8967a35962fa16a68a751:eyJzZWxlY3RlZExpbmVDb3VudCI6MTIzLCJmaXJzdFNlbGVjdGVkTGluZUhhc2giOiIyMzhkYjdlMjBiNDA2NzVlODg1NThmNDczMzVmY2VlNTQyMTQ2YWRmMWIxNDA5Nzc1ZTIxZWRmZDA0NzdkYWY2IiwibGFzdFNlbGVjdGVkTGluZUhhc2giOiI4NGU0MjA4Y2Q2ZmZiOGM0YTM1NDdiMmY1NGFkYTE5OTc4YzNmMzY1ZTc4Zjk1MDJlZjUxNDVjZGQyYWE4NTQzIiwicHJlY2VkaW5nQ29udGV4dExpbmVDb3VudCI6MywicHJlY2VkaW5nQ29udGV4dEhhc2giOiI1YzgzYzkwOTE1ZmYzZjI4MWNkZmM4YTJlNmJmNmExYjE0OTBlZTZmYmI5ZjNiMzQ5ZGNjYTk1NjM3MmU4MzYzIiwiZm9sbG93aW5nQ29udGV4dExpbmVDb3VudCI6MiwiZm9sbG93aW5nQ29udGV4dEhhc2giOiI4OGVlM2RiMzg0NDZkZDc1ZWEwZDc0NGNmOTc5OGVjNzM4YmU0NTA5MjI4YWI1ZTFkMmZmMDQxMDllNWJiOGY3In0"
+        }
+      ]
+    },
+    {
+      "id": "claim_b2b8492af7a8445e9507c11e2c9df19d",
+      "statement": "Finalization reconciles unfinished modules, regenerates report and alert outcomes idempotently, and records whether run finalization completed or failed.",
+      "evidence": [
+        {
+          "resource": "repo://sql/20_procedures/29_finops_finalizer.sql#L14-L88",
+          "version": "repo-lines-v1:sha256:c8ebfb04a9663b11a5706f523cf5ab8384ae6ee1fab16851b877ca64aa5a3266:eyJzZWxlY3RlZExpbmVDb3VudCI6NzUsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjIzOGRiN2UyMGI0MDY3NWU4ODU1OGY0NzMzNWZjZWU1NDIxNDZhZGYxYjE0MDk3NzVlMjFlZGZkMDQ3N2RhZjYiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjZjNzgyZTQ4MGQ0NDNlMzM5ODk3NzljNjJjOTQ4Njg0OTliYTU2MmRhYTI5NzdiNWQ4ZWJkMmE0N2JmOGM0MDMiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjUyOTQwZDY5ODYyNzg4MTBmZjhhNWNiNzUxZDc0OTUxMzU4ZDdlYTM1MDgzOGQ1OTIwMzhjNGU5OTg5NTI1ZTkiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjoxLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6ImVlMzQ2YjNlYzhlNDY1Zjc5MTMzZTQxYjU0NzdhNzRkZGNmNTc3YzE1YjNmNWUzZDczOTRhOTEyZDE5Zjc0ZmYifQ"
+        }
+      ]
+    }
+  ],
+  "verification": {
+    "by": "openwiki/0.9.0",
+    "at": "2026-11-15T23:16:32.229Z"
+  }
+}

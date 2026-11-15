@@ -1,0 +1,60 @@
+{
+  "schemaVersion": 1,
+  "pageVersion": "sha256:716aa3b6b01488e7f35f0dd7d167bd7acd7f782729d2ffa22a5de5f460396d3f",
+  "claims": [
+    {
+      "id": "claim_83e648483d5744be9add7f9a1d434dea",
+      "statement": "The root task runs daily at 10:00 UTC, prevents overlap, uses serverless compute, derives the previous UTC analysis date, and opens persisted run state.",
+      "evidence": [
+        {
+          "resource": "repo://sql/30_tasks/30_finops_task_graph.sql#L4-L20",
+          "version": "repo-lines-v1:sha256:ae2e423b167a6a0c11e4ec392adccde3448633cc96522b0c78ead9d2baa9f154:eyJzZWxlY3RlZExpbmVDb3VudCI6MTcsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6ImRkZGM3N2YyZGIyZDE4NTY1YThlYjdkMjEyODQ3ZTlkYTIwMWM1NmU2ZWFiMDU5ZGFiOTMyM2Y3M2FjYjkxZTgiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjZjNzgyZTQ4MGQ0NDNlMzM5ODk3NzljNjJjOTQ4Njg0OTliYTU2MmRhYTI5NzdiNWQ4ZWJkMmE0N2JmOGM0MDMiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjVhZmIwOWQwY2QzODMwZjU4Nzk5Mzc2MzQwYmFiNjI5NmJhOWRiYzg1ODdiNmNhMDlhYTM3OTRjY2U3OGFlZWMiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjcyMTZmYjMwMTYwYWQ3MzBiNWNhZmI5YmQ1YWMyMGNmNDQwZTlmNjM5ZDY3M2E1ODAzYmJiMzVlMDEwODJmZTgifQ"
+        }
+      ]
+    },
+    {
+      "id": "claim_1a5cf2fc6d2247588ea61266185c982f",
+      "statement": "Six analysis tasks depend directly on the root, and the report task waits for all six analysis tasks before building the daily report.",
+      "evidence": [
+        {
+          "resource": "repo://sql/30_tasks/30_finops_task_graph.sql#L22-L132",
+          "version": "repo-lines-v1:sha256:3779ed82796a9547428de2973138e4c6f859cd71ad6f5aaaad127f77727cce44:eyJzZWxlY3RlZExpbmVDb3VudCI6MTExLCJmaXJzdFNlbGVjdGVkTGluZUhhc2giOiJmNWQ1ZWM4MTJmZGQzMzNkODMxMGQ1YWEyODJjMjMwZDY5ZmFiNmI1NzFkNzI0ZjI4Njc4NmMxZDVhNTJkMDFiIiwibGFzdFNlbGVjdGVkTGluZUhhc2giOiI2Yzc4MmU0ODBkNDQzZTMzOTg5Nzc5YzYyYzk0ODY4NDk5YmE1NjJkYWEyOTc3YjVkOGViZDJhNDdiZjhjNDAzIiwicHJlY2VkaW5nQ29udGV4dExpbmVDb3VudCI6MywicHJlY2VkaW5nQ29udGV4dEhhc2giOiJjZWYyNjU0Yzg0ZDVmNzU3ZmFkZWJlNGIxN2ZiZTBjOWY0NmE3MmEzZmI3Yzg1MGJkY2YxNzZjNmZjNTMyZDM1IiwiZm9sbG93aW5nQ29udGV4dExpbmVDb3VudCI6MywiZm9sbG93aW5nQ29udGV4dEhhc2giOiJlYWQ2ODI0NzU3OTU0MzZhOGVjMzIxOTUzYjk0MjA3ZjAyYzZlZmRmNGQzMmJmOGNmMTVlNDdkNGM0ZGI4MzNkIn0"
+        }
+      ]
+    },
+    {
+      "id": "claim_f3f2a54156ba4118b964ede1dbf680b1",
+      "statement": "The alert task follows report generation while a separate finalizer is attached to the root through FINALIZE and calls the run-finalization procedure.",
+      "evidence": [
+        {
+          "resource": "repo://sql/30_tasks/30_finops_task_graph.sql#L134-L152",
+          "version": "repo-lines-v1:sha256:8086be6d9d0ea03eab8ddf4a817c860c8aa14577f271d00a6a5e3632c5513269:eyJzZWxlY3RlZExpbmVDb3VudCI6MTksImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjU0YTQ3NTRiZWI5MGIwN2QyYzM5ZGExZjE5MTdjZGMxMzI2YzFiOGZmN2VlYjVlYzM2MzFlMTJmNjgzY2UzYzgiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjZjNzgyZTQ4MGQ0NDNlMzM5ODk3NzljNjJjOTQ4Njg0OTliYTU2MmRhYTI5NzdiNWQ4ZWJkMmE0N2JmOGM0MDMiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjgwZTg3NDMyMGRjYmJmODY3MjFiZDkwMjgyYzUwODVmYWM4NjVlNzBlYzcwNDQxZTA0MGEwZmVmMzFmMDNiNTYiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjowLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6ImUzYjBjNDQyOThmYzFjMTQ5YWZiZjRjODk5NmZiOTI0MjdhZTQxZTQ2NDliOTM0Y2E0OTU5OTFiNzg1MmI4NTUifQ"
+        }
+      ]
+    },
+    {
+      "id": "claim_cd6e815c798d4377ae38f9dbae05104b",
+      "statement": "Graph activation explicitly resumes the finalizer before enabling the root and its dependent tasks, then inspects task state.",
+      "evidence": [
+        {
+          "resource": "repo://sql/30_tasks/31_resume_finops_task_graph.sql#L4-L9",
+          "version": "repo-lines-v1:sha256:78ca4a0223c09a9770feed8b1bea8539851b42d125d03b96d8300a78e75fd796:eyJzZWxlY3RlZExpbmVDb3VudCI6NiwiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiMmJiMTIwM2JjYTIzNDcwZTA0MmU2MmE4YzU2ZDY1ZDI3OTRmZTlkMjM4ZDFkOWIyYmZlMzEwMmZlYjBmN2U3YyIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiMDUwMzg3MGRiYjhkYTViZGVmN2VmNjYwNDBiNTE0ZWE5ZGUwZGNiMWU0MGY1YzU1NDg0NjY2ZTMzZTQ2ODVjMCIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjMsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiNWFmYjA5ZDBjZDM4MzBmNTg3OTkzNzYzNDBiYWI2Mjk2YmE5ZGJjODU4N2I2Y2EwOWFhMzc5NGNjZTc4YWVlYyIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjAsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiZTNiMGM0NDI5OGZjMWMxNDlhZmJmNGM4OTk2ZmI5MjQyN2FlNDFlNDY0OWI5MzRjYTQ5NTk5MWI3ODUyYjg1NSJ9"
+        }
+      ]
+    },
+    {
+      "id": "claim_6e7459ce1833489da3b5581688201f11",
+      "statement": "Suspending the root prevents future scheduled runs without claiming to cancel child tasks already running from a captured graph version.",
+      "evidence": [
+        {
+          "resource": "repo://sql/30_tasks/32_suspend_finops_task_graph.sql#L4-L6",
+          "version": "repo-lines-v1:sha256:3d8086b9fe0e0a5301e8cfc6d8861e920baa00f2d90573b1b04e9fd1aaf4b172:eyJzZWxlY3RlZExpbmVDb3VudCI6MywiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiMGNmMmJmZjAxZjMyZjkwODJkNzRlN2RiZDc2Mzk1ZTEzZDM3ZThiMTI1ODJlNmRmZjAxMzczOGE2YjZlOTgyNiIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiYmRhMmQwZmU1MzBjZWFjOGJhZDQ4MjI0YWVlN2UxNTliZDkxNmZmYzBkMWMzYzE3N2ZjNjgwYzYzNDhjNjY5MCIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjMsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiNWFmYjA5ZDBjZDM4MzBmNTg3OTkzNzYzNDBiYWI2Mjk2YmE5ZGJjODU4N2I2Y2EwOWFhMzc5NGNjZTc4YWVlYyIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjAsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiZTNiMGM0NDI5OGZjMWMxNDlhZmJmNGM4OTk2ZmI5MjQyN2FlNDFlNDY0OWI5MzRjYTQ5NTk5MWI3ODUyYjg1NSJ9"
+        }
+      ]
+    }
+  ],
+  "verification": {
+    "by": "openwiki/0.9.0",
+    "at": "2026-11-15T23:16:32.229Z"
+  }
+}
