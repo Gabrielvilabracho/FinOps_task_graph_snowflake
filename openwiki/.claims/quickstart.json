@@ -1,6 +1,6 @@
 {
   "schemaVersion": 1,
-  "pageVersion": "sha256:849ac454c8949e67e7238ebb8720675ee50140d80c5b8caed9dec6be5193d031",
+  "pageVersion": "sha256:fbf4561dce1308747e4c7d01b34e0c5b41d06497eb20858a57bfc06e7451d886",
   "claims": [
     {
       "id": "claim_2851bb98aa34402abb41115091cd2a5f",
@@ -14,11 +14,11 @@
     },
     {
       "id": "claim_b0cfe0ca964b414e9005e52b2ad3f17a",
-      "statement": "Repository implementation is locally tested while target-account objects, grants, reports, alerts, and live Task Graph behavior remain pending or independently unverified.",
+      "statement": "Repository implementation and source-backed OpenWiki are complete locally while target-account objects, grants, reports, alerts, and live Task Graph behavior remain pending or independently unverified.",
       "evidence": [
         {
-          "resource": "repo://README.md#L5-L13",
-          "version": "repo-lines-v1:sha256:349708ab8d645a73e9d3cb6d64f85c45267d3b88482b86b33783ad3d8a9ff7ff:eyJzZWxlY3RlZExpbmVDb3VudCI6OSwiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiOWY1ZmU5Y2JhMDFiZjlkNTkwMjQ0Zjg5MzA5MzkxYmZhMTgxZDJmMmNlODcxOGQ3NDFhNWVhNGI0YTA4OGMzYiIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiYjgwYmFjYWFjNmZlYTc1NGMyODY5ODNiNDhiYTM3ZjhlODNhMWJhNzkwM2RjOTMzYjA4OWEwNWExYWM4N2YyOSIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjMsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiNTgyNjFiYTgyODM3YjdmMDMyNTQzNDQzZjM2NGUzMTE4ZDAxYTk3M2JhNDM2MGRkYmMxMzg2OTIyMDVmMjYyMCIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjMsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiZDgwZDI1YzBmZjQ1NjRmM2VlZDU0YzhmYjY0ODQzMjNkODRjYjY5NTY4NDE2ZWY0ODExMzM3MjNmMzRmM2FhMSJ9"
+          "resource": "repo://README.md#L5-L15",
+          "version": "repo-lines-v1:sha256:045fe917ba9acccb8de4fa66d889ff54afd97f351556f9e2bbc0c670274c2fd4:eyJzZWxlY3RlZExpbmVDb3VudCI6MTEsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjlmNWZlOWNiYTAxYmY5ZDU5MDI0NGY4OTMwOTM5MWJmYTE4MWQyZjJjZTg3MThkNzQxYTVlYTRiNGEwODhjM2IiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6ImI4MGJhY2FhYzZmZWE3NTRjMjg2OTgzYjQ4YmEzN2Y4ZTgzYTFiYTc5MDNkYzkzM2IwODlhMDVhMWFjODdmMjkiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjU4MjYxYmE4MjgzN2I3ZjAzMjU0MzQ0M2YzNjRlMzExOGQwMWE5NzNiYTQzNjBkZGJjMTM4NjkyMjA1ZjI2MjAiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6ImQ4MGQyNWMwZmY0NTY0ZjNlZWQ1NGM4ZmI2NDg0MzIzZDg0Y2I2OTU2ODQxNmVmNDgxMTMzNzIzZjM0ZjNhYTEifQ"
         }
       ]
     },
@@ -27,7 +27,7 @@
       "statement": "Only the cost module has approved anomaly thresholds; other analyzers collect evidence and remain RULE_NOT_CONFIGURED until their rules are approved.",
       "evidence": [
         {
-          "resource": "repo://README.md#L15-L21",
+          "resource": "repo://README.md#L17-L23",
           "version": "repo-lines-v1:sha256:4195dcb7449292cfd5174a955c5562f46a7f78cc1bf47979988b16b1cfc3c14f:eyJzZWxlY3RlZExpbmVDb3VudCI6NywiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiMjc5ZDE1NDZmMWQxYTE4YTczNTY3MmIxODM0M2MyOGM3OTdhZjNiYjQ5YzRkNDYyYWIzMDE4NWNlYWQ0OGZmOCIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiNjFmOGNlZTYyNmMyOTQwYjkzZTk2ZTI5NWVmMDBkNjExODk2ODUwN2NkN2UzZWI2MjdmZGVlN2YwMDlmZjg3ZCIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjMsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiZjZjZGE3ZWRkNmViNDRiYjk4YTA2YTU5NDRjNmYxMTM5YTU3NzA2NzMyNmFjMmIwYTc1MjI2OGMwMTc3MWJhMSIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjMsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiMGQwMzkyOTk3ZDIwODAzNGZjOWFiY2ZiNzhmZTVjMzA4ODU1Mjg5ZmU1ZGFkYzYyNjQwMmVhOTYyOWM5MTdlZCJ9"
         }
       ]
@@ -45,6 +45,6 @@
   ],
   "verification": {
     "by": "openwiki/0.9.0",
-    "at": "2026-11-15T23:16:32.229Z"
+    "at": "2026-11-15T23:36:35.919Z"
   }
 }

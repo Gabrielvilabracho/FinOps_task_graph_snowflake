@@ -1,3 +1,3 @@
 # Files
 
-- [Testing and Verification](verification.md) - Local contract tests, mocked deployment checks, Snowflake-side validation, and the remaining live-integration evidence gap.
+- [Testing and Verification](verification.md) - Local contracts, deployment probes, OpenWiki maintenance checks, Snowflake validation, and remaining live-integration gaps.

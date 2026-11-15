@@ -5,13 +5,13 @@ description: Entry point for understanding, testing, deploying, and operating th
 tags: [quickstart, snowflake, finops, navigation]
 verified:
   - by: openwiki/0.9.0
-    at: 2026-11-15T23:16:32.229Z
+    at: 2026-11-15T23:36:35.919Z
 sources:
   - id: openwiki-source-66381fd16098d228f5875787
     resource: repo://docs/operations/runbook.md
   - id: openwiki-source-23775c3de52f3ab95a13cb8b
     resource: repo://README.md
-generated: { by: "opencode", at: "2026-11-15T23:16:32.229Z" }
+generated: { by: "opencode", at: "2026-11-15T23:36:35.919Z" }
 ---
 
 # FinOps Task Graph Quickstart
@@ -25,6 +25,7 @@ This repository implements a native Snowflake FinOps system in `DATALAB.SPAIN`. 
 - Remaining objects, effective grants, Task Graph execution, notification delivery, and finalizer behavior are pending live Snowflake validation.
 - `GG_APP_CC_REC_DATAWARE_DMO` is treated only as the confirmed read/monitor access role.
 - The single Task Graph owner role still requires an explicit team decision.
+- OpenWiki is generated and finalized with source-backed Claims and guarded maintenance tests.
 - Streams and triggered tasks are a proposed future phase, not current runtime members.
 
 ## Start with the question you have

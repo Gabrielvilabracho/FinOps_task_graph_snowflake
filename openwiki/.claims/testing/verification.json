@@ -1,6 +1,6 @@
 {
   "schemaVersion": 1,
-  "pageVersion": "sha256:e71365756d8554235580078852ba3590201d6504b8ede88e8da2425b0f66f562",
+  "pageVersion": "sha256:a5e353d2d007e3fb429db7fe9efe82f7649ebdc8c9139dcab14a67cd594f3b1c",
   "claims": [
     {
       "id": "claim_ef20a5ba4d8f49eab9689013c20cc725",
@@ -51,10 +51,40 @@
           "version": "repo-lines-v1:sha256:de599e3ab583eb3093c2b12da1748692b81b68374a19dae4fa0c8ef528b0713a:eyJzZWxlY3RlZExpbmVDb3VudCI6NDgsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6ImNjOGM5NmI2NGYxOWZmZjExM2FhYmE0ZDQzODZlMGY5YmI5NzAxZTMzNjU2MmNhOGJjNjIyMzMxY2JmM2JmNTUiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjQ5MjE4MjhhZTk0M2QwMWEyYWI1NjYwNDI3MTFjOWYyM2M5ODkxMGFiOWQ4YmEzYjVlYzZjZmRlNDRiZTVjM2UiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjVhZmIwOWQwY2QzODMwZjU4Nzk5Mzc2MzQwYmFiNjI5NmJhOWRiYzg1ODdiNmNhMDlhYTM3OTRjY2U3OGFlZWMiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjowLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6ImUzYjBjNDQyOThmYzFjMTQ5YWZiZjRjODk5NmZiOTI0MjdhZTQxZTQ2NDliOTM0Y2E0OTU5OTFiNzg1MmI4NTUifQ"
         }
       ]
+    },
+    {
+      "id": "claim_55604fec58df47888a3f8b5e601c78eb",
+      "statement": "OpenWiki regression tests validate lifecycle completion, page and Claims hash consistency, the exact trusted trigger allowlist, SHA-pinned actions, non-persisted checkout credentials, and completed T8 tracking.",
+      "evidence": [
+        {
+          "resource": "repo://tests/test_openwiki_artifacts.py#L20-L67",
+          "version": "repo-lines-v1:sha256:81f02fdc5a845a8401a663fc2fc813d44fb1985ed78626f65afbdd08a9293d6e:eyJzZWxlY3RlZExpbmVDb3VudCI6NDgsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6ImQxYTIyNjlkNWRkMmE4YzUxMDViYzMxNWFjMzdlMDg3N2M0NjA1MmEzZmY3MGJjMzlhYmU2YTdlNDQ4NjQyOWYiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjAxYmE0NzE5YzgwYjZmZTkxMWIwOTFhN2MwNTEyNGI2NGVlZWNlOTY0ZTA5YzA1OGVmOGY5ODA1ZGFjYTU0NmIiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6Ijc4OTEzNzg0YjY5NjQ3ZTJlZmZlMGQ4MmZlMGY5YzdlNGZiMTIxZjhiMzJkYjZkYTkxZTE5N2RiOWUzZWM5Y2IiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjoyLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6ImIwODI3OWJiYWIxMDRjMTc0M2E5MDAwNWE2MWY1MzA2YzNmZDMxZjUyZGE3ZjZkY2FmMjZmOTE5ZDljZmVhYjcifQ"
+        }
+      ]
+    },
+    {
+      "id": "claim_13fdec87cb8a46baaa93635230e18e5d",
+      "statement": "The maintenance workflow uses only manual and scheduled triggers, full-SHA action references, non-persisted checkout credentials, and step-scoped OpenAI and LangSmith secrets.",
+      "evidence": [
+        {
+          "resource": "repo://.github/workflows/openwiki-update.yml#L3-L48",
+          "version": "repo-lines-v1:sha256:5e406f2d7177aa2912f50a956ae2bf5176d5b6aee5ed50e99a2e497cc01aadeb:eyJzZWxlY3RlZExpbmVDb3VudCI6NDYsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6ImU5NmRjNDgxNDlmNWE4M2QxZWQ2ZGJiMzliYmM3ZTJiOTAyYWEzZDM0ZDZiZDVhZTRiMjkxYjY4ZGYwY2E3OWEiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjBkOGRmNjBkNWQxYmQxNTgwNzliZTFmNGVhMmM3ZDFiODUxNGQzN2U5MWY3NmZmYmJlMDRjNDc5MjNiYjE5M2YiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjoyLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6ImM1YjFmMjRlNjE4MDVlZTFhOWJjNzgwNDdlMWU0YjNkODYxNTdkNmUzN2Q4YWMwYmNiZWJkNWU2NWU1ZWYxYWEiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjEyNGVhMmE5NGFmNjIzNjQyN2ExYTZiM2EzOTQ1NjFhYTlkOTk0OTM3NDkyYmUyOWJmMTIzYTM0YjE1NDQ0MzgifQ"
+        }
+      ]
+    },
+    {
+      "id": "claim_5620dadd3efc47e984a05663e68634c7",
+      "statement": "The maintenance workflow installs versioned npm packages globally without a repository lockfile, so transitive dependency integrity remains a hardening advisory rather than locally verified behavior.",
+      "evidence": [
+        {
+          "resource": "repo://.github/workflows/openwiki-update.yml#L29-L32",
+          "version": "repo-lines-v1:sha256:622841fb5dcf18694859895a7dd5511aef56987ac219735d0d6c9b2152c51daf:eyJzZWxlY3RlZExpbmVDb3VudCI6NCwiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiMDFiYTQ3MTljODBiNmZlOTExYjA5MWE3YzA1MTI0YjY0ZWVlY2U5NjRlMDljMDU4ZWY4Zjk4MDVkYWNhNTQ2YiIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiNTc2MDg2MDNhNzFkZWY2YTE5ZTY1NDcyNDI0ZmFmNDcwODkzMGFjNGU2NjI2Zjk5YjA2ZTVmOGFkMGRhZTU4OSIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjMsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiOTE3YTA0YTcyN2NjNjgwM2FiNWUyNzY3YjU2NTAzZGU0ZDhkZGIxNGU2YjEwZWNlN2M1NjA2Y2Y4YmEyZTdlNiIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjMsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiOTM3NjlkMjkyYWFhMDBjMmQzZDAyNzBkZmM5MjIzODZhMGRlNGRhMzhjOTA3MDA1NThlYjIzMmI4ZGIyYjdiNyJ9"
+        }
+      ]
     }
   ],
   "verification": {
     "by": "openwiki/0.9.0",
-    "at": "2026-11-15T23:16:32.229Z"
+    "at": "2026-11-15T23:36:35.919Z"
   }
 }

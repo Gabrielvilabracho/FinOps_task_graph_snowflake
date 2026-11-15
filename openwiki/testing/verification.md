@@ -1,12 +1,14 @@
 ---
 type: testing
 title: Testing and Verification
-description: Local contract tests, mocked deployment checks, Snowflake-side validation, and the remaining live-integration evidence gap.
+description: Local contracts, deployment probes, OpenWiki maintenance checks, Snowflake validation, and remaining live-integration gaps.
 tags: [testing, verification, snowflake, contracts]
 verified:
   - by: openwiki/0.9.0
-    at: 2026-11-15T23:16:32.229Z
+    at: 2026-11-15T23:36:35.919Z
 sources:
+  - id: openwiki-source-6d4b4e707b8d60b6ccfa3425
+    resource: repo://.github/workflows/openwiki-update.yml
   - id: openwiki-source-b8325a9b65c05ee9a2638982
     resource: repo://sql/90_validation/90_validate_deployment.sql
   - id: openwiki-source-60d2c254172ab184137fc60a
@@ -15,9 +17,11 @@ sources:
     resource: repo://tests/test_deploy_script.py
   - id: openwiki-source-1b7ab3f3796385286d32910e
     resource: repo://tests/test_finops_grants_security.py
+  - id: openwiki-source-52204a88e6ea6c119431cd81
+    resource: repo://tests/test_openwiki_artifacts.py
   - id: openwiki-source-1bb3862e57a34c739599e099
     resource: repo://tests/test_repository_contract.py
-generated: { by: "opencode", at: "2026-11-15T23:16:32.229Z" }
+generated: { by: "opencode", at: "2026-11-15T23:36:35.919Z" }
 ---
 
 # Testing and Verification
@@ -42,7 +46,9 @@ The suite verifies:
 - no external orchestrator is introduced into runtime SQL;
 - grant SQL cannot give the read/monitor role unconfirmed runtime privileges or blanket shared-schema access;
 - the parent-database grant occurs under `SECURITYADMIN` before managed-schema grants under `SYSADMIN`;
-- the deployment helper invokes core SQL in the expected order while grants and activation remain manual.
+- the deployment helper invokes core SQL in the expected order while grants and activation remain manual;
+- OpenWiki pages, manifest hashes, Claims sidecars, lifecycle completion, and task tracking remain consistent;
+- the maintenance workflow keeps an exact `workflow_dispatch` and `schedule` trigger allowlist, full-SHA action references, and non-persisted checkout credentials.
 
 `bash -n scripts/deploy.sh` and `git diff --check` provide additional shell-syntax and whitespace checks.
 
@@ -51,6 +57,18 @@ The suite verifies:
 `tests/test_deploy_script.py` replaces the `snow` executable with a temporary recorder. It checks the public shell entrypoint without contacting Snowflake, compares every submitted file against the expected dependency order, and confirms that the output still directs operators to manual grant and resume steps.
 
 This proves ordering and activation boundaries in the repository. It does not prove that any SQL statement is accepted by a live Snowflake account.
+
+## OpenWiki lifecycle and workflow checks
+
+`tests/test_openwiki_artifacts.py` verifies the six expected authored pages, completed lifecycle metadata, absence of transient run state, and matching page hashes across the manifest and Claims sidecars. It also pins the maintenance workflow's trust boundary:
+
+- only `workflow_dispatch` and `schedule` may trigger the workflow;
+- no `github.event` value is interpolated into shell;
+- every referenced action must use a full 40-character commit SHA;
+- checkout credentials must not persist while OpenWiki and npm code execute;
+- ODD tracking must record T8 as complete.
+
+The workflow passes pull-request output through an environment variable before shell annotation. Secrets are scoped to the OpenWiki execution step. Scheduled GitHub execution remains unverified locally, and the global npm installation still lacks a committed lockfile or integrity-bound transitive dependency graph.
 
 ## Snowflake-side policy assertions
 
