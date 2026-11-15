@@ -10,6 +10,8 @@ A serverless FinOps monitoring system implemented inside Snowflake with modular 
 | `FINOPS_RUN`, `FINOPS_MODULE_RUN` in target Snowflake | Reported as created; not independently verified |
 | Remaining tables, procedures, tasks, reports, and alerts in target Snowflake | Pending deployment and live validation |
 | `GG_APP_CC_REC_DATAWARE_DMO` access | Pending `sql/00_setup/02_finops_grants.sql` |
+| Task Graph owner role | Pending explicit confirmation before applying `03_finops_task_owner_grants.template.sql` |
+| OpenWiki | Generated and finalized with source-backed Claims |
 | Streams and triggered tasks | Proposed future phase only |
 
 ## What the daily run answers
@@ -40,7 +42,7 @@ FINOPS_FINALIZER (runs after the graph completes or a child fails)
 
 1. Review [architecture](docs/architecture.md) and [official evidence](docs/official-snowflake-evidence.md).
 2. Deploy SQL in numeric order; keep the root suspended during structural changes.
-3. Run `sql/00_setup/02_finops_grants.sql` with the documented administrative roles.
+3. Apply read/monitor grants from `02_finops_grants.sql`; confirm the owner role before adapting the separate task-owner template.
 4. Validate with `sql/90_validation/90_validate_deployment.sql`.
 5. Resume only after configuration and notification recipients are approved.
 

@@ -16,6 +16,7 @@ jobs:
       - name: Check out repository
         uses: actions/checkout@34e114876b0b11c390a56381ad16ebd13914f8d5 # v4
         with:
+          persist-credentials: false
           # Full history so `openwiki code --update` can diff HEAD against the
           # commit it last documented; a shallow clone hides that commit and the
           # update runs against an empty change summary.
@@ -81,7 +82,9 @@ jobs:
 
       - name: Annotate OpenWiki update pull request
         if: ${{ !cancelled() && steps.create-pr.outputs.pull-request-url != '' }}
-        run: echo "::notice title=OpenWiki update pull request::${{ steps.create-pr.outputs.pull-request-url }}"
+        env:
+          PULL_REQUEST_URL: ${{ steps.create-pr.outputs.pull-request-url }}
+        run: echo "::notice title=OpenWiki update pull request::$PULL_REQUEST_URL"
 
       - name: Propagate OpenWiki failure
         if: ${{ steps.openwiki.outcome == 'failure' }}
