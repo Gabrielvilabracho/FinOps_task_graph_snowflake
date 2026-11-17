@@ -9,6 +9,7 @@ ROOT = Path(__file__).resolve().parents[1]
 EXPECTED_FILES = (
     "sql/00_setup/01_finops_objects.sql",
     "sql/10_core/10_finops_cost_policy.sql",
+    "sql/10_core/11_finops_status_precedence.sql",
     "sql/20_procedures/20_finops_run_lifecycle.sql",
     "sql/20_procedures/21_finops_check_cost.sql",
     "sql/20_procedures/22_finops_check_errors.sql",
