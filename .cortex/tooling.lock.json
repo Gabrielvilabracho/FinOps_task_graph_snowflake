@@ -1,0 +1,53 @@
+{
+  "schema_version": 1,
+  "resolved_at": "2026-11-17",
+  "sources": [
+    {
+      "id": "snowflake-ai-kit",
+      "repository": "Snowflake-Labs/snowflake-ai-kit",
+      "revision": "9259a3b67def2ced6d67e96dc65637d12c3cf40f",
+      "archive_url": "https://codeload.github.com/Snowflake-Labs/snowflake-ai-kit/tar.gz/9259a3b67def2ced6d67e96dc65637d12c3cf40f",
+      "resolved_from": "https://api.github.com/repos/Snowflake-Labs/snowflake-ai-kit/commits/main",
+      "license_paths": [
+        "LICENSE",
+        "LICENSE-SKILLS.md"
+      ],
+      "skills": [
+        {
+          "source": "plugins/cortex-code/skills/cortex-router",
+          "destination": "cortex-router"
+        },
+        {
+          "source": "plugins/cortex-code/skills/cortex-run",
+          "destination": "cortex-run"
+        },
+        {
+          "source": "plugins/cortex-code/skills/cortex-setup",
+          "destination": "cortex-setup"
+        }
+      ]
+    },
+    {
+      "id": "coco-skills",
+      "repository": "Snowflake-Labs/coco-skills",
+      "revision": "f5aa17340a3423e300b9efe8f07d5e00617ef4b6",
+      "archive_url": "https://codeload.github.com/Snowflake-Labs/coco-skills/tar.gz/f5aa17340a3423e300b9efe8f07d5e00617ef4b6",
+      "resolved_from": "https://api.github.com/repos/Snowflake-Labs/coco-skills/commits/main",
+      "license_paths": [],
+      "skills": [
+        {
+          "source": "skills/check-model-availability",
+          "destination": "check-model-availability"
+        },
+        {
+          "source": "skills/rbac",
+          "destination": "rbac"
+        },
+        {
+          "source": "skills/semantic-view-patterns",
+          "destination": "semantic-view-patterns"
+        }
+      ]
+    }
+  ]
+}
