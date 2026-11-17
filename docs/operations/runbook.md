@@ -15,6 +15,7 @@ Keep `FINOPS_ROOT_TASK` suspended while changing graph structure.
 ```text
 sql/00_setup/01_finops_objects.sql
 sql/10_core/10_finops_cost_policy.sql
+sql/10_core/11_finops_status_precedence.sql
 sql/20_procedures/20_finops_run_lifecycle.sql
 sql/20_procedures/21_finops_check_cost.sql
 sql/20_procedures/22_finops_check_errors.sql
@@ -54,7 +55,7 @@ WHERE MODULE_NAME = 'ALERT' AND CONFIG_KEY = 'ENABLED';
 
 1. Run local contract tests.
 2. Run `sql/90_validation/90_validate_deployment.sql`.
-3. Run `tests/sql/00_cost_policy_test.sql` in a non-production environment.
+3. Run `tests/sql/00_cost_policy_test.sql`, `02_metric_contract_test.sql`, and `03_status_precedence_test.sql` in a non-production environment.
 4. Resume children/finalizer, execute `FINOPS_ROOT_TASK AWAIT`, and inspect run tables.
 5. Resume the production schedule only after the smoke run is understood.
 
@@ -73,7 +74,7 @@ OTHER_COSTS: RULE_NOT_CONFIGURED — evidence collected, rule pending
 Overall: ATTENTION_REQUIRED
 ```
 
-A technical module failure also produces `ATTENTION_REQUIRED`, but its module status is `FAILED`, not `ATTENTION`.
+`FAILED` outranks `DATA_INCOMPLETE`, which outranks business attention. `DATA_INCOMPLETE` is alert-worthy and never falls through to `NORMAL`; delivered alerts remain deduplicated by run and channel.
 
 ## Incident handling
 
@@ -81,6 +82,10 @@ A technical module failure also produces `ATTENTION_REQUIRED`, but its module st
 - If a module failed, correct the source privilege/query issue and retry the graph with Snowflake's graph retry capability or run a new manual graph execution.
 - If alert delivery failed, inspect `FINOPS_ALERT_DELIVERY`; do not assume the notification was sent.
 - If Account Usage data is incomplete, rerun after documented source latency instead of lowering or fabricating a threshold.
+
+## Unsupported live checks
+
+Without an explicitly authorized session, Snowflake compilation, object privileges, Account Usage freshness, Task Graph execution, and email delivery remain unverified. Repository tests do not prove those live behaviors.
 
 ## Safe stop and rollback
 

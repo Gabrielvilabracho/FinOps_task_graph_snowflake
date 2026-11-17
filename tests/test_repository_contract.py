@@ -23,6 +23,7 @@ class RepositoryContractTests(unittest.TestCase):
             "sql/00_setup/01_finops_objects.sql",
             "sql/00_setup/02_finops_grants.sql",
             "sql/10_core/10_finops_cost_policy.sql",
+            "sql/10_core/11_finops_status_precedence.sql",
             "sql/20_procedures/20_finops_run_lifecycle.sql",
             "sql/20_procedures/21_finops_check_cost.sql",
             "sql/20_procedures/22_finops_check_errors.sql",
@@ -37,6 +38,9 @@ class RepositoryContractTests(unittest.TestCase):
             "sql/30_tasks/31_resume_finops_task_graph.sql",
             "sql/30_tasks/32_suspend_finops_task_graph.sql",
             "sql/90_validation/90_validate_deployment.sql",
+            "tests/sql/02_metric_contract_test.sql",
+            "tests/sql/03_status_precedence_test.sql",
+            "tests/sql/04_metric_completeness_invariant_test.sql",
         )
 
         for relative_path in required:
@@ -150,11 +154,189 @@ class RepositoryContractTests(unittest.TestCase):
             "RULE_NOT_CONFIGURED",
             "FAILED",
             "ATTENTION_REQUIRED",
+            "DATA_INCOMPLETE",
         ):
             self.assertIn(status, combined)
 
         self.assertIn("SP_FINOPS_BUILD_REPORT", finalizer)
         self.assertIn("SP_FINOPS_SEND_ALERT", finalizer)
+
+    def test_metric_contract_is_typed_complete_and_idempotent(self) -> None:
+        objects = self.read("sql/00_setup/01_finops_objects.sql")
+        lifecycle = self.read("sql/20_procedures/20_finops_run_lifecycle.sql")
+
+        self.assertRegex(
+            objects,
+            r"(?is)CREATE TABLE IF NOT EXISTS FINOPS_METRIC\s*\(.*?"
+            r"PRIMARY KEY\s*\(RUN_ID, MODULE_NAME, METRIC_KEY\)",
+        )
+        for column in (
+            "CURRENT_VALUE",
+            "PREVIOUS_VALUE",
+            "BASELINE_7D_VALUE",
+            "BASELINE_30D_VALUE",
+            "DELTA_ABSOLUTE",
+            "DELTA_PERCENT",
+            "THRESHOLD_VALUE",
+            "CONTRIBUTORS",
+            "EXPLANATION",
+            "RECOMMENDED_ACTION",
+            "SOURCE_NAME",
+            "SOURCE_WINDOW_START",
+            "SOURCE_WINDOW_END",
+            "SOURCE_ROW_COUNT",
+            "SOURCE_WATERMARK",
+            "COLLECTED_AT",
+            "EXPECTED_COMPLETE_AT",
+            "IS_COMPLETE",
+            "COMPLETENESS_REASON",
+            "CREATED_AT",
+            "UPDATED_AT",
+        ):
+            self.assertIn(column, objects)
+
+        self.assertRegex(
+            lifecycle,
+            r"(?is)MERGE INTO FINOPS_METRIC.*?ON\s+target\.RUN_ID\s*=\s*source\.RUN_ID"
+            r"\s+AND\s+target\.MODULE_NAME\s*=\s*source\.MODULE_NAME"
+            r"\s+AND\s+target\.METRIC_KEY\s*=\s*source\.METRIC_KEY",
+        )
+
+    def test_metric_api_enforces_incomplete_status_precedence(self) -> None:
+        lifecycle = self.read("sql/20_procedures/20_finops_run_lifecycle.sql")
+        record_metric = re.search(
+            r"(?is)CREATE OR REPLACE PROCEDURE SP_FINOPS_RECORD_METRIC\(.*?\n\$\$;",
+            lifecycle,
+        )
+        self.assertIsNotNone(record_metric)
+        procedure = record_metric.group(0)
+
+        self.assertIn("V_EFFECTIVE_STATUS", procedure)
+        self.assertRegex(
+            procedure,
+            r"(?is)NOT\s+P_IS_COMPLETE.*?FINOPS_STATUS_PRECEDENCE\(P_STATUS\).*?"
+            r"FINOPS_STATUS_PRECEDENCE\('DATA_INCOMPLETE'\).*?"
+            r"V_EFFECTIVE_STATUS\s*:=\s*'DATA_INCOMPLETE'",
+        )
+        self.assertRegex(procedure, r"(?i)'status',\s*V_EFFECTIVE_STATUS")
+
+    def test_missing_data_is_not_coerced_to_zero_or_normal(self) -> None:
+        for name in ("21_finops_check_cost.sql", "23_finops_check_warehouse.sql"):
+            with self.subTest(module=name):
+                sql = self.read(f"sql/20_procedures/{name}")
+                self.assertIn("EXPECTED_COMPLETE_AT", sql)
+                self.assertIn("SOURCE_WATERMARK", sql)
+                self.assertIn("IS_COMPLETE", sql)
+                self.assertIn("DATA_INCOMPLETE", sql)
+                self.assertRegex(sql, r"(?i)WHEN\s+.*IS_COMPLETE.*THEN\s+COALESCE")
+
+    def test_partial_source_publication_remains_incomplete(self) -> None:
+        for name in ("21_finops_check_cost.sql", "23_finops_check_warehouse.sql"):
+            with self.subTest(module=name):
+                sql = self.read(f"sql/20_procedures/{name}")
+                self.assertRegex(
+                    sql,
+                    r"(?is)V_IS_COMPLETE\s*:=\s*CURRENT_TIMESTAMP\(\)\s*"
+                    r">=\s*V_EXPECTED_COMPLETE_AT\s+AND\s+"
+                    r"V_SOURCE_WATERMARK\s*>=\s*V_WINDOW_END",
+                )
+                self.assertNotRegex(
+                    sql,
+                    r"(?is)V_IS_COMPLETE\s*:=.*?V_SOURCE_ROW_COUNT\s*>\s*0\s+OR",
+                )
+
+    def test_status_precedence_is_shared_by_metric_module_and_run_folding(self) -> None:
+        precedence = self.read("sql/10_core/11_finops_status_precedence.sql")
+        lifecycle = self.read("sql/20_procedures/20_finops_run_lifecycle.sql")
+        report = self.read("sql/20_procedures/27_finops_report.sql")
+        alert = self.read("sql/20_procedures/28_finops_alert.sql")
+        finalizer = self.read("sql/20_procedures/29_finops_finalizer.sql")
+
+        expected_order = (
+            "FAILED",
+            "DATA_INCOMPLETE",
+            "ATTENTION",
+            "REVIEW_REQUIRED",
+            "NORMAL",
+        )
+        ranks = [
+            int(re.search(rf"(?is)WHEN\s+'{status}'.*?THEN\s+(\d+)", precedence).group(1))
+            for status in expected_order
+        ]
+        self.assertEqual(ranks, sorted(ranks, reverse=True))
+        for sql in (lifecycle, report):
+            self.assertIn("FINOPS_STATUS_PRECEDENCE", sql)
+        self.assertIn("ATTENTION_REQUIRED", report)
+        for sql in (report, alert, finalizer):
+            self.assertIn("DATA_INCOMPLETE", sql)
+
+    def test_slice_one_preserves_cost_policy_and_warehouse_scope(self) -> None:
+        cost = self.read("sql/20_procedures/21_finops_check_cost.sql")
+        warehouse = self.read("sql/20_procedures/23_finops_check_warehouse.sql")
+
+        self.assertIn("SUM(CREDITS_USED)", cost)
+        self.assertNotIn("CREDITS_USED_CLOUD_SERVICES", cost)
+        self.assertIn("FINOPS_CLASSIFY_COST", cost)
+        self.assertIn("REVIEW_REQUIRED", warehouse)
+        self.assertNotRegex(warehouse, r"(?i)(threshold|limit)\s*[:=]\s*[0-9]")
+
+    def test_shared_report_finalizer_and_alert_idempotency_is_preserved(self) -> None:
+        report = self.read("sql/20_procedures/27_finops_report.sql")
+        alert = self.read("sql/20_procedures/28_finops_alert.sql")
+        finalizer = self.read("sql/20_procedures/29_finops_finalizer.sql")
+
+        self.assertRegex(
+            report,
+            r"(?is)MERGE INTO FINOPS_DAILY_REPORT.*?ON target\.RUN_ID = source\.RUN_ID",
+        )
+        self.assertRegex(
+            alert,
+            r"(?is)MERGE INTO FINOPS_ALERT_DELIVERY.*?"
+            r"ON target\.RUN_ID = source\.RUN_ID AND target\.CHANNEL = source\.CHANNEL",
+        )
+        self.assertIn("ALREADY_DELIVERED", alert)
+        self.assertRegex(
+            finalizer,
+            r"(?is)AND NOT EXISTS\s*\(.*?FINDING_TYPE = 'TECHNICAL_FAILURE'",
+        )
+
+    def test_slice_one_docs_define_live_validation_boundary(self) -> None:
+        combined = "\n".join(
+            self.read(path)
+            for path in (
+                "README.md",
+                "docs/architecture.md",
+                "docs/operations/runbook.md",
+                "docs/operations/finops-analytics-expansion-plan.md",
+            )
+        )
+        for phrase in (
+            "FINOPS_METRIC",
+            "DATA_INCOMPLETE",
+            "Snowflake compilation",
+            "Account Usage freshness",
+        ):
+            self.assertIn(phrase, combined)
+
+    def test_cortex_tooling_is_delivered_without_credentials(self) -> None:
+        for path in (
+            ".cortex/tooling.lock.json",
+            "scripts/prepare_cortex_tooling.sh",
+            "docs/operations/cortex-tooling.md",
+        ):
+            with self.subTest(path=path):
+                self.assertTrue((ROOT / path).is_file(), path)
+
+    def test_warehouse_documentation_matches_review_status(self) -> None:
+        plan = self.read("docs/operations/finops-analytics-expansion-plan.md")
+        warehouse = self.read("sql/20_procedures/23_finops_check_warehouse.sql")
+
+        self.assertIn("'REVIEW_REQUIRED'", warehouse)
+        self.assertNotIn(
+            "Errors, Warehouse, Queries, AI Services, and Other Costs collect "
+            "metrics but return `RULE_NOT_CONFIGURED`.",
+            plan,
+        )
 
     def test_snowflake_scripting_delimiters_are_balanced(self) -> None:
         for path in (ROOT / "sql").rglob("*.sql"):
