@@ -318,6 +318,14 @@ class RepositoryContractTests(unittest.TestCase):
         ):
             self.assertIn(phrase, combined)
 
+    def test_cortex_tooling_is_delivered_without_credentials(self) -> None:
+        for path in (
+            ".cortex/tooling.lock.json",
+            "scripts/prepare_cortex_tooling.sh",
+        ):
+            with self.subTest(path=path):
+                self.assertTrue((ROOT / path).is_file(), path)
+
     def test_warehouse_documentation_matches_review_status(self) -> None:
         plan = self.read("docs/operations/finops-analytics-expansion-plan.md")
         warehouse = self.read("sql/20_procedures/23_finops_check_warehouse.sql")
