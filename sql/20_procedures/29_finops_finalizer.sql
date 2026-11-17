@@ -72,6 +72,7 @@ BEGIN
     'normal_status', 'NORMAL',
     'business_anomaly_status', 'ATTENTION',
     'rule_gap_status', 'RULE_NOT_CONFIGURED',
+    'incomplete_data_status', 'DATA_INCOMPLETE',
     'technical_failure_status', 'FAILED',
     'overall_attention_status', 'ATTENTION_REQUIRED'
   );
