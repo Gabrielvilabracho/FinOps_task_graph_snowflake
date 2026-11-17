@@ -322,6 +322,7 @@ class RepositoryContractTests(unittest.TestCase):
         for path in (
             ".cortex/tooling.lock.json",
             "scripts/prepare_cortex_tooling.sh",
+            "docs/operations/cortex-tooling.md",
         ):
             with self.subTest(path=path):
                 self.assertTrue((ROOT / path).is_file(), path)
