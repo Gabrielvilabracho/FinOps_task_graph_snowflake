@@ -24,11 +24,12 @@ The implementation keeps orchestration, cost evidence, analysis rules, reports, 
 - `NORMAL`: evaluated rule found no anomaly.
 - `ATTENTION`: business anomaly matched an approved rule.
 - `RULE_NOT_CONFIGURED`: evidence exists, but the team has not approved an anomaly rule.
+- `DATA_INCOMPLETE`: the source is not expected complete yet or has not published through the requested window; values remain `NULL`.
 - `FAILED`: technical analysis or delivery failure.
 - `REVIEW_REQUIRED`: run succeeded but one or more modules lack approved rules.
 - `ATTENTION_REQUIRED`: at least one business anomaly or technical failure requires action.
 
-This prevents a platform failure from masquerading as a cost anomaly and prevents missing rules from being reported as healthy.
+Status folding uses one precedence order: `FAILED > DATA_INCOMPLETE > ATTENTION > REVIEW_REQUIRED > NORMAL`. Module `ATTENTION` maps to run `ATTENTION_REQUIRED`; legacy `RULE_NOT_CONFIGURED` folds as `REVIEW_REQUIRED`. This prevents failures, delayed data, and missing rules from being reported as healthy.
 
 ## Cost decision flow
 
@@ -55,9 +56,12 @@ The comparison is strictly greater than each threshold. A missing previous-day b
 - `FINOPS_CONFIG`: approved rules and delivery configuration.
 - `FINOPS_RUN`: one durable record per graph run group.
 - `FINOPS_MODULE_RUN`: one record per run and analysis module.
+- `FINOPS_METRIC`: one typed metric per `(RUN_ID, MODULE_NAME, METRIC_KEY)`, including source window, watermark, expected-complete time, and completeness evidence. Repeated writes merge on that identity.
 - `FINOPS_FINDING`: rule matches, technical findings, and explicit rule gaps.
 - `FINOPS_DAILY_REPORT`: one idempotent summary per run.
 - `FINOPS_ALERT_DELIVERY`: notification outcome without storing credentials.
+
+`FINOPS_MODULE_RUN.METRICS` remains the compact module summary. `FINOPS_METRIC` is the durable normalized evidence contract. Before a source's expected-complete time, or when its publication watermark has not reached the requested window, collectors persist `NULL`, `IS_COMPLETE = FALSE`, and `DATA_INCOMPLETE`. Zero is valid only after a successful mature window query; source query and privilege errors remain `FAILED`.
 
 ## Repository structure
 
