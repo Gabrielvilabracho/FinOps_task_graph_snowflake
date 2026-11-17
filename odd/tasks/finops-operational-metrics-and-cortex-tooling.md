@@ -19,7 +19,7 @@ Forecast: more than 400 authored lines across SQL contracts, procedures, tests, 
 
 - T1 · S1,S2,S4-S8 · delegated (parallel independent Slice 1 unit) · complete · commits `da104ed`, `a4e2dd5`, and `84f3492` · RED: 9 contract failures, one targeted invariant failure, and one partial-publication failure; GREEN: focused regressions and the full local suite pass.
 - T2 · S1,S3,S8 · delegated (parallel independent tooling unit) · complete · commit `6bd6e2e` · lock, shell syntax, ShellCheck, and offline `--check` pass without activation or credentials.
-- T3 · S1-S8 · inline parent seam and high-risk verification · in progress · local suite passes; final independent verification and PR-chain delivery remain pending; live Snowflake proof remains unavailable.
+- T3 · S1-S8 · inline parent seam and high-risk verification · complete · candidate `79a4176` passed the bounded blocker recheck and 25 local tests; PR-chain delivery is separate; live Snowflake proof remains unavailable.
 
 ## Log
 
@@ -36,3 +36,4 @@ Forecast: more than 400 authored lines across SQL contracts, procedures, tests, 
 - L11 · 2026-11-17 · User selected `feature-branch-chain` for this feature because the implementation exceeds the review-size forecast.
 - L12 · 2026-11-18 · Native review corroborated that partial source rows could incorrectly satisfy completeness before the source watermark reached the requested window end. Commit `a4e2dd5` now requires both expected-complete time and `SOURCE_WATERMARK >= V_WINDOW_END` for Cost and Warehouse.
 - L13 · 2026-11-18 · Independent whole-feature verification found that the credential-free Cortex artifacts were not yet committed and that one Warehouse status sentence contradicted the implementation. Commits `84f3492` and `6bd6e2e` close those gaps; final verification remains pending.
+- L14 · 2026-11-18 · The bounded recheck passed for both prior blockers. The candidate tracks the pinned inert Cortex preparation artifacts, Warehouse documentation matches implemented statuses, 25 tests pass, and all live Snowflake/Cortex checks remain explicitly unavailable.
