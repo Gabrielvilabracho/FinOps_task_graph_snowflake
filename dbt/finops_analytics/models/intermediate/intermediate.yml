@@ -1,0 +1,9 @@
+version: 2
+
+models:
+  - name: int_finops_date_spine
+    description: One UTC analysis date for each of the previous 365 completed calendar days.
+    columns:
+      - name: analysis_date
+        description: UTC date available for complete-versus-missing source evaluation.
+        data_tests: [not_null, unique]

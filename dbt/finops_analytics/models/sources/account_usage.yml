@@ -1,0 +1,32 @@
+version: 2
+
+sources:
+  - name: snowflake_account_usage
+    description: Snowflake account-level usage metadata used for descriptive FinOps analytics.
+    database: SNOWFLAKE
+    schema: ACCOUNT_USAGE
+    tables:
+      - name: metering_daily_history
+        description: Daily account credit usage, cloud-services adjustments, and billed credits.
+        columns:
+          - name: usage_date
+            description: UTC usage date when the session timezone is UTC.
+          - name: service_type
+            description: Snowflake service category that consumed credits.
+          - name: credits_used
+            description: Raw compute and cloud-services credits before adjustments.
+          - name: credits_billed
+            description: Credits billed after cloud-services adjustments.
+      - name: warehouse_metering_history
+        description: Hourly credit usage and query-attributed compute by warehouse.
+        columns:
+          - name: start_time
+            description: Beginning of the metering hour.
+          - name: end_time
+            description: End of the metering hour and publication watermark input.
+          - name: warehouse_id
+            description: Stable Snowflake warehouse identifier.
+          - name: warehouse_name
+            description: Warehouse name at the time of metering.
+          - name: credits_attributed_compute_queries
+            description: Compute credits attributed to query execution; excludes idle time and can be null.
