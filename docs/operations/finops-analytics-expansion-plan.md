@@ -189,6 +189,15 @@ The HTML report must render these results. It must not calculate them.
 
 ## Recommended implementation order
 
+### Analytics foundation — dbt Cost and Warehouse marts (implemented locally)
+
+- `dbt/finops_analytics` defines credential-free project configuration, documented Account Usage sources, staging views, and descriptive daily marts.
+- `finops_daily_cost` keeps raw usage, cloud-services adjustments, and billed credits distinct. It does not apply currency conversion or the operational Cost thresholds.
+- `finops_warehouse_daily` keeps query-attribution gaps explicit and does not invent a Warehouse anomaly rule.
+- The current procedures remain owners of approved rules and durable run persistence. The serverless Task Graph remains unchanged.
+- `UDTF_FINOPS_COST_METRICS` and `UDTF_FINOPS_WAREHOUSE_METRICS` are not created because date/warehouse filters over the marts provide the same read interface without duplicating transformations.
+- Repository checks are implemented. dbt parse/build and native Snowflake deployment remain pending an installed runner and explicitly authorized Snowflake target.
+
 ### Slice 1 — Shared metric contract (implemented in repository)
 
 - `FINOPS_METRIC` is the normalized durable contract, keyed by `(RUN_ID, MODULE_NAME, METRIC_KEY)` and written through one idempotent merge helper. `FINOPS_MODULE_RUN.METRICS` remains the summary payload.
