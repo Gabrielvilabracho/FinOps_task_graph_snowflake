@@ -6,3 +6,6 @@ __pycache__/
 .venv/
 .snowflake/
 openwiki/.run.json
+dbt/finops_analytics/target/
+dbt/finops_analytics/logs/
+dbt/finops_analytics/dbt_packages/

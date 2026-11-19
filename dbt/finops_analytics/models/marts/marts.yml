@@ -1,0 +1,31 @@
+version: 2
+
+models:
+  - name: finops_daily_cost
+    description: Daily account credits with raw usage and billed credits kept explicit.
+    columns:
+      - name: analysis_date
+        description: UTC usage date.
+        data_tests: [not_null, unique]
+      - name: raw_credits_used
+        description: Raw credits used before cloud-services adjustments.
+      - name: billed_credits
+        description: Credits billed after cloud-services adjustments.
+      - name: is_source_complete
+        description: True only when later publication evidence covers this date.
+        data_tests: [not_null]
+
+unit_tests:
+  - name: daily_cost_keeps_raw_and_billed_credits_distinct
+    model: finops_daily_cost
+    given:
+      - input: ref('stg_account_usage__metering_daily_history')
+        rows:
+          - {usage_date: '2026-11-17', service_type: WAREHOUSE_METERING, credits_used_compute: 10.0, credits_used_cloud_services: 0.0, credits_used: 10.0, credits_adjustment_cloud_services: 0.0, credits_billed: 10.0}
+          - {usage_date: '2026-11-18', service_type: WAREHOUSE_METERING, credits_used_compute: 1.0, credits_used_cloud_services: 0.0, credits_used: 1.0, credits_adjustment_cloud_services: 0.0, credits_billed: 1.0}
+      - input: ref('int_finops_date_spine')
+        rows:
+          - {analysis_date: '2026-11-17'}
+    expect:
+      rows:
+        - {analysis_date: '2026-11-17', raw_credits_used: 10.0, billed_credits: 10.0}

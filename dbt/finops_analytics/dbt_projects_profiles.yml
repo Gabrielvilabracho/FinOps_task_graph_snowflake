@@ -1,0 +1,12 @@
+finops_analytics:
+  target: prod
+  outputs:
+    prod:
+      type: snowflake
+      account: "{{ env_var('SNOWFLAKE_ACCOUNT') }}"
+      user: "{{ env_var('SNOWFLAKE_USER') }}"
+      role: "{{ env_var('FINOPS_DBT_ROLE') }}"
+      warehouse: "{{ env_var('FINOPS_DBT_WAREHOUSE') }}"
+      database: "{{ env_var('FINOPS_DBT_DATABASE', 'DATALAB') }}"
+      schema: "{{ env_var('FINOPS_DBT_SCHEMA', 'SPAIN') }}"
+      threads: 8
