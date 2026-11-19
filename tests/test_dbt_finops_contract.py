@@ -44,6 +44,28 @@ class DbtFinOpsContractTests(unittest.TestCase):
         self.assertNotRegex(graph, r"(?i)\bdbt\b")
         self.assertIn("serverless", graph.lower())
 
+    def test_warehouse_extension_preserves_attribution_and_freshness(self) -> None:
+        warehouse = self.read(
+            "dbt/finops_analytics/models/marts/finops_warehouse_daily.sql"
+        )
+
+        self.assertIn("ref('stg_account_usage__warehouse_metering_history')", warehouse)
+        self.assertRegex(warehouse, r"(?i)dateadd\(hour,\s*8,")
+        self.assertIn("count(credits_attributed_compute_queries) = count(*)", warehouse)
+        self.assertNotRegex(warehouse, r"(?i)(attention|threshold|0\.30|\b25\b)")
+
+    def test_udtf_assessment_documents_both_proposed_contracts(self) -> None:
+        guide = self.read("docs/operations/dbt-finops-analytics.md")
+
+        for heading in (
+            "### Proposed UDTF_FINOPS_COST_METRICS contract",
+            "### Proposed UDTF_FINOPS_WAREHOUSE_METRICS contract",
+        ):
+            self.assertIn(heading, guide)
+
+        for field in ("Inputs:", "Output columns:", "Freshness:", "Privileges:", "Example:"):
+            self.assertEqual(guide.count(field), 2, field)
+
 
 if __name__ == "__main__":
     unittest.main()
