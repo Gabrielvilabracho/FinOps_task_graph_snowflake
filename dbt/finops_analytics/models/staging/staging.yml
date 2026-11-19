@@ -1,0 +1,25 @@
+version: 2
+
+models:
+  - name: stg_account_usage__metering_daily_history
+    description: Renamed projection of daily account metering without policy classification.
+    columns:
+      - name: usage_date
+        description: Account usage date.
+        data_tests: [not_null]
+      - name: service_type
+        description: Snowflake service category.
+        data_tests: [not_null]
+
+  - name: stg_account_usage__warehouse_metering_history
+    description: Renamed projection of hourly warehouse metering without anomaly thresholds.
+    columns:
+      - name: start_time
+        description: Beginning of the metering hour.
+        data_tests: [not_null]
+      - name: end_time
+        description: End of the metering hour.
+        data_tests: [not_null]
+      - name: warehouse_id
+        description: Stable Snowflake warehouse identifier.
+        data_tests: [not_null]

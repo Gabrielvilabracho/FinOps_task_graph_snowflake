@@ -2,7 +2,7 @@
 
 ## Executive summary
 
-The implementation keeps orchestration, cost evidence, analysis rules, reports, and alert state in Snowflake. Tasks orchestrate; procedures own business logic; tables preserve operational evidence; a finalizer reconciles every graph run even when a child fails.
+The implementation keeps orchestration, cost evidence, analysis rules, reports, and alert state in Snowflake. Tasks orchestrate; procedures own business logic; tables preserve operational evidence; a finalizer reconciles every graph run even when a child fails. A separate dbt project provides descriptive Cost and Warehouse marts without changing that operational ownership.
 
 ## Operational model
 
@@ -63,6 +63,12 @@ The comparison is strictly greater than each threshold. A missing previous-day b
 
 `FINOPS_MODULE_RUN.METRICS` remains the compact module summary. `FINOPS_METRIC` is the durable normalized evidence contract. Before a source's expected-complete time, or when its publication watermark has not reached the requested window, collectors persist `NULL`, `IS_COMPLETE = FALSE`, and `DATA_INCOMPLETE`. Zero is valid only after a successful mature window query; source query and privilege errors remain `FAILED`.
 
+## dbt analytics boundary
+
+`dbt/finops_analytics` reads documented `SNOWFLAKE.ACCOUNT_USAGE` sources and materializes descriptive Cost and Warehouse marts. It does not classify anomalies, write operational run state, send alerts, or replace the procedure contract. The marts preserve raw versus billed credits, source publication evidence, and null attribution rather than manufacturing policy outcomes.
+
+The current Task Graph remains serverless. Native Snowflake tasks that execute a dbt project require a user-managed warehouse, so dbt scheduling is a separate future adaptation that needs explicit warehouse, role, grant, failure, and rollback decisions.
+
 ## Repository structure
 
 ```text
@@ -71,6 +77,7 @@ The comparison is strictly greater than each threshold. A missing previous-day b
 │   ├── architecture.md
 │   ├── official-snowflake-evidence.md
 │   └── operations/runbook.md
+├── dbt/finops_analytics/            # Descriptive Cost and Warehouse marts
 ├── odd/tasks/                      # Durable feature specification and log
 ├── scripts/                        # Optional deployment helper only
 ├── sql/
