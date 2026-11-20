@@ -20,6 +20,7 @@ Forecast: initially under 400 authored changed lines; the completed atomic deplo
 - T3 · S1-S4,S6 · inline · complete · RED observed 17 failures and one error; GREEN passed 39 tests, shell syntax, diff validation, parent spot check, and independent high-risk verification.
 - T4 · S4-S5 · inline · complete · `FINOPS_TASK_OWNER` was created with scoped schema/warehouse privileges, both required Account Usage database roles, and account-level serverless task execution privileges.
 - T5 · S1-S5 · inline · complete · The idempotent single-session deployment succeeded in `FINOPS_DEV.FINOPS`; fail-closed validation proved ten suspended tasks, one owner, no unexpected tasks, disabled alerts, and empty run history. Final targeted recheck: PASS.
+- T6 · S1,S5 · inline · complete · Review correction makes the administrative bootstrap create `FINOPS_DEV` before its schema and pins the clean-account order with a repository contract test. RED failed on the absent statement; GREEN passed the focused test, all 40 repository tests, shell syntax, and diff validation.
 
 ## Log
 
@@ -40,3 +41,5 @@ Forecast: initially under 400 authored changed lines; the completed atomic deplo
 - L15 · 2026-11-21 · Final correction replaced display-only task counts with Snowflake Scripting custom exceptions for missing expected tasks, active expected tasks, and unexpected `FINOPS_` tasks. The live valid deployment returned `10/10/0` and completed successfully.
 - L16 · 2026-11-21 · Closure evidence: 39 Python tests, shell syntax, and `git diff --check` passed. The independent targeted blocker recheck confirmed fail-closed validation and bootstrap-before-deploy ordering with no remaining blocker. Activation remains intentionally pending.
 - L17 · 2026-11-21 · The user selected `feature-branch-chain` after the completed diff reached 629 authored changed lines. The implementation remains one cohesive first slice because separating target, owner, deployment, validation, tests, or operating instructions would leave an unsafe intermediate deployment contract; a small closure commit will record final commit and review evidence.
+- L18 · 2026-11-21 · Gentle AI review found that the bootstrap created `FINOPS_DEV.FINOPS` without first creating `FINOPS_DEV`, which fails on a truly clean account. RED reproduced the missing statement; the bounded correction now creates the database before the schema and adds an ordering regression test.
+- L19 · 2026-11-21 · Correction evidence: focused database-before-schema contract passed, all 40 Python tests passed, `bash -n scripts/deploy.sh` passed, and `git diff --check` passed. Task activation remains intentionally excluded.

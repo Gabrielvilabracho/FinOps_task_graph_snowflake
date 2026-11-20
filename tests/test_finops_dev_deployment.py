@@ -52,6 +52,15 @@ class FinOpsDevDeploymentTests(unittest.TestCase):
         self.assertIn('GRANT ROLE FINOPS_TASK_OWNER TO USER "gvilabracho"', grants)
         self.assertNotIn("FINOPS_REPO_OPERATOR", grants)
 
+    def test_task_owner_bootstrap_creates_database_before_schema(self) -> None:
+        grants = (
+            ROOT / "sql/00_setup/03_finops_task_owner_grants.sql"
+        ).read_text(encoding="utf-8")
+
+        database = grants.index("CREATE DATABASE IF NOT EXISTS FINOPS_DEV")
+        schema = grants.index("CREATE SCHEMA IF NOT EXISTS FINOPS_DEV.FINOPS")
+        self.assertLess(database, schema)
+
     def test_task_owner_has_exact_account_usage_database_roles(self) -> None:
         grants = (
             ROOT / "sql/00_setup/03_finops_task_owner_grants.sql"
