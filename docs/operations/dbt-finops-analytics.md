@@ -19,7 +19,7 @@ The current Task Graph remains serverless and unchanged. Snowflake requires a us
 
 ## Native Snowflake project
 
-The intended object remains `DATALAB.SPAIN.FINOPS_DBT_PROJECT`. `dbt_projects_profiles.yml` contains no password, token, or private key. Deployment must provide the account, user, execution role, and `FINOPS_DBT_WAREHOUSE` through an explicitly authorized environment or CI identity.
+The intended object is `FINOPS_DEV.FINOPS.FINOPS_DBT_PROJECT`. `dbt_projects_profiles.yml` contains no password, token, or private key. Deployment must provide the account, user, execution role, and `FINOPS_DBT_WAREHOUSE` through an explicitly authorized environment or CI identity.
 
 Before deployment, an administrator must approve and provision:
 

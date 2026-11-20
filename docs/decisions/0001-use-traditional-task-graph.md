@@ -6,7 +6,7 @@ Accepted for the first implementation.
 
 ## Context
 
-Snowflake supports both a root-task-based graph and a newer `TASK GRAPH` object. The requested design names independent tasks, requires a root task and finalizer, and must remain compatible with the supplied `DATALAB.SPAIN` deployment context.
+Snowflake supports both a root-task-based graph and a newer `TASK GRAPH` object. The requested design names independent tasks and requires a root task and finalizer. The original `DATALAB.SPAIN` context was superseded by the selected clean-deployment target `FINOPS_DEV.FINOPS`.
 
 ## Decision
 

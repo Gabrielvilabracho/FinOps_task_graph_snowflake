@@ -1,6 +1,6 @@
--- Run after deployment with a role that can inspect DATALAB.SPAIN tasks.
+-- Run after deployment with a role that can inspect FINOPS_DEV.FINOPS tasks.
 
-SHOW TASKS IN SCHEMA DATALAB.SPAIN;
+SHOW TASKS IN SCHEMA FINOPS_DEV.FINOPS;
 
 SELECT
   "name",
@@ -23,4 +23,4 @@ WHERE "name" IN (
 ORDER BY "name";
 
 -- Manual smoke run after child tasks and the finalizer are resumed:
--- EXECUTE TASK DATALAB.SPAIN.FINOPS_ROOT_TASK AWAIT;
+-- EXECUTE TASK FINOPS_DEV.FINOPS.FINOPS_ROOT_TASK AWAIT;

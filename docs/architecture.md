@@ -93,7 +93,7 @@ The current Task Graph remains serverless. Native Snowflake tasks that execute a
 
 ## Security and ownership
 
-All graph tasks must live in `DATALAB.SPAIN` and share one owner role. The schema uses managed access and is owned by `SYSADMIN`, so schema object grants must be issued by the schema owner or a role with `MANAGE GRANTS`. Serverless tasks additionally require account-level `EXECUTE TASK` and `EXECUTE MANAGED TASK` for the task owner.
+All graph tasks live in `FINOPS_DEV.FINOPS` and must share one owner role. Before grants are applied, confirm the schema owner and whether managed access is enabled; managed-access object grants must be issued by the schema owner or a role with `MANAGE GRANTS`. Serverless tasks additionally require account-level `EXECUTE TASK` and `EXECUTE MANAGED TASK` for the task owner. `FINOPS_REPO_OPERATOR` remains limited to repository synchronization and is not the deployment or runtime owner.
 
 ## Future event-driven phase
 

@@ -7,12 +7,13 @@ A serverless FinOps monitoring system implemented inside Snowflake with modular 
 | Area | State |
 | --- | --- |
 | Repository implementation | Implemented in SQL and covered by local contract tests |
-| `FINOPS_RUN`, `FINOPS_MODULE_RUN` in target Snowflake | Reported as created; not independently verified |
-| Remaining tables, procedures, tasks, reports, and alerts in target Snowflake | Pending deployment and live validation |
-| `FINOPS_METRIC` and `DATA_INCOMPLETE` contract | Implemented in repository; Snowflake compilation and Account Usage freshness remain unverified |
+| `FINOPS_DEV.FINOPS` application objects | Deployed and structurally validated; no historical data migration was required |
+| `FINOPS_METRIC` and `DATA_INCOMPLETE` contract | Compiled in Snowflake; runtime Account Usage freshness remains unverified until an authorized smoke run |
 | dbt Cost and Warehouse analytics | Implemented locally under `dbt/finops_analytics`; parse, execution, and native deployment remain unverified |
-| `GG_APP_CC_REC_DATAWARE_DMO` access | Pending `sql/00_setup/02_finops_grants.sql` |
-| Task Graph owner role | Pending explicit confirmation before applying `03_finops_task_owner_grants.template.sql` |
+| `FINOPS_REPO_OPERATOR` | Configured for Snowflake Git synchronization only; not an object deployment role |
+| Optional `GG_APP_CC_REC_DATAWARE_DMO` access | Pending `sql/00_setup/02_finops_grants.sql` |
+| Combined deployment and Task Graph owner role | `FINOPS_TASK_OWNER` created and verified as the sole owner of all ten tasks |
+| Task Graph activation | All ten tasks are suspended; activation remains explicit and pending |
 | OpenWiki | Generated and finalized with source-backed Claims |
 | Streams and triggered tasks | Proposed future phase only |
 
@@ -43,8 +44,8 @@ FINOPS_FINALIZER (runs after the graph completes or a child fails)
 ## Quick path
 
 1. Review [architecture](docs/architecture.md), [official evidence](docs/official-snowflake-evidence.md), and the [dbt analytics guide](docs/operations/dbt-finops-analytics.md).
-2. Deploy SQL in numeric order; keep the root suspended during structural changes.
-3. Apply read/monitor grants from `02_finops_grants.sql`; confirm the owner role before adapting the separate task-owner template.
+2. Run the one-time authorized owner bootstrap from `03_finops_task_owner_grants.sql`; optional read/monitor grants remain separate in `02_finops_grants.sql`.
+3. Run `./scripts/deploy.sh <snowflake-connection-name>` with the confirmed combined deployment and single task-owner role; it targets `FINOPS_DEV.FINOPS` and keeps the graph suspended.
 4. Validate with `sql/90_validation/90_validate_deployment.sql`.
 5. Resume only after configuration and notification recipients are approved.
 

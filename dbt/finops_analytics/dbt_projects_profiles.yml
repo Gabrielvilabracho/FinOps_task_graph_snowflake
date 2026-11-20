@@ -7,6 +7,6 @@ finops_analytics:
       user: "{{ env_var('SNOWFLAKE_USER') }}"
       role: "{{ env_var('FINOPS_DBT_ROLE') }}"
       warehouse: "{{ env_var('FINOPS_DBT_WAREHOUSE') }}"
-      database: "{{ env_var('FINOPS_DBT_DATABASE', 'DATALAB') }}"
-      schema: "{{ env_var('FINOPS_DBT_SCHEMA', 'SPAIN') }}"
+      database: "{{ env_var('FINOPS_DBT_DATABASE', 'FINOPS_DEV') }}"
+      schema: "{{ env_var('FINOPS_DBT_SCHEMA', 'FINOPS') }}"
       threads: 8

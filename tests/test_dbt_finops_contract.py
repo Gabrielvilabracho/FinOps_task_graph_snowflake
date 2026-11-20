@@ -28,6 +28,8 @@ class DbtFinOpsContractTests(unittest.TestCase):
 
         profile = self.read("dbt/finops_analytics/dbt_projects_profiles.yml")
         self.assertIn("env_var('FINOPS_DBT_WAREHOUSE')", profile)
+        self.assertIn("env_var('FINOPS_DBT_DATABASE', 'FINOPS_DEV')", profile)
+        self.assertIn("env_var('FINOPS_DBT_SCHEMA', 'FINOPS')", profile)
         self.assertNotRegex(profile, r"(?i)(password|private_key|token)\s*:")
 
     def test_cost_mart_preserves_policy_and_completeness_boundaries(self) -> None:

@@ -3,16 +3,28 @@
 ## Prerequisites
 
 - An explicitly authorized Snowflake session.
-- `SYSADMIN` or the managed-access schema owner for schema-level grants.
+- The confirmed owner of `FINOPS_DEV.FINOPS`, or a role with `MANAGE GRANTS` when the schema uses managed access.
 - `ACCOUNTADMIN` for account-level serverless-task privileges when not already delegated.
-- A single approved task-owner role with access to `SNOWFLAKE.ACCOUNT_USAGE` through `USAGE_VIEWER` or equivalent privileges.
+- A single approved task-owner role with `SNOWFLAKE.USAGE_VIEWER` for metering/warehouse views and `SNOWFLAKE.GOVERNANCE_VIEWER` for `QUERY_HISTORY`.
 - An email notification integration and verified recipients only when alert delivery is enabled.
 
 ## Deployment order
 
 Keep `FINOPS_ROOT_TASK` suspended while changing graph structure.
 
+The deployment helper always targets `FINOPS_DEV.FINOPS` and disables secondary roles:
+
+```bash
+./scripts/deploy.sh <snowflake-connection-name>
+```
+
+For the first clean installation, run `03_finops_task_owner_grants.sql` once
+through the authorized administrative session. The deployment helper then forces
+`FINOPS_TASK_OWNER` as the primary role, so it deploys the objects and owns every
+graph task. `FINOPS_REPO_OPERATOR` must not be used for deployment.
+
 ```text
+sql/00_setup/03_finops_task_owner_grants.sql  # one-time administrative bootstrap
 sql/00_setup/01_finops_objects.sql
 sql/10_core/10_finops_cost_policy.sql
 sql/10_core/11_finops_status_precedence.sql
@@ -31,6 +43,9 @@ sql/00_setup/02_finops_grants.sql
 sql/90_validation/90_validate_deployment.sql
 ```
 
+The verified deployment path uses one Snowflake CLI session for all application
+files. This avoids repeated OAuth authorization while preserving numeric order.
+
 Do not run `31_resume_finops_task_graph.sql` until validation passes and the notification configuration is reviewed.
 
 ## Alert configuration
@@ -38,15 +53,15 @@ Do not run `31_resume_finops_task_graph.sql` until validation passes and the not
 Alerting is disabled by default. Configure values without storing credentials:
 
 ```sql
-UPDATE DATALAB.SPAIN.FINOPS_CONFIG
+UPDATE FINOPS_DEV.FINOPS.FINOPS_CONFIG
 SET CONFIG_VALUE = TO_VARIANT('FINOPS_EMAIL_INTEGRATION'), UPDATED_AT = CURRENT_TIMESTAMP()
 WHERE MODULE_NAME = 'ALERT' AND CONFIG_KEY = 'EMAIL_INTEGRATION';
 
-UPDATE DATALAB.SPAIN.FINOPS_CONFIG
+UPDATE FINOPS_DEV.FINOPS.FINOPS_CONFIG
 SET CONFIG_VALUE = TO_VARIANT('verified.user@example.com'), UPDATED_AT = CURRENT_TIMESTAMP()
 WHERE MODULE_NAME = 'ALERT' AND CONFIG_KEY = 'RECIPIENTS';
 
-UPDATE DATALAB.SPAIN.FINOPS_CONFIG
+UPDATE FINOPS_DEV.FINOPS.FINOPS_CONFIG
 SET CONFIG_VALUE = TO_VARIANT(TRUE), UPDATED_AT = CURRENT_TIMESTAMP()
 WHERE MODULE_NAME = 'ALERT' AND CONFIG_KEY = 'ENABLED';
 ```
@@ -59,7 +74,7 @@ WHERE MODULE_NAME = 'ALERT' AND CONFIG_KEY = 'ENABLED';
 4. Resume children/finalizer, execute `FINOPS_ROOT_TASK AWAIT`, and inspect run tables.
 5. Resume the production schedule only after the smoke run is understood.
 
-The context-confirmed `GG_APP_CC_REC_DATAWARE_DMO` role receives only object-scoped FinOps read and monitor grants. The team must identify the single Task Graph owner before applying the account-level template in `sql/00_setup/03_finops_task_owner_grants.template.sql`.
+`FINOPS_REPO_OPERATOR` synchronizes the Snowflake Git repository only; it does not deploy objects or own tasks. The optional `GG_APP_CC_REC_DATAWARE_DMO` role receives only object-scoped FinOps read and monitor grants. `FINOPS_TASK_OWNER` is the combined deployment and single graph-owner role defined by `sql/00_setup/03_finops_task_owner_grants.sql`.
 
 ## Daily interpretation
 
