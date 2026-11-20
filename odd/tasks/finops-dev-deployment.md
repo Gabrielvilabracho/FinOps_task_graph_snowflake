@@ -16,11 +16,11 @@ Forecast: initially under 400 authored changed lines; the completed atomic deplo
 ## Tasks
 
 - T1 · S1-S6 · delegated exploration · complete · Source, test, dbt, documentation, privilege, and suspension boundaries mapped with path-level evidence.
-- T2 · S1-S4,S6 · inline · complete · Target contracts drove the SQL, deploy helper, dbt defaults, grants, tests, and documentation to `FINOPS_DEV.FINOPS`.
-- T3 · S1-S4,S6 · inline · complete · RED observed 17 failures and one error; GREEN passed 39 tests, shell syntax, diff validation, parent spot check, and independent high-risk verification.
-- T4 · S4-S5 · inline · complete · `FINOPS_TASK_OWNER` was created with scoped schema/warehouse privileges, both required Account Usage database roles, and account-level serverless task execution privileges.
-- T5 · S1-S5 · inline · complete · The idempotent single-session deployment succeeded in `FINOPS_DEV.FINOPS`; fail-closed validation proved ten suspended tasks, one owner, no unexpected tasks, disabled alerts, and empty run history. Final targeted recheck: PASS.
-- T6 · S1,S5 · inline · complete · Review correction makes the administrative bootstrap create `FINOPS_DEV` before its schema and pins the clean-account order with a repository contract test. RED failed on the absent statement; GREEN passed the focused test, all 40 repository tests, shell syntax, and diff validation.
+- T2 · S1-S4,S6 · inline · complete · Commit `a8fa502` · Target contracts drove the SQL, deploy helper, dbt defaults, grants, tests, and documentation to `FINOPS_DEV.FINOPS`.
+- T3 · S1-S4,S6 · inline · complete · Commit `a8fa502` · RED observed 17 failures and one error; GREEN passed 39 tests, shell syntax, diff validation, parent spot check, and independent high-risk verification.
+- T4 · S4-S5 · inline · complete · Commit `a8fa502` · `FINOPS_TASK_OWNER` was created with scoped schema/warehouse privileges, both required Account Usage database roles, and account-level serverless task execution privileges.
+- T5 · S1-S5 · inline · complete · Commit `a8fa502` · The idempotent single-session deployment succeeded in `FINOPS_DEV.FINOPS`; fail-closed validation proved ten suspended tasks, one owner, no unexpected tasks, disabled alerts, and empty run history. Final targeted recheck: PASS.
+- T6 · S1,S5 · inline · complete · Commit `c1ed937` · Review correction makes the administrative bootstrap create `FINOPS_DEV` before its schema and pins the clean-account order with a repository contract test. RED failed on the absent statement; GREEN passed the focused test, all 40 repository tests, shell syntax, and diff validation.
 
 ## Log
 
@@ -43,3 +43,4 @@ Forecast: initially under 400 authored changed lines; the completed atomic deplo
 - L17 · 2026-11-21 · The user selected `feature-branch-chain` after the completed diff reached 629 authored changed lines. The implementation remains one cohesive first slice because separating target, owner, deployment, validation, tests, or operating instructions would leave an unsafe intermediate deployment contract; a small closure commit will record final commit and review evidence.
 - L18 · 2026-11-21 · Gentle AI review found that the bootstrap created `FINOPS_DEV.FINOPS` without first creating `FINOPS_DEV`, which fails on a truly clean account. RED reproduced the missing statement; the bounded correction now creates the database before the schema and adds an ordering regression test.
 - L19 · 2026-11-21 · Correction evidence: focused database-before-schema contract passed, all 40 Python tests passed, `bash -n scripts/deploy.sh` passed, and `git diff --check` passed. Task activation remains intentionally excluded.
+- L20 · 2026-11-21 · Native review could not restart because Gentle AI omitted an executable candidate-bound continuation. The user explicitly disabled RDD for this clone; delivery now follows ordinary repository policy as `disabled/unmanaged`. No task activation, push, or pull request was performed.
