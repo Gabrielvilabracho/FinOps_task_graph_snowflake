@@ -27,8 +27,34 @@ class DbtFinOpsContractTests(unittest.TestCase):
                 self.assertTrue((ROOT / path).is_file(), path)
 
         profile = self.read("dbt/finops_analytics/dbt_projects_profiles.yml")
-        self.assertIn("env_var('FINOPS_DBT_WAREHOUSE')", profile)
+        for variable in (
+            "DBT_SNOWFLAKE_ACCOUNT",
+            "DBT_SNOWFLAKE_USER",
+            "DBT_FINOPS_DBT_ROLE",
+            "DBT_FINOPS_DBT_WAREHOUSE",
+        ):
+            with self.subTest(variable=variable):
+                self.assertIn(f"env_var('{variable}')", profile)
+
+        self.assertIn("env_var('DBT_FINOPS_DBT_DATABASE', 'FINOPS_DEV')", profile)
+        self.assertIn("env_var('DBT_FINOPS_DBT_SCHEMA', 'FINOPS')", profile)
         self.assertNotRegex(profile, r"(?i)(password|private_key|token)\s*:")
+
+    def test_native_dbt_bootstrap_is_cost_bounded_and_does_not_resume_tasks(self) -> None:
+        bootstrap = self.read("sql/00_setup/04_finops_dbt_bootstrap.sql")
+
+        for contract in (
+            "WAREHOUSE_SIZE = 'XSMALL'",
+            "AUTO_SUSPEND = 60",
+            "AUTO_RESUME = TRUE",
+            "CREATE ROLE IF NOT EXISTS FINOPS_DBT_ROLE",
+            "GRANT CREATE DBT PROJECT ON SCHEMA FINOPS_DEV.FINOPS",
+            "GRANT DATABASE ROLE SNOWFLAKE.USAGE_VIEWER",
+        ):
+            with self.subTest(contract=contract):
+                self.assertIn(contract, bootstrap)
+
+        self.assertNotRegex(bootstrap, r"(?i)\bALTER\s+TASK\b|\bRESUME\b")
 
     def test_cost_mart_preserves_policy_and_completeness_boundaries(self) -> None:
         cost = self.read("dbt/finops_analytics/models/marts/finops_daily_cost.sql")
@@ -53,6 +79,19 @@ class DbtFinOpsContractTests(unittest.TestCase):
         self.assertRegex(warehouse, r"(?i)dateadd\(hour,\s*8,")
         self.assertIn("count(credits_attributed_compute_queries) = count(*)", warehouse)
         self.assertNotRegex(warehouse, r"(?i)(attention|threshold|0\.30|\b25\b)")
+
+    def test_warehouse_name_preserves_missing_source_values(self) -> None:
+        warehouse = self.read(
+            "dbt/finops_analytics/models/marts/finops_warehouse_daily.sql"
+        )
+        marts = self.read("dbt/finops_analytics/models/marts/marts.yml")
+        warehouse_name = marts.split("- name: warehouse_name", 1)[1].split(
+            "- name: raw_credits_used", 1
+        )[0]
+
+        self.assertNotIn("coalesce(warehouse_name", warehouse.lower())
+        self.assertIn("may be null", warehouse_name.lower())
+        self.assertNotIn("not_null", warehouse_name)
 
     def test_udtf_assessment_documents_both_proposed_contracts(self) -> None:
         guide = self.read("docs/operations/dbt-finops-analytics.md")

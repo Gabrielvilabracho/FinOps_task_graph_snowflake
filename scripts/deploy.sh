@@ -7,6 +7,9 @@ if [[ $# -lt 1 ]]; then
 fi
 
 connection="$1"
+database="FINOPS_DEV"
+schema="FINOPS"
+role="FINOPS_TASK_OWNER"
 repo_root="$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)"
 
 files=(
@@ -27,14 +30,24 @@ files=(
   "sql/90_validation/90_validate_deployment.sql"
 )
 
+snow_args=(
+  --connection "$connection"
+  --database "$database"
+  --schema "$schema"
+  --role "$role"
+  --secondary-roles NONE
+)
+
 for file in "${files[@]}"; do
-  snow sql --connection "$connection" --filename "$repo_root/$file"
+  snow_args+=(--filename "$repo_root/$file")
 done
+
+snow sql "${snow_args[@]}"
 
 cat <<'EOF'
 Core objects are deployed with the graph suspended.
 Administrative grants and graph resume remain explicit manual steps:
   sql/00_setup/02_finops_grants.sql
-  sql/00_setup/03_finops_task_owner_grants.template.sql (template; requires confirmed owner)
+  sql/00_setup/03_finops_task_owner_grants.sql (one-time authorized bootstrap)
   sql/30_tasks/31_resume_finops_task_graph.sql
 EOF

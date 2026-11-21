@@ -24,16 +24,16 @@ class FinOpsGrantSecurityTests(unittest.TestCase):
         for object_type in ("TABLES", "VIEWS", "FUNCTIONS", "PROCEDURES", "TASKS"):
             with self.subTest(object_type=object_type):
                 self.assertNotIn(
-                    f"ON ALL {object_type} IN SCHEMA DATALAB.SPAIN",
+                    f"ON ALL {object_type} IN SCHEMA FINOPS_DEV.FINOPS",
                     SQL,
                 )
                 self.assertNotIn(
-                    f"ON FUTURE {object_type} IN SCHEMA DATALAB.SPAIN",
+                    f"ON FUTURE {object_type} IN SCHEMA FINOPS_DEV.FINOPS",
                     SQL,
                 )
 
     def test_parent_database_grant_uses_securityadmin(self) -> None:
-        database_grant = SQL.index("GRANT USAGE ON DATABASE DATALAB")
+        database_grant = SQL.index("GRANT USAGE ON DATABASE FINOPS_DEV")
         securityadmin = SQL.index("USE ROLE SECURITYADMIN")
         sysadmin = SQL.index("USE ROLE SYSADMIN")
         self.assertLess(securityadmin, database_grant)

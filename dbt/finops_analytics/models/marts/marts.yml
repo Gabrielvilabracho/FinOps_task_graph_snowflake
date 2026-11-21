@@ -27,8 +27,7 @@ models:
         description: Stable warehouse identifier.
         data_tests: [not_null]
       - name: warehouse_name
-        description: Warehouse name observed in metering history.
-        data_tests: [not_null]
+        description: Warehouse name observed in metering history; may be null when Account Usage publishes only the stable warehouse identifier.
       - name: raw_credits_used
         description: Warehouse credits before account-level cloud-services adjustment.
         data_tests: [not_null]

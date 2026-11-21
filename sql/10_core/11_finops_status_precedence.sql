@@ -1,5 +1,5 @@
-USE DATABASE DATALAB;
-USE SCHEMA SPAIN;
+USE DATABASE FINOPS_DEV;
+USE SCHEMA FINOPS;
 
 -- One rank function drives metric-to-module and module-to-run folding.
 -- RULE_NOT_CONFIGURED is retained as a compatibility alias for REVIEW_REQUIRED.
