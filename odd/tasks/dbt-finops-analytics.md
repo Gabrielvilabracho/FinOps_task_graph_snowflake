@@ -25,6 +25,7 @@ Branches: `feat/dbt-finops-analytics-tracker` → `feat/dbt-finops-analytics-01-
 - [x] T6 — S9-S10 — Route: inline — Commit `cdc9f41` — Deployed and compiled `FINOPS_DBT_PROJECT` from `dbt/finops_analytics` with dbt 1.9.4.
 - [x] T7 — S9-S10 — Route: inline — Commit `cdc9f41` — Built the selected Cost/Warehouse lineage; final result was PASS=24, WARN=0, ERROR=0, SKIP=0.
 - [x] T8 — S9-S10 — Route: inline — Commit `cdc9f41` — Verified 365 Cost rows, four Warehouse rows, the suspended dbt warehouse, and ten suspended operational tasks.
+- [x] T9 — S9-S10 — Route: inline — After dbt validation completed, the previously authorized operational resume started all ten tasks; dbt itself remains unscheduled and runs only on explicit execution.
 
 ## Log
 
@@ -46,3 +47,4 @@ Branches: `feat/dbt-finops-analytics-tracker` → `feat/dbt-finops-analytics-01-
 - L16 (2026-11-21) — The first live build exposed one legitimate Account Usage row with a stable warehouse ID but a null warehouse name. RED reproduced the over-strict contract; the correction preserves the source null, documents it, and removes only the invalid `not_null` test.
 - L17 (2026-11-21) — Final live proof: native project deployment and compilation succeeded; the selected build passed all 24 model/data/unit checks; marts contain 365 Cost rows and four Warehouse rows; the `X-SMALL` warehouse auto-suspended; all ten operational tasks remain suspended.
 - L18 (2026-11-21) — Live dbt provisioning, credential-free runtime variables, the Account Usage null-name correction, repository regression coverage, and operating evidence were committed as `cdc9f41`. RDD remains disabled for this clone, so delivery is `disabled/unmanaged` under ordinary repository policy.
+- L19 (2026-11-21) — The native dbt project remained unscheduled and its warehouse auto-suspended after validation. The sequencing condition was then satisfied, so the previously authorized manual Task Graph resume completed with all ten operational tasks in `started` state.

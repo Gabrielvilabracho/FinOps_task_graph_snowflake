@@ -8,7 +8,7 @@ Forecast: initially under 400 authored changed lines; the completed atomic deplo
 
 - S1 — Deploy to `FINOPS_DEV.FINOPS` instead of the historical target. Acceptance: editable deployment artifacts, tests, dbt defaults, and operating documentation consistently use or default to the selected target.
 - S2 — The user clarified: “pero si no se corrido ninguna ves ninguna de esas es puro codigoq ue eoms creado nosotros”. Acceptance: treat this as a clean installation; do not design or execute a historical data migration.
-- S3 — Preserve the existing safety boundary that tasks remain suspended. Acceptance: deployment never executes `sql/30_tasks/31_resume_finops_task_graph.sql`, and validation proves all ten graph tasks are suspended.
+- S3 — Preserve the safety boundary that deployment never activates tasks implicitly. Acceptance: deployment excludes `sql/30_tasks/31_resume_finops_task_graph.sql`; activation occurs only after explicit user authorization and post-deployment validation.
 - S4 — Keep repository synchronization separate from object deployment. Acceptance: documentation and grants distinguish `FINOPS_REPO_OPERATOR` from the deployment role and the single task-owner role.
 - S5 — Use minimum Snowflake privileges and avoid `ACCOUNTADMIN` for normal operation. Acceptance: owner/deployer grants are explicit, scoped to `FINOPS_DEV.FINOPS`, and live mutation waits for an authorized capable role.
 - S6 — Preserve unrelated untracked files. Acceptance: `.agents/`, `.atl/`, generated HTML/workflow files, and `skills-lock.json` are neither modified nor committed by this feature.
@@ -21,6 +21,7 @@ Forecast: initially under 400 authored changed lines; the completed atomic deplo
 - T4 · S4-S5 · inline · complete · Commit `a8fa502` · `FINOPS_TASK_OWNER` was created with scoped schema/warehouse privileges, both required Account Usage database roles, and account-level serverless task execution privileges.
 - T5 · S1-S5 · inline · complete · Commit `a8fa502` · The idempotent single-session deployment succeeded in `FINOPS_DEV.FINOPS`; fail-closed validation proved ten suspended tasks, one owner, no unexpected tasks, disabled alerts, and empty run history. Final targeted recheck: PASS.
 - T6 · S1,S5 · inline · complete · Commit `c1ed937` · Review correction makes the administrative bootstrap create `FINOPS_DEV` before its schema and pins the clean-account order with a repository contract test. RED failed on the absent statement; GREEN passed the focused test, all 40 repository tests, shell syntax, and diff validation.
+- T7 · S3 · inline · complete · After native dbt deployment and email verification, the explicitly authorized manual resume started all ten operational tasks; the deployment helper still excludes activation.
 
 ## Log
 
@@ -44,3 +45,4 @@ Forecast: initially under 400 authored changed lines; the completed atomic deplo
 - L18 · 2026-11-21 · Gentle AI review found that the bootstrap created `FINOPS_DEV.FINOPS` without first creating `FINOPS_DEV`, which fails on a truly clean account. RED reproduced the missing statement; the bounded correction now creates the database before the schema and adds an ordering regression test.
 - L19 · 2026-11-21 · Correction evidence: focused database-before-schema contract passed, all 40 Python tests passed, `bash -n scripts/deploy.sh` passed, and `git diff --check` passed. Task activation remains intentionally excluded.
 - L20 · 2026-11-21 · Native review could not restart because Gentle AI omitted an executable candidate-bound continuation. The user explicitly disabled RDD for this clone; delivery now follows ordinary repository policy as `disabled/unmanaged`. No task activation, push, or pull request was performed.
+- L21 · 2026-11-21 · After native dbt deployment passed 24 checks and email delivery was verified, the user-authorized `31_resume_finops_task_graph.sql` activation completed. Final live inventory reports all ten `FINOPS_` tasks in `started` state.
