@@ -133,9 +133,11 @@ class RepositoryContractTests(unittest.TestCase):
             visit(task_name)
 
     def test_runtime_contains_no_external_orchestrator(self) -> None:
+        runtime_directories = ("10_core", "20_procedures", "30_tasks")
         sql_text = "\n".join(
             path.read_text(encoding="utf-8")
-            for path in (ROOT / "sql").rglob("*.sql")
+            for directory in runtime_directories
+            for path in (ROOT / "sql" / directory).rglob("*.sql")
         )
         self.assertNotRegex(sql_text, r"(?i)\b(airflow|dbt)\b")
 

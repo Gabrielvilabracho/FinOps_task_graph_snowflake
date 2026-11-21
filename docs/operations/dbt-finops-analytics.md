@@ -19,16 +19,16 @@ The current Task Graph remains serverless and unchanged. Snowflake requires a us
 
 ## Native Snowflake project
 
-The intended object is `FINOPS_DEV.FINOPS.FINOPS_DBT_PROJECT`. `dbt_projects_profiles.yml` contains no password, token, or private key. Deployment must provide the account, user, execution role, and `FINOPS_DBT_WAREHOUSE` through an explicitly authorized environment or CI identity.
+The live object is `FINOPS_DEV.FINOPS.FINOPS_DBT_PROJECT`, owned by `FINOPS_DBT_ROLE`. `dbt_projects_profiles.yml` contains no password, token, or private key. Deployment provides the non-secret account, user, execution role, database, schema, and `FINOPS_DBT_WAREHOUSE` values through `DBT_`-prefixed execution variables.
 
-Before deployment, an administrator must approve and provision:
+The reproducible administrative baseline lives in `sql/00_setup/04_finops_dbt_bootstrap.sql` and provisions:
 
 1. A user-managed warehouse for dbt execution.
 2. A profile role with imported access to `SNOWFLAKE`, usage on target database/schemas, and create privileges for dbt relations.
 3. A calling role with usage on the dbt project object and permission to use the profile role.
 4. Separate read grants for consumers of the resulting marts.
 
-Only after those controls exist should an authorized operator deploy, compile, and run a selected build such as `dbt build --select finops_daily_cost finops_warehouse_daily` or its supported `EXECUTE DBT PROJECT` equivalent.
+The approved warehouse is `X-SMALL`, auto-resumes on demand, and auto-suspends after 60 seconds. The deployed native project uses dbt Core 1.9.4 and dbt-snowflake 1.9.2. Its selected Cost/Warehouse build completed with 24 passes, zero warnings, and zero errors. dbt has no automatic schedule, and the operational Task Graph remains separate and suspended until explicitly activated.
 
 ## Function assessment
 
@@ -56,7 +56,7 @@ The decision is deliberately **no UDTF** until a caller needs a parameterized re
 
 ## Verification boundary
 
-Repository tests verify structure and ownership without credentials. dbt parsing, compilation, source inspection, model execution, grants, publication latency, and native project deployment remain pending live checks requiring explicit Snowflake destination, operation, and session authorization.
+Repository tests verify structure, safe warehouse defaults, and ownership boundaries without credentials. Authorized live validation deployed and compiled the native project, built five models, ran 17 data tests and two unit tests, and produced 365 Cost rows plus four Warehouse rows. `FINOPS_DBT_WAREHOUSE` returned to `SUSPENDED`; all ten operational tasks remained suspended. Future source freshness and production behavior still require ongoing observation rather than inference from this first build.
 
 ## References
 
