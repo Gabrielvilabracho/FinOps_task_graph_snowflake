@@ -21,10 +21,10 @@ Branches: `feat/dbt-finops-analytics-tracker` → `feat/dbt-finops-analytics-01-
 - [x] T2 — S2-S5,S8 — Route: inline (one coherent behavior; no writer trigger) — Implement sources, staging models, Cost/Warehouse marts, and dbt tests — Commits: `7f4b3c6`, `1c8b1a8`.
 - [x] T3 — S5-S8 — Route: inline (one coherent behavior; no writer trigger) — Document native Snowflake deployment prerequisites, operational adaptation boundary, and UDTF decisions — Commits: `7f4b3c6`, `1c8b1a8`.
 - [x] T4 — S1-S8 — Route: inline verification; independent verifier required for Risk item 5 — Run offline checks, review exact diff, and record unavailable live proof — Commits: `7f4b3c6`, `1c8b1a8`.
-- [x] T5 — S9-S10 — Route: inline — Provisioned the `X-SMALL` warehouse, dedicated role, target-schema authority, Account Usage access, and native dbt project privilege.
-- [x] T6 — S9-S10 — Route: inline — Deployed and compiled `FINOPS_DBT_PROJECT` from `dbt/finops_analytics` with dbt 1.9.4.
-- [x] T7 — S9-S10 — Route: inline — Built the selected Cost/Warehouse lineage; final result was PASS=24, WARN=0, ERROR=0, SKIP=0.
-- [x] T8 — S9-S10 — Route: inline — Verified 365 Cost rows, four Warehouse rows, the suspended dbt warehouse, and ten suspended operational tasks.
+- [x] T5 — S9-S10 — Route: inline — Commit `cdc9f41` — Provisioned the `X-SMALL` warehouse, dedicated role, target-schema authority, Account Usage access, and native dbt project privilege.
+- [x] T6 — S9-S10 — Route: inline — Commit `cdc9f41` — Deployed and compiled `FINOPS_DBT_PROJECT` from `dbt/finops_analytics` with dbt 1.9.4.
+- [x] T7 — S9-S10 — Route: inline — Commit `cdc9f41` — Built the selected Cost/Warehouse lineage; final result was PASS=24, WARN=0, ERROR=0, SKIP=0.
+- [x] T8 — S9-S10 — Route: inline — Commit `cdc9f41` — Verified 365 Cost rows, four Warehouse rows, the suspended dbt warehouse, and ten suspended operational tasks.
 
 ## Log
 
@@ -45,3 +45,4 @@ Branches: `feat/dbt-finops-analytics-tracker` → `feat/dbt-finops-analytics-01-
 - L15 (2026-11-21) — Provisioning created `FINOPS_DBT_WAREHOUSE`, `FINOPS_DBT_ROLE`, the minimum warehouse/database/schema/dbt-project privileges, and imported `SNOWFLAKE.USAGE_VIEWER`; the configuration is reproduced by `sql/00_setup/04_finops_dbt_bootstrap.sql`.
 - L16 (2026-11-21) — The first live build exposed one legitimate Account Usage row with a stable warehouse ID but a null warehouse name. RED reproduced the over-strict contract; the correction preserves the source null, documents it, and removes only the invalid `not_null` test.
 - L17 (2026-11-21) — Final live proof: native project deployment and compilation succeeded; the selected build passed all 24 model/data/unit checks; marts contain 365 Cost rows and four Warehouse rows; the `X-SMALL` warehouse auto-suspended; all ten operational tasks remain suspended.
+- L18 (2026-11-21) — Live dbt provisioning, credential-free runtime variables, the Account Usage null-name correction, repository regression coverage, and operating evidence were committed as `cdc9f41`. RDD remains disabled for this clone, so delivery is `disabled/unmanaged` under ordinary repository policy.
