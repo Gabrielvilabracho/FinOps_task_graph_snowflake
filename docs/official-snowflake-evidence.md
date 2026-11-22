@@ -37,7 +37,7 @@ Recommendation: finalization uses persisted module state and immediate runtime i
 | [SERVERLESS_TASK_HISTORY](https://docs.snowflake.com/en/sql-reference/account-usage/serverless_task_history) | Serverless task credits | Separate from warehouse cost. |
 | [CORTEX_AI_FUNCTIONS_USAGE_HISTORY](https://docs.snowflake.com/en/sql-reference/account-usage/cortex_ai_functions_usage_history) | AI function/model/query credits | Covers Cortex AI functions represented by this view, not every possible AI product. |
 
-Recommendation: schedule the daily graph at `10:00 UTC` and use explicit UTC day boundaries so the previous day's query-attribution records have time to arrive.
+Selected local schedule: run the daily graph at `12:00 UTC` and retain explicit previous-day UTC boundaries. This allows 12 hours after day close, including the documented Snowpipe Streaming publication window. Publication/history checks still apply; elapsed time alone does not establish completeness or financial reconciliation.
 
 ## Alerts and controls
 

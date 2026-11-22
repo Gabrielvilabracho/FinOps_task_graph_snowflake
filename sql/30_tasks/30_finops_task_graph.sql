@@ -5,7 +5,7 @@ USE SCHEMA FINOPS;
 -- No WAREHOUSE clause means every task uses Snowflake-managed serverless compute.
 
 CREATE OR REPLACE TASK FINOPS_ROOT_TASK
-  SCHEDULE = 'USING CRON 0 10 * * * UTC'
+  SCHEDULE = 'USING CRON 0 12 * * * UTC'
   OVERLAP_POLICY = NO_OVERLAP
 AS
 EXECUTE IMMEDIATE $$

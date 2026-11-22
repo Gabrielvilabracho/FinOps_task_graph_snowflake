@@ -8,13 +8,19 @@ models:
         description: UTC usage date.
         data_tests: [not_null, unique]
       - name: raw_credits_used
-        description: Raw credits used before cloud-services adjustments; this is not a currency amount.
-        data_tests: [not_null]
+        description: Raw credits before cloud-services adjustment; null for provisional, absent or incomplete evidence. Not currency.
       - name: billed_credits
-        description: Credits billed after cloud-services adjustments; this is not a currency amount.
-        data_tests: [not_null]
+        description: Credits after cloud-services adjustment; null for provisional, absent or incomplete evidence. Not payable currency.
+      - name: evidence_reason
+        description: Missing maturity, historical coverage, source rows or known values; null only for observed mature evidence.
+      - name: source_first_usage_date
+        description: Earliest observed source date; the first day cannot prove a complete historical population.
+      - name: source_rows
+        description: Observed daily service rows; zero means absent publication, not verified zero usage.
+      - name: financial_basis
+        description: Credits only; hourly, daily and service-detail representations must not be added together.
       - name: is_source_complete
-        description: True only after the documented publication delay and when a later source date proves publication advanced beyond this row.
+        description: True after a local 48-hour reconciliation margin, earlier/later history and non-null observed rows. Not invoice reconciliation. Requires a UTC source session.
         data_tests: [not_null]
 
   - name: finops_warehouse_daily
@@ -32,7 +38,13 @@ models:
         description: Warehouse credits before account-level cloud-services adjustment.
         data_tests: [not_null]
       - name: estimated_idle_credits
-        description: Compute less query-attributed compute; null when attribution is incomplete.
+        description: Legacy nonnegative alias for compute residual; null when attribution is incomplete. Not proven waste or savings.
+      - name: compute_residual_credits
+        description: Signed compute less query-attributed compute; null when any compute or attribution value is absent. Provisional until source maturity.
+      - name: attribution_state
+        description: Observed row coverage only; Adaptive Warehouses can have unavailable attribution, not zero.
+      - name: ownership_state
+        description: UNKNOWN until effective-dated business ownership and allocation policy are supplied.
       - name: is_source_complete
         description: True only after the eight-hour query-attribution publication delay and a covering source watermark.
         data_tests: [not_null]
@@ -44,6 +56,7 @@ unit_tests:
     given:
       - input: ref('stg_account_usage__metering_daily_history')
         rows:
+          - {usage_date: '2026-11-16', service_type: WAREHOUSE_METERING, credits_used_compute: 1.0, credits_used_cloud_services: 0.0, credits_used: 1.0, credits_adjustment_cloud_services: 0.0, credits_billed: 1.0}
           - {usage_date: '2026-11-17', service_type: WAREHOUSE_METERING, credits_used_compute: 10.0, credits_used_cloud_services: 0.0, credits_used: 10.0, credits_adjustment_cloud_services: 0.0, credits_billed: 10.0}
           - {usage_date: '2026-11-17', service_type: SERVERLESS_TASK, credits_used_compute: 2.0, credits_used_cloud_services: 1.0, credits_used: 3.0, credits_adjustment_cloud_services: -0.5, credits_billed: 2.5}
           - {usage_date: '2026-11-18', service_type: WAREHOUSE_METERING, credits_used_compute: 1.0, credits_used_cloud_services: 0.0, credits_used: 1.0, credits_adjustment_cloud_services: 0.0, credits_billed: 1.0}
