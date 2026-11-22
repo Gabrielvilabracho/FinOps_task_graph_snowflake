@@ -14,10 +14,10 @@ Research scope is documentation only: no source-code, SQL, dbt, tests, task sche
 
 ## Tasks
 
-- [x] **T1 — Establish the primary-source inventory and bounded coverage** | S1 | Route: inline project/working-group index discovery | Status: completed | Commit: none requested; 12 indexed entries assigned explicit coverage checks.
-- [x] **T2 — Research published work with provenance, versions and gaps** | S1 | Route: two disjoint read-only research maps after broad primary-source evidence exceeded inline budget; parent owned governance/context and synthesis | Status: completed; all 12 index entries reconciled with coverage and caveats | Commit: none requested.
-- [x] **T3 — Write the comprehensive research document** | S1 | Route: inline; primary-source evidence only, explicit recommendations and unknowns | Status: completed in `docs/tokenomics-foundation-research.md` | Commit: none requested.
-- [x] **T4 — Integrate findings and verify documentation** | S1 | Route: inline passive structural checks; no code implementation | Status: completed; README and Framework research links added, structural checks passed, runtime surface unchanged | Commit: none requested.
+- [x] **T1 — Establish the primary-source inventory and bounded coverage** | S1 | Route: inline project/working-group index discovery | Status: completed | Commit: `77469ac`; 12 indexed entries assigned explicit coverage checks.
+- [x] **T2 — Research published work with provenance, versions and gaps** | S1 | Route: two disjoint read-only research maps after broad primary-source evidence exceeded inline budget; parent owned governance/context and synthesis | Status: completed; all 12 index entries reconciled with coverage and caveats | Commit: `77469ac`.
+- [x] **T3 — Write the comprehensive research document** | S1 | Route: inline; primary-source evidence only, explicit recommendations and unknowns | Status: completed in `docs/tokenomics-foundation-research.md` | Commit: `77469ac`.
+- [x] **T4 — Integrate findings and verify documentation** | S1 | Route: inline passive structural checks; no code implementation | Status: completed; README and Framework research links added, structural checks passed, runtime surface unchanged | Commit: `77469ac`.
 
 ## Log
 
@@ -54,3 +54,7 @@ Added the 4,744-word dedicated synthesis and linked it from `README.md` and `doc
 > realiza  commit , push PR y merge
 
 The user selected `Una PR con excepción` and identified approved issue #14. Deliver the research with the already-completed local evidence refactor in one PR, using separate cohesive commits and an explicit over-budget rationale. Exclude unrelated local configuration and generated diagrams; no Snowflake access or deployment is authorized. Publication does not implement VADA, full TCA, FOCUS 1.5 or ROI. The prior documentation-only no-publication boundary is superseded only for this Git delivery.
+
+### L8 — Delivery commit and structural proof
+
+Research delivery commit: `77469ac` (`docs(research): audit Tokenomics projects and Snowflake gaps`), following implementation commit `bf0470e`. The final research links restored the pre-publication README and Framework synthesis bytes exactly; the focused check passed for five staged documentation files and 31 local links/anchors. Staged secret-pattern scans found no matches. The implementation suite passed 64 tests, shell syntax passed, and native Snowflake/dbt validation remains pending. This task-record update changes no runtime bytes.
