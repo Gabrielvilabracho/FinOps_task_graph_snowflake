@@ -23,6 +23,7 @@ The Foundation Framework is flexible and non-prescriptive. All four domains matt
 | How should we allocate and reconcile costs? | [Financial evidence and allocation](#financial-evidence-and-allocation) |
 | How should the practice operate? | [People, governance, and operating processes](#people-governance-and-operating-processes) |
 | How do AI costs change the model? | [AI economics and Total Cost of AI](#ai-economics-and-total-cost-of-ai) |
+| How do Tokenomics Foundation production, consumption and value proposals extend this? | [Tokenomics Foundation Research](tokenomics-foundation-research.md) |
 | What can Snowflake actually support? | [Snowflake capability and evidence contrast](#snowflake-capability-and-evidence-contrast) |
 | What would we implement for Snowflake? | [Proposed Snowflake adaptation](#proposed-snowflake-adaptation), then [Adoption roadmap](#adoption-roadmap) |
 | Which decisions remain open? | [Decisions required before implementation](#decisions-required-before-implementation) |
@@ -34,6 +35,8 @@ The Foundation Framework is flexible and non-prescriptive. All four domains matt
 Research started from the current Framework overview, followed all 22 capability pages, the foundation pages and core personas, and selected linked practical guidance on allocation, data workflows, finance, governance, optimization, AI, and data platforms. The explicitly requested Total Cost of AI article was included. FOCUS and Creative Commons were consulted on their official sites for relevant standardization and licensing context.
 
 These are first-party descriptions of the Foundation's operating model and practitioner guidance. They are authoritative for what the Foundation recommends, but not independent proof of financial outcomes, vendor performance, legal compliance, or applicability to a particular Snowflake contract. Historical statistics, provider price examples, and sample maturity thresholds are not adopted as project requirements.
+
+The later [Tokenomics Foundation Research](tokenomics-foundation-research.md) separately audits the Foundation's 12 indexed AI Tokenomics projects. That dedicated ledger supersedes any assumption that the selected AI articles in this 157-resource inventory constitute complete Tokenomics Foundation coverage. Its stack, Big-T, cache, operating-model, VADA, value-classification, software-engineering, survey and candidate FOCUS findings remain proposals or reported evidence unless explicitly validated and implemented here.
 
 Evidence is classified as follows:
 
@@ -442,6 +445,8 @@ A possible project decision record includes scope, sponsor, cost/value baseline,
 ### Single-account boundary
 
 A Snowflake account can provide part of a product's financial and workload evidence. Without labor, external SaaS/API, shared-platform, and business-outcome data, the result is **bounded account/workload economics**, not complete enterprise Product TCA. Clearly disclose exclusions instead of labeling a partial model “fully loaded.”
+
+The dedicated [Tokenomics Foundation analysis](tokenomics-foundation-research.md#repository-fit-and-evidence-gaps) extends this boundary through proposed workload/task/outcome/value contracts. Existing query, task and credit identifiers must not be relabeled as business Tasks, quality-qualified Outcomes or currency EffectiveCost without verified source semantics and accountable linkage.
 
 ## FOCUS and interoperability
 

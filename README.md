@@ -31,6 +31,11 @@ overlapping representations, not amounts to sum. The local schedule is once dail
 covering the previous complete UTC day and allowing 12 hours for raw publication. The separate
 48-hour financial margin still applies; deployment remains explicitly pending.
 
+The [Tokenomics Foundation research](docs/tokenomics-foundation-research.md) maps the Foundation's
+12 publicly indexed project entries across AI production, consumption and value. It records version and
+coverage limits, then contrasts the proposed TCA/task/outcome/value contracts with this repository's
+bounded Snowflake evidence. It is research guidance—not implemented VADA, FOCUS 1.5, TCA or ROI.
+
 ## Graph
 
 ```text
@@ -49,7 +54,7 @@ FINOPS_FINALIZER (runs after the graph completes or a child fails)
 
 ## Quick path
 
-1. Review [architecture](docs/architecture.md), [official evidence](docs/official-snowflake-evidence.md), the [FinOps Framework research](docs/finops-framework-research.md), and the [dbt analytics guide](docs/operations/dbt-finops-analytics.md).
+1. Review [architecture](docs/architecture.md), [official evidence](docs/official-snowflake-evidence.md), the [FinOps Framework research](docs/finops-framework-research.md), the [Tokenomics Foundation research](docs/tokenomics-foundation-research.md), and the [dbt analytics guide](docs/operations/dbt-finops-analytics.md).
 2. Run the one-time authorized owner bootstrap from `03_finops_task_owner_grants.sql`; optional read/monitor grants remain separate in `02_finops_grants.sql`.
 3. Run `./scripts/deploy.sh <snowflake-connection-name>` with the confirmed combined deployment and single task-owner role; it targets `FINOPS_DEV.FINOPS` and keeps the graph suspended.
 4. Validate with `sql/90_validation/90_validate_deployment.sql`.

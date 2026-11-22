@@ -48,13 +48,13 @@ Authorization boundaries:
 
 ## Tasks
 
-- [x] **T0 — Prepare recovery** | S1–S2 | Route: inline, passive documentation only | Status: completed | Commit: none; document readback and structural checks recorded below.
-- [x] **T1 — Reconcile the local baseline and choose the first bounded change** | S1–S2 | Route: delegated read-only mapping after the inline evidence budget; implementation stays inline | Status: completed | Commit: none requested; baseline 42 tests passed.
-- [x] **T2 — Separate consumption and financial evidence contracts** | S1–S2 | Route: inline | Status: completed locally | Commit: none requested; RED/GREEN SQL-helper and mart fixtures, independent baseline guards, optional billed representation; native compilation pending.
-- [x] **T3 — Make attribution, ownership and residual boundaries explicit** | S1–S2 | Route: inline | Status: completed locally | Commit: none requested; RED missing residual helper/fields; GREEN signed/partial/null/legacy-alias fixtures and suite. Ownership unknown; no waste verdict.
-- [x] **T4 — Expand service-aware AI evidence without double counting** | S1–S2 | Route: inline | Status: completed locally | Commit: none requested; RED empty-as-zero/coverage contract; GREEN actual Functions aggregation fixtures (empty, zero, null, running, multi-day). Optional User-AI service subset and explicit uncollected coverage; no AI grand total.
-- [x] **T5 — Adapt reporting and workflow boundaries to evidence readiness** | S1–S3 | Route: inline | Status: completed locally | Commit: none requested; daily root schedule changed to 12:00 UTC with authored docs aligned; existing evidence-aware reporting preserved; no live deployment.
-- [x] **T6 — Verify the local refactor and document remaining operational gates** | S1–S3 | Route: inline tests plus independent verifiers for Risk items 3 and 5 | Status: completed locally | Commit: none requested; 64 tests passed; schedule-only delta and prior-day UTC window independently verified; native integration remains a separate gate.
+- [x] **T0 — Prepare recovery** | S1–S2 | Route: inline, passive documentation only | Status: completed | Commit: `bf0470e`; document readback and structural checks recorded below.
+- [x] **T1 — Reconcile the local baseline and choose the first bounded change** | S1–S2 | Route: delegated read-only mapping after the inline evidence budget; implementation stays inline | Status: completed | Commit: `bf0470e`; baseline 42 tests passed.
+- [x] **T2 — Separate consumption and financial evidence contracts** | S1–S2 | Route: inline | Status: completed locally | Commit: `bf0470e`; RED/GREEN SQL-helper and mart fixtures, independent baseline guards, optional billed representation; native compilation pending.
+- [x] **T3 — Make attribution, ownership and residual boundaries explicit** | S1–S2 | Route: inline | Status: completed locally | Commit: `bf0470e`; RED missing residual helper/fields; GREEN signed/partial/null/legacy-alias fixtures and suite. Ownership unknown; no waste verdict.
+- [x] **T4 — Expand service-aware AI evidence without double counting** | S1–S2 | Route: inline | Status: completed locally | Commit: `bf0470e`; RED empty-as-zero/coverage contract; GREEN actual Functions aggregation fixtures (empty, zero, null, running, multi-day). Optional User-AI service subset and explicit uncollected coverage; no AI grand total.
+- [x] **T5 — Adapt reporting and workflow boundaries to evidence readiness** | S1–S3 | Route: inline | Status: completed locally | Commit: `bf0470e`; daily root schedule changed to 12:00 UTC with authored docs aligned; existing evidence-aware reporting preserved; no live deployment.
+- [x] **T6 — Verify the local refactor and document remaining operational gates** | S1–S3 | Route: inline tests plus independent verifiers for Risk items 3 and 5 | Status: completed locally | Commit: `bf0470e`; 64 tests passed; schedule-only delta and prior-day UTC window independently verified; native integration remains a separate gate.
 
 ## Log
 
@@ -160,3 +160,5 @@ Observed RED: updated cron expectation failed against the 10:00 definition. GREE
 > realiza  commit , push PR y merge
 
 The user selected `Una PR con excepción` and supplied approved GitHub issue #14 after correcting #40. Publish the existing refactor and research as one PR with cohesive commits; exclude `.agents/`, `.atl/`, generated HTML/workflow artifacts and `skills-lock.json`. The previous deployment PR #13 is already merged, so the new delivery branch is `feat/finops-evidence-research` from current `origin/main`. The pre-publication suite passed 64 tests and `git diff --check`; native SQL/dbt verification, financial reconciliation, graph recovery and live deployment remain explicitly pending. RDD is clone-locally disabled and was not changed. Risk: items 3 and 5, covered by the previously recorded independent checks; Git publication does not authorize Snowflake execution.
+
+Implementation delivery commit: `bf0470e` (`feat(finops): preserve evidence readiness and credit boundaries`). Its 20-file unit keeps runtime behavior, deterministic tests, operational documentation and the supporting FinOps Framework research together. The subsequent documentation unit adds the separately audited Tokenomics material and its navigation links without changing runtime bytes.
