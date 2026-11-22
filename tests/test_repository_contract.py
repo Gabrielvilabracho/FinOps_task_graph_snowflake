@@ -73,7 +73,7 @@ class RepositoryContractTests(unittest.TestCase):
 
     def test_task_graph_is_serverless_daily_and_acyclic_by_contract(self) -> None:
         sql = self.read("sql/30_tasks/30_finops_task_graph.sql")
-        self.assertIn("USING CRON 0 10 * * * UTC", sql)
+        self.assertIn("USING CRON 0 12 * * * UTC", sql)
         self.assertIn("OVERLAP_POLICY = NO_OVERLAP", sql)
         self.assertNotRegex(sql, r"(?im)^\s*WAREHOUSE\s*=")
 
@@ -131,6 +131,19 @@ class RepositoryContractTests(unittest.TestCase):
 
         for task_name in dependencies:
             visit(task_name)
+
+    def test_noon_schedule_preserves_previous_full_utc_day(self) -> None:
+        graph = self.read("sql/30_tasks/30_finops_task_graph.sql")
+        dates = re.findall(r"V_ANALYSIS_DATE := (.*?);", graph, re.S)
+        self.assertEqual(len(dates), 7)
+        for expression in dates:
+            self.assertRegex(expression, r"(?is)DATEADD\(\s*DAY,\s*-1,")
+            self.assertIn("CONVERT_TIMEZONE('UTC',", expression)
+            self.assertNotIn("CURRENT_TIMESTAMP()", expression)
+        cost = self.read("sql/20_procedures/21_finops_check_cost.sql")
+        self.assertIn("' 00:00:00 +00:00'", cost)
+        self.assertIn("V_WINDOW_END := DATEADD(DAY, 1, V_WINDOW_START)", cost)
+        self.assertIn("START_TIME >= :V_WINDOW_START AND START_TIME < :V_WINDOW_END", cost)
 
     def test_runtime_contains_no_external_orchestrator(self) -> None:
         runtime_directories = ("10_core", "20_procedures", "30_tasks")

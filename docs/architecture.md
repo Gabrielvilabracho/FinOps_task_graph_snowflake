@@ -8,7 +8,7 @@ The implementation keeps orchestration, cost evidence, analysis rules, reports, 
 
 | Stage | Responsibility | Input | Output | Dependency | State |
 | --- | --- | --- | --- | --- | --- |
-| `FINOPS_ROOT_TASK` | Open the daily run | Graph runtime ID and scheduled time | `FINOPS_RUN` plus pending module rows | Daily `10:00 UTC` | Implemented in repository; deployment pending |
+| `FINOPS_ROOT_TASK` | Open the daily run | Graph runtime ID and scheduled time | `FINOPS_RUN` plus pending module rows | Daily `12:00 UTC` | Implemented in repository; deployment pending |
 | `FINOPS_CHECK_COST` | Evaluate approved cost rules | `METERING_HISTORY` | Metrics and cost findings | Root | Implemented in repository; deployment pending |
 | `FINOPS_CHECK_ERRORS` | Count failed queries | `QUERY_HISTORY` | Metrics; no anomaly verdict | Root | Implemented; rule pending |
 | `FINOPS_CHECK_WAREHOUSE` | Measure warehouse and idle credits | `WAREHOUSE_METERING_HISTORY` | Metrics; no anomaly verdict | Root | Implemented; rule pending |
@@ -61,7 +61,11 @@ The comparison is strictly greater than each threshold. A missing previous-day b
 - `FINOPS_DAILY_REPORT`: one idempotent summary per run.
 - `FINOPS_ALERT_DELIVERY`: notification outcome without storing credentials.
 
-`FINOPS_MODULE_RUN.METRICS` remains the compact module summary. `FINOPS_METRIC` is the durable normalized evidence contract. Before a source's expected-complete time, or when its publication watermark has not reached the requested window, collectors persist `NULL`, `IS_COMPLETE = FALSE`, and `DATA_INCOMPLETE`. Zero is valid only after a successful mature window query; source query and privilege errors remain `FAILED`.
+`FINOPS_MODULE_RUN.METRICS` remains the compact module summary. `FINOPS_METRIC` is the durable normalized evidence contract. Before a source's expected-complete time, or when publication/history/known-value checks fail, the refactored collectors persist `NULL`, `IS_COMPLETE = FALSE`, and `DATA_INCOMPLETE`. Zero requires observed mature zero-credit rows, not an empty query. Primary-source errors remain `FAILED`; optional daily financial and User-AI failures are explicit incomplete evidence without losing primary observations.
+
+The local [evidence contract](operations/finops-evidence-contract.md) documents separate consumption,
+financial and service-detail representations, signed warehouse residuals, unknown ownership and
+readiness-aware reports. It has not been deployed; native compilation and cadence alignment remain gates.
 
 ## dbt analytics boundary
 

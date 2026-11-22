@@ -22,13 +22,15 @@ daily as (
         sum(credits_used_compute) as compute_credits,
         sum(credits_used_cloud_services) as cloud_services_credits,
         sum(credits_attributed_compute_queries) as query_attributed_compute_credits,
+        count(*) as source_rows,
+        count(case when credits_used is not null and credits_used_compute is not null
+            then 1 end) as known_metering_rows,
+        count(credits_attributed_compute_queries) as attribution_known_rows,
         case
             when count(credits_attributed_compute_queries) = count(*)
-                then greatest(
-                    sum(credits_used_compute) - sum(credits_attributed_compute_queries),
-                    0
-                )
-        end as estimated_idle_credits
+                and count(credits_used_compute) = count(*)
+                then sum(credits_used_compute) - sum(credits_attributed_compute_queries)
+        end as compute_residual_credits
     from metering
     group by 1, 2, 3
 
@@ -38,10 +40,16 @@ publication as (
 
     select
         daily.*,
-        daily.estimated_idle_credits / nullif(daily.compute_credits, 0)
+        greatest(daily.compute_residual_credits, 0) as estimated_idle_credits,
+        greatest(daily.compute_residual_credits, 0) / nullif(daily.compute_credits, 0)
             as estimated_idle_ratio,
+        'UNKNOWN' as ownership_state,
+        case when known_metering_rows <> source_rows then 'COMPUTE_VALUES_INCOMPLETE'
+            when attribution_known_rows = source_rows then 'OBSERVED'
+            else 'ATTRIBUTION_UNAVAILABLE' end as attribution_state,
         source_state.source_watermark,
-        dateadd(hour, 8, dateadd(day, 1, daily.analysis_date::timestamp_tz))
+        dateadd(hour, 8, dateadd(day, 1,
+            to_timestamp_tz(to_char(daily.analysis_date, 'YYYY-MM-DD') || ' 00:00:00 +00:00')))
             as expected_complete_at
     from daily
     cross join source_state
@@ -52,8 +60,9 @@ final as (
 
     select
         publication.*,
-        current_timestamp() >= expected_complete_at
-            and source_watermark >= dateadd(day, 1, analysis_date::timestamp_tz)
+        coalesce(known_metering_rows = source_rows and current_timestamp() >= expected_complete_at
+            and source_watermark >= dateadd(day, 1,
+                to_timestamp_tz(to_char(analysis_date, 'YYYY-MM-DD') || ' 00:00:00 +00:00')), false)
             as is_source_complete
     from publication
 

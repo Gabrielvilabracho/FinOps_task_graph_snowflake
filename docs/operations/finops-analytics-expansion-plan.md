@@ -12,7 +12,7 @@ This is the implementation handoff for the next session. The goal is to evolve t
 
 ## Current state
 
-- The Task Graph runs daily at 10:00 UTC and analyzes the previous UTC day.
+- The local Task Graph definition runs daily at 12:00 UTC and analyzes the previous complete UTC day; this schedule change has not been deployed.
 - Six checks run in parallel: Cost, Errors, Warehouse, Queries, AI Services, and Other Costs.
 - Only Cost has an approved anomaly policy: daily credits over 25 or day-over-day growth over 30%.
 - Warehouse returns `REVIEW_REQUIRED` after complete evidence and `DATA_INCOMPLETE` while publication is incomplete. Errors, Queries, AI Services, and Other Costs collect metrics but return the legacy `RULE_NOT_CONFIGURED` review state.
