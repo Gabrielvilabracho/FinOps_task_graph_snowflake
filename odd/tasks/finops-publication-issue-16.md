@@ -9,8 +9,8 @@ Delivery: auto-chain, stacked-to-main; parent-owned inline Git execution. Branch
 
 ## Tasks
 
-- T1 · S1-S2 · inline (Git remains parent-owned) · in progress · Runtime repairs, regression tests and native validation guide; commit/PR pending; forecast 336 lines plus this logbook; Risk: item 3, shared metric API. Prior independent local/native verification passed.
-- T2 · S1-S2 · inline · pending · Cross-account deployment guide; forecast 307 lines plus evidence; commit/PR pending; Risk: none, new documentation.
+- T1 · S1-S2 · inline (Git remains parent-owned) · complete · Commit c9a65f3, PR #17 merged as 4f712df; 359 changed lines. 70 tests, shellcheck, whitespace and staged secret checks passed; prior independent local/native verification retained. Risk: item 3, shared metric API.
+- T2 · S1-S2 · inline · in progress · Cross-account deployment guide; forecast 307 lines plus evidence; commit/PR pending; Risk: none, new documentation.
 - T3 · S1-S2 · inline · pending · Fictional report HTML example; forecast 94 lines plus evidence; commit/PR pending; Risk: none, illustrative standalone document.
 - T4 · S1-S2 · inline · pending · Diagram source plus generated viewer; 15,023 lines before evidence; approved size exception; commit/PR pending. Browser-local interactions only; no Snowflake execution.
 - T5 · S1-S2 · inline · pending · Vendored guidance, lock and required license/provenance; 36,819 lines before notices/evidence; approved size exception; commit/PR pending. No package execution or dependency installation.
@@ -21,3 +21,4 @@ Delivery: auto-chain, stacked-to-main; parent-owned inline Git execution. Branch
 - L2 · 2026-11-23 · Verified issue #16, title EWE, OPEN and status:approved. User selected “PRs separadas (recomendado)” after the complete publication scope, two size exceptions, required vendor license, and local-only `.atl/` treatment were presented.
 - L3 · 2026-11-23 · Base: origin/main 611dbde. Existing runtime work was already checked with 70 local tests, native rollback probes, independent differential/live verification, and unchanged historical hashes. This publication performs no new Snowflake operation. RDD remains clone-locally off.
 - L4 · 2026-11-23 · Gitleaks identified two false positives in vendored client-side-encryption guidance: public algorithm names at lines 187/201, not credentials. The generated registry contains private workstation paths and unrelated inventory and is excluded by the selected publication scope. Pinned upstream Apache-2.0 license verified; no root NOTICE was listed.
+- L5 · 2026-11-23 · PR #17 merged after MERGEABLE/CLEAN readback, exactly one type:bug label, zero check runs and no repository rulesets. No PR CI was configured; no CI success was invented. Remaining units start from this merged main boundary.
