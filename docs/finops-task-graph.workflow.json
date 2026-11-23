@@ -1,0 +1,87 @@
+{
+  "schema_version": 2,
+  "diagram_type": "workflow",
+  "meta": {
+    "title": "Flujo diario del Task Graph de FinOps",
+    "output": "docs/finops-task-graph.html",
+    "animation": "none",
+    "quality_profile": "showcase",
+    "views": [
+      {
+        "id": "inicio",
+        "label": "Inicio programado",
+        "focus": ["root", "checks"],
+        "note": "El root abre el run diario y dispara seis comprobaciones en paralelo."
+      },
+      {
+        "id": "reporte",
+        "label": "Reporte y alerta",
+        "focus": ["checks", "report", "alert"],
+        "note": "El reporte espera todos los resultados y la alerta decide si debe enviar correo."
+      },
+      {
+        "id": "cierre",
+        "label": "Cierre del run",
+        "focus": ["alert", "finalizer"],
+        "note": "El finalizador está asociado al root y no depende del éxito de la alerta."
+      }
+    ]
+  },
+  "lanes": [
+    { "id": "main", "label": "Ejecución diaria" },
+    { "id": "completion", "label": "Cierre del run" }
+  ],
+  "phases": [
+    { "id": "start_phase", "label": "Inicio", "fromCol": 0, "toCol": 0, "variant": "emphasis" },
+    { "id": "analysis_phase", "label": "Comprobaciones", "fromCol": 1, "toCol": 2 },
+    { "id": "delivery_phase", "label": "Comunicación", "fromCol": 3, "toCol": 4, "variant": "emphasis" },
+    { "id": "finish_phase", "label": "Finalización", "fromCol": 5, "toCol": 5, "variant": "dashed" }
+  ],
+  "mainPath": ["root", "checks", "report", "alert", "finalizer"],
+  "semanticChecks": {
+    "allowedRoots": ["root"],
+    "allowedTerminals": ["finalizer"],
+    "requiredEdges": [
+      { "from": "root", "to": "checks" },
+      { "from": "checks", "to": "report" },
+      { "from": "report", "to": "alert" },
+      { "from": "alert", "to": "finalizer" }
+    ],
+    "requiredPaths": [
+      { "from": "root", "to": "finalizer" }
+    ]
+  },
+  "nodes": [
+    { "id": "root", "lane": "main", "col": 0, "type": "cloud", "label": "FINOPS_ROOT_TASK", "sublabel": "Diario · 12:00 UTC", "tag": "NO_OVERLAP", "width": 122 },
+    { "id": "checks", "lane": "main", "col": 2, "type": "backend", "label": "6 comprobaciones", "sublabel": "se ejecutan en paralelo", "tag": "AFTER root", "width": 120 },
+    { "id": "report", "lane": "main", "col": 3, "type": "database", "label": "Crear reporte", "sublabel": "espera los 6 resultados", "tag": "FINOPS_REPORT_TASK", "width": 118 },
+    { "id": "alert", "lane": "main", "col": 4, "type": "messagebus", "label": "Evaluar alerta", "sublabel": "envía correo si aplica", "tag": "FINOPS_ALERT_TASK", "width": 114 },
+    { "id": "finalizer", "lane": "completion", "col": 5, "type": "security", "label": "Finalizar run", "sublabel": "consolida estado y errores", "tag": "FINALIZE", "width": 112 }
+  ],
+  "edges": [
+    { "id": "root_checks", "from": "root", "to": "checks", "label": "inicia el análisis", "variant": "emphasis", "role": "main" },
+    { "id": "checks_report", "from": "checks", "to": "report", "label": "todos terminaron", "variant": "emphasis", "role": "main" },
+    { "id": "report_alert", "from": "report", "to": "alert", "label": "reporte listo", "variant": "emphasis", "role": "main" },
+    { "id": "alert_finalizer", "from": "alert", "to": "finalizer", "label": "cierre del graph", "variant": "security", "role": "main" }
+  ],
+  "cards": [
+    {
+      "dot": "amber",
+      "title": "Qué ocurre en el análisis",
+      "items": [
+        "A las 12:00 UTC el root abre el run del día anterior sin solapamientos",
+        "En paralelo: costes, errores, warehouses, consultas, AI Services y otros costes",
+        "El reporte espera los seis resultados antes de consolidar"
+      ]
+    },
+    {
+      "dot": "emerald",
+      "title": "Cómo termina el flujo",
+      "items": [
+        "FINOPS_REPORT_TASK espera las seis comprobaciones",
+        "FINOPS_ALERT_TASK envía correo solo cuando corresponde",
+        "FINOPS_FINALIZER usa FINALIZE del root, no AFTER de la alerta"
+      ]
+    }
+  ]
+}
