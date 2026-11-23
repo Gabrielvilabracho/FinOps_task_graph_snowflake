@@ -11,8 +11,8 @@ Delivery: auto-chain, stacked-to-main; parent-owned inline Git execution. Branch
 
 - T1 · S1-S2 · inline (Git remains parent-owned) · complete · Commit c9a65f3, PR #17 merged as 4f712df; 359 changed lines. 70 tests, shellcheck, whitespace and staged secret checks passed; prior independent local/native verification retained. Risk: item 3, shared metric API.
 - T2 · S1-S2 · inline · complete · Commit f2b5d54, PR #18 merged as 84b87f5; 312 changed lines. Seven local links and seven Bash examples checked; no remote commands executed. Risk: none, new documentation.
-- T3 · S1-S2 · inline · in progress · Fictional report HTML example; forecast 94 lines plus evidence; commit/PR pending; Risk: none, illustrative standalone document.
-- T4 · S1-S2 · inline · pending · Diagram source plus generated viewer; 15,023 lines before evidence; approved size exception; commit/PR pending. Browser-local interactions only; no Snowflake execution.
+- T3 · S1-S2 · inline · complete · Commit 8a712ba, PR #19 merged as 816af61; 99 changed lines. HTML structure, fictional-data boundary, delivery-status wording, whitespace and staged secret checks passed. Risk: none, illustrative standalone document.
+- T4 · S1-S2 · inline · in progress · Diagram source plus generated viewer; 15,023 lines before evidence; approved size exception; commit/PR pending. Browser-local interactions only; no Snowflake execution.
 - T5 · S1-S2 · inline · pending · Vendored guidance, lock and required license/provenance; 36,819 lines before notices/evidence; approved size exception; commit/PR pending. No package execution or dependency installation.
 
 ## Log
@@ -23,3 +23,5 @@ Delivery: auto-chain, stacked-to-main; parent-owned inline Git execution. Branch
 - L4 · 2026-11-23 · Gitleaks identified two false positives in vendored client-side-encryption guidance: public algorithm names at lines 187/201, not credentials. The generated registry contains private workstation paths and unrelated inventory and is excluded by the selected publication scope. Pinned upstream Apache-2.0 license verified; no root NOTICE was listed.
 - L5 · 2026-11-23 · PR #17 merged after MERGEABLE/CLEAN readback, exactly one type:bug label, zero check runs and no repository rulesets. No PR CI was configured; no CI success was invented. Remaining units start from this merged main boundary.
 - L6 · 2026-11-23 · PR #18 merged after CLEAN/MERGEABLE readback with one type:docs label and no configured check runs. Its guide references published repair c9a65f3 rather than treating it as uncommitted source.
+- L7 · 2026-11-23 · PR #19 merged after CLEAN/MERGEABLE readback with one type:docs label and no checks. The static example remains fictional; its footer now accurately names the existing configured email-delivery statuses. No UI behavior or SQL runtime changed.
+- L8 · 2026-11-23 · Diagram source and regenerated HTML now show 12:00 UTC and clarify root-associated FINALIZE semantics. Archify deliver passed 9/9 showcase checks, zero errors/warnings; automated Chrome containment passed at four desktop sizes, with largest light/dark screenshots inspected. Artifact SHA-256: 71e787829de4576f32a871089519d477f75e8291d629ca3ed27679deef1c25c9. Authored Spanish content keeps the existing English viewer UI fallback; no generator update was installed.
