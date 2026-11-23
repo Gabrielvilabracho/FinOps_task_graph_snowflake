@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Snowflake FinOps — Daily report example</title>
+</head>
+<body style="margin:0; background:#eef1f4; color:#203044; font-family:Calibri,Arial,sans-serif; font-size:16px; line-height:1.6;">
+  <!-- Static demonstration only. All dates, measurements and findings are fictional. -->
+  <!-- Layout tables are presentational; the module table retains data-table semantics. -->
+  <table role="presentation" style="width:100%; border-collapse:collapse;">
+    <tr><td style="padding:24px 12px;">
+      <table role="presentation" align="center" style="width:100%; max-width:760px; margin:0 auto; border-collapse:collapse; background:#ffffff;">
+        <tr><td style="padding:32px 28px; background:#102d3a; color:#ffffff; border-top:6px solid #21a89a;">
+          <p style="margin:0 0 8px; color:#9de6da; font-size:12px; font-weight:700; letter-spacing:2px;">SNOWFLAKE / FINOPS</p>
+          <h1 style="margin:0; font-family:Georgia,serif; font-size:32px; font-weight:400; line-height:1.2;">Your daily operations brief.</h1>
+          <p style="margin:14px 0 0; color:#d8e6ec;">Analysis date: <strong>16 Nov 2026</strong> &nbsp;·&nbsp; Time zone: UTC</p>
+        </td></tr>
+        <tr><td style="padding:20px 28px 0;">
+          <p style="margin:0; padding:10px 14px; background:#f1f5f9; color:#475569; font-size:13px;"><strong>EXAMPLE ONLY</strong> — Fictional data. This is a proposed email layout, not a live report.</p>
+        </td></tr>
+        <tr><td style="padding:24px 28px;">
+          <p style="margin:0 0 8px; color:#526476; font-size:12px; font-weight:700; letter-spacing:1px;">OVERALL STATUS</p>
+          <h2 style="margin:0 0 8px; color:#9a3412; font-size:24px;">Attention required</h2>
+          <p style="margin:0;">Daily consumption exceeded the configured limit. Two modules also need rule configuration before their results can be assessed.</p>
+          <p style="margin:16px 0 0; padding:14px 16px; border-left:4px solid #d97706; background:#fffbeb; color:#78350f;"><strong>Recommended action:</strong> investigate the credit increase, then configure the missing AI and other-cost rules.</p>
+        </td></tr>
+        <tr><td style="padding:0 28px 24px;">
+          <table role="presentation" style="width:100%; border-collapse:collapse; border-top:1px solid #dce3e8; border-bottom:1px solid #dce3e8;">
+            <tr>
+              <td style="width:33%; padding:16px 6px; text-align:center;"><strong style="font-size:28px; color:#b45309;">1</strong><br><span style="font-size:13px;">Needs attention</span></td>
+              <td style="width:33%; padding:16px 6px; text-align:center;"><strong style="font-size:28px; color:#b91c1c;">0</strong><br><span style="font-size:13px;">Technical failures</span></td>
+              <td style="width:34%; padding:16px 6px; text-align:center;"><strong style="font-size:28px; color:#475569;">2</strong><br><span style="font-size:13px;">Rule gaps</span></td>
+            </tr>
+          </table>
+        </td></tr>
+        <tr><td style="padding:0 28px 24px;">
+          <h2 style="margin:0 0 12px; font-family:Georgia,serif; font-size:23px; font-weight:400;">Module health</h2>
+          <table style="width:100%; border-collapse:collapse; font-size:14px; overflow-wrap:anywhere;">
+            <caption style="text-align:left; padding:0 0 12px; color:#526476;">Results for all six checks · analysis day in UTC</caption>
+            <thead><tr style="background:#eaf0f3; text-align:left;">
+              <th scope="col" style="padding:12px 8px;">Module</th>
+              <th scope="col" style="padding:12px 8px;">Status</th>
+              <th scope="col" style="padding:12px 8px;">Result</th>
+            </tr></thead>
+            <tbody>
+              <tr style="background:#fffbeb;">
+                <th scope="row" style="padding:14px 8px; border-bottom:1px solid #dce3e8; text-align:left;">COST</th>
+                <td style="padding:14px 8px; border-bottom:1px solid #dce3e8; color:#92400e; font-weight:700;">ATTENTION</td>
+                <td style="padding:14px 8px; border-bottom:1px solid #dce3e8;">32 credits used; limit: 25. Growth: 60%; limit: 30%.</td>
+              </tr>
+              <tr>
+                <th scope="row" style="padding:14px 8px; border-bottom:1px solid #dce3e8; text-align:left;">ERRORS</th>
+                <td style="padding:14px 8px; border-bottom:1px solid #dce3e8; color:#166534; font-weight:700;">NORMAL</td>
+                <td style="padding:14px 8px; border-bottom:1px solid #dce3e8;">Example result: no configured error limits exceeded.</td>
+              </tr>
+              <tr style="background:#f7f9fa;">
+                <th scope="row" style="padding:14px 8px; border-bottom:1px solid #dce3e8; text-align:left;">WAREHOUSE</th>
+                <td style="padding:14px 8px; border-bottom:1px solid #dce3e8; color:#166534; font-weight:700;">NORMAL</td>
+                <td style="padding:14px 8px; border-bottom:1px solid #dce3e8;">Example result: warehouse metrics within configured limits.</td>
+              </tr>
+              <tr>
+                <th scope="row" style="padding:14px 8px; border-bottom:1px solid #dce3e8; text-align:left;">QUERIES</th>
+                <td style="padding:14px 8px; border-bottom:1px solid #dce3e8; color:#166534; font-weight:700;">NORMAL</td>
+                <td style="padding:14px 8px; border-bottom:1px solid #dce3e8;">Example result: query metrics within configured limits.</td>
+              </tr>
+              <tr style="background:#f7f9fa;">
+                <th scope="row" style="padding:14px 8px; border-bottom:1px solid #dce3e8; text-align:left;">AI</th>
+                <td style="padding:14px 8px; border-bottom:1px solid #dce3e8; color:#475569; font-weight:700;">RULE_NOT_CONFIGURED</td>
+                <td style="padding:14px 8px; border-bottom:1px solid #dce3e8;">Rule missing. This does not mean consumption is normal.</td>
+              </tr>
+              <tr>
+                <th scope="row" style="padding:14px 8px; border-bottom:1px solid #dce3e8; text-align:left;">OTHER_COSTS</th>
+                <td style="padding:14px 8px; border-bottom:1px solid #dce3e8; color:#475569; font-weight:700;">RULE_NOT_CONFIGURED</td>
+                <td style="padding:14px 8px; border-bottom:1px solid #dce3e8;">Rule missing. Review configuration before assessing costs.</td>
+              </tr>
+            </tbody>
+          </table>
+        </td></tr>
+        <tr><td style="padding:0 28px 24px;">
+          <h2 style="margin:0 0 12px; font-family:Georgia,serif; font-size:23px; font-weight:400;">What needs your attention</h2>
+          <p style="margin:0 0 10px;"><strong>01 / Daily credit consumption</strong><br>32 credits versus a limit of 25: <strong style="color:#92400e;">28% above the limit</strong>.</p>
+          <p style="margin:0 0 10px;"><strong>02 / Day-over-day growth</strong><br>Consumption increased from 20 to 32 credits: <strong style="color:#92400e;">60% growth</strong>, above the 30% limit.</p>
+          <p style="margin:0;"><strong>03 / Missing rules</strong><br>Configure AI and OTHER_COSTS rules so future reports can classify their metrics.</p>
+        </td></tr>
+        <tr><td style="padding:20px 28px; background:#f1f5f7; color:#475569; font-size:12px;">
+          <p style="margin:0 0 8px;"><strong>Status key:</strong> NORMAL = within rules · ATTENTION = business anomaly · FAILED = technical error · RULE_NOT_CONFIGURED = missing rule.</p>
+          <p style="margin:0;">Example run: demo-2026-11-17 · Generated: 17 Nov 2026, 10:04 UTC<br>Proposed HTML presentation. The current SQL email uses plain text; when configured, delivery applies to ATTENTION_REQUIRED, DATA_INCOMPLETE, or FAILED.</p>
+        </td></tr>
+      </table>
+    </td></tr>
+  </table>
+</body>
+</html>
