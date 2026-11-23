@@ -60,7 +60,7 @@ BEGIN
         || ' | billed=' || COALESCE(METRICS:evidence:financial:reason::STRING, 'N/A_OR_OBSERVED')
         || ' | AI subset=' || COALESCE(METRICS:evidence:user_ai_reason::STRING, 'N/A_OR_OBSERVED')
         || ' | ' || COALESCE(METRICS:evidence:scope_note::STRING, '')),
-      CHAR(10))
+      '\n')
       WITHIN GROUP (ORDER BY MODULE_NAME)
   INTO
     :V_ATTENTION_COUNT,

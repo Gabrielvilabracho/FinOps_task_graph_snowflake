@@ -147,7 +147,7 @@ class EvidenceSemanticsTests(unittest.TestCase):
 
     def test_report_lines_surface_unknowns_without_changing_legacy_modules(self):
         source = (ROOT / "sql/20_procedures/27_finops_report.sql").read_text()
-        expression = re.search(r"LISTAGG\((.*?),\s*CHAR\(10\)\)\s*WITHIN", source, re.S).group(1)
+        expression = re.search(r"LISTAGG\((.*?),\s*'\\n'\)\s*WITHIN", source, re.S).group(1)
         expression = re.sub(r"METRICS:([a-z_]+(?::[a-z_]+)*)(?:::STRING)?",
                             lambda m: "json_extract(METRICS, '$." + m[1].replace(":", ".") + "')",
                             expression)
@@ -233,7 +233,7 @@ class EvidenceSemanticsTests(unittest.TestCase):
 
     def test_legacy_report_lines_match_exactly(self):
         source = (ROOT / "sql/20_procedures/27_finops_report.sql").read_text()
-        expression = re.search(r"LISTAGG\((.*?),\s*CHAR\(10\)\)\s*WITHIN", source, re.S)[1]
+        expression = re.search(r"LISTAGG\((.*?),\s*'\\n'\)\s*WITHIN", source, re.S)[1]
         expression = re.sub(r"METRICS:([a-z_]+(?::[a-z_]+)*)(?:::STRING)?",
             lambda m: "json_extract(METRICS, '$." + m[1].replace(":", ".") + "')", expression)
         for module in ("ERRORS", "QUERIES", "OTHER_COSTS"):
