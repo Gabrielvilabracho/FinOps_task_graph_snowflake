@@ -2,7 +2,7 @@
 
 ## Executive summary
 
-The implementation keeps orchestration, cost evidence, analysis rules, reports, and alert state in Snowflake. Tasks orchestrate; procedures own business logic; tables preserve operational evidence; a finalizer reconciles every graph run even when a child fails. A separate dbt project provides descriptive Cost and Warehouse marts without changing that operational ownership.
+The implementation keeps orchestration, cost evidence, analysis rules, reports, and alert state in Snowflake. Tasks orchestrate; procedures own business logic; tables preserve operational evidence; a finalizer reconciles every graph run even when a child fails. A native dbt project provides descriptive query and warehouse marts. An explicit overlay can add it to the operational graph as one warehouse-backed node without moving anomaly policy into dbt.
 
 ## Operational model
 
@@ -15,6 +15,7 @@ The implementation keeps orchestration, cost evidence, analysis rules, reports, 
 | `FINOPS_CHECK_QUERIES` | Measure query activity and attributed credits | `QUERY_HISTORY`, `QUERY_ATTRIBUTION_HISTORY` | Metrics; no anomaly verdict | Root | Implemented; rule pending |
 | `FINOPS_CHECK_AI` | Measure Cortex AI function usage | `CORTEX_AI_FUNCTIONS_USAGE_HISTORY` | Metrics; no anomaly verdict | Root | Implemented; rule pending |
 | `FINOPS_CHECK_OTHER_COSTS` | Aggregate non-warehouse and non-AI metering | `METERING_HISTORY` | Metrics; no anomaly verdict | Root | Implemented; rule pending |
+| `FINOPS_DBT_ANALYTICS` | Refresh descriptive dbt history and marts | Native dbt project | Durable daily/weekly/monthly analytics and module state | Root; optional overlay | Implemented; native graph validation pending |
 | `FINOPS_REPORT_TASK` | Materialize daily summary | Module outcomes and findings | `FINOPS_DAILY_REPORT` | All analysis tasks succeed | Implemented in repository; deployment pending |
 | `FINOPS_ALERT_TASK` | Deliver only required notifications | Report status and alert config | `FINOPS_ALERT_DELIVERY` | Report succeeds | Implemented; integration pending |
 | `FINOPS_FINALIZER` | Reconcile incomplete/failed graph runs | Persisted module state | Final report, delivery attempt, final run status | Finalizer of root | Implemented in repository; deployment pending |
@@ -69,9 +70,9 @@ readiness-aware reports. It has not been deployed; native compilation and cadenc
 
 ## dbt analytics boundary
 
-`dbt/finops_analytics` reads documented `SNOWFLAKE.ACCOUNT_USAGE` sources and materializes descriptive Cost and Warehouse marts. It does not classify anomalies, write operational run state, send alerts, or replace the procedure contract. The marts preserve raw versus billed credits, source publication evidence, and null attribution rather than manufacturing policy outcomes.
+`dbt/finops_analytics` reads documented `SNOWFLAKE.ACCOUNT_USAGE` sources and materializes descriptive Cost, query-performance, and warehouse-utilization marts. It does not classify anomalies, send alerts, or replace the procedure contract. The marts preserve raw versus billed credits, source publication evidence, and null attribution rather than manufacturing policy outcomes.
 
-The current Task Graph remains serverless. Native Snowflake tasks that execute a dbt project require a user-managed warehouse, so dbt scheduling is a separate future adaptation that needs explicit warehouse, role, grant, failure, and rollback decisions.
+The base ten-task graph remains serverless. `33_integrate_finops_dbt_analytics.sql` is an explicit, non-activating overlay that adds exactly one user-managed `FINOPS_DBT_WAREHOUSE` node and extends report convergence. A `FINOPS_DBT_ROLE`-owned wrapper records module start, completion, and failure while preserving the single `FINOPS_TASK_OWNER` graph owner. Configuration enables the seventh module only after task creation succeeds. `34_remove_finops_dbt_analytics.sql` disables that module before restoring the six-predecessor report fan-in and dropping the optional task.
 
 ## Repository structure
 

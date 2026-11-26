@@ -92,6 +92,41 @@ class DeployScriptTests(unittest.TestCase):
         self.assertEqual(graph.count("AS\nEXECUTE IMMEDIATE $$"), 10)
         self.assertEqual(graph.count("END;\n$$;"), 10)
 
+    def test_dbt_task_integration_deploys_without_resuming_graph(self) -> None:
+        script = (ROOT / "scripts/deploy_dbt_task_integration.sh").read_text(
+            encoding="utf-8"
+        )
+        validation = (
+            ROOT / "sql/90_validation/91_validate_dbt_task_integration.sql"
+        ).read_text(encoding="utf-8")
+
+        for contract in (
+            "--default-env prod",
+            "--role FINOPS_DBT_ROLE",
+            "--client-store-temporary-credential",
+            "--oauth-enable-refresh-tokens",
+            "--server-session-keep-alive",
+            "30_finops_dbt_analytics.sql",
+            "--role FINOPS_TASK_OWNER",
+            "33_integrate_finops_dbt_analytics.sql",
+            "91_validate_dbt_task_integration.sql",
+        ):
+            with self.subTest(contract=contract):
+                self.assertIn(contract, script)
+        self.assertNotRegex(script, r"(?i)\bresume\b")
+        self.assertIn("Expected exactly eleven named FinOps tasks", validation)
+        self.assertIn("FINOPS_DBT_ANALYTICS", validation)
+        self.assertIn("CONFIG_VALUE::BOOLEAN", validation)
+        self.assertIn(
+            "COALESCE(COUNT_IF(CONFIG_VALUE::BOOLEAN = TRUE), 0) = 1",
+            validation,
+        )
+        self.assertIn("UNEXPECTED_TASK_COUNT_INVALID EXCEPTION", validation)
+        self.assertIn(
+            "WAREHOUSE[[:space:]]*=[[:space:]]*FINOPS_DBT_WAREHOUSE",
+            validation,
+        )
+
 
 if __name__ == "__main__":
     unittest.main()

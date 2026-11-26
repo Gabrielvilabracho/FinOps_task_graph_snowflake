@@ -127,7 +127,8 @@ USING (
     ('COST', 'GROWTH_RATIO_THRESHOLD', '0.30', 'FLOAT', TRUE, 'Alert when day-over-day credit growth exceeds this ratio.'),
     ('ALERT', 'ENABLED', 'false', 'BOOLEAN', TRUE, 'Master switch for native email delivery.'),
     ('ALERT', 'EMAIL_INTEGRATION', 'null', 'STRING', TRUE, 'Approved Snowflake email notification integration name.'),
-    ('ALERT', 'RECIPIENTS', 'null', 'STRING', TRUE, 'Comma-separated verified Snowflake user email addresses.')
+    ('ALERT', 'RECIPIENTS', 'null', 'STRING', TRUE, 'Comma-separated verified Snowflake user email addresses.'),
+    ('DBT_ANALYTICS', 'ENABLED', 'false', 'BOOLEAN', TRUE, 'Include the validated native dbt node in operational graph runs.')
     source (MODULE_NAME, CONFIG_KEY, CONFIG_VALUE_JSON, VALUE_TYPE, ENABLED, DESCRIPTION)
 ) source
 ON target.MODULE_NAME = source.MODULE_NAME AND target.CONFIG_KEY = source.CONFIG_KEY

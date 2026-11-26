@@ -28,14 +28,14 @@ class DbtFinOpsContractTests(unittest.TestCase):
 
         profile = self.read("dbt/finops_analytics/dbt_projects_profiles.yml")
         for variable in (
-            "DBT_SNOWFLAKE_ACCOUNT",
-            "DBT_SNOWFLAKE_USER",
             "DBT_FINOPS_DBT_ROLE",
             "DBT_FINOPS_DBT_WAREHOUSE",
         ):
             with self.subTest(variable=variable):
                 self.assertIn(f"env_var('{variable}')", profile)
 
+        self.assertIn('account: "not needed"', profile)
+        self.assertIn('user: "not needed"', profile)
         self.assertIn("env_var('DBT_FINOPS_DBT_DATABASE', 'FINOPS_DEV')", profile)
         self.assertIn("env_var('DBT_FINOPS_DBT_SCHEMA', 'FINOPS')", profile)
         self.assertNotRegex(profile, r"(?i)(password|private_key|token)\s*:")
@@ -57,6 +57,18 @@ class DbtFinOpsContractTests(unittest.TestCase):
 
         self.assertNotRegex(bootstrap, r"(?i)\bALTER\s+TASK\b|\bRESUME\b")
 
+    def test_lifecycle_merge_filters_inside_using_query(self) -> None:
+        lifecycle = self.read("sql/20_procedures/20_finops_run_lifecycle.sql")
+
+        self.assertNotRegex(
+            lifecycle,
+            re.compile(
+                r"\)\s+source\s+WHERE\b.*?\bON\s+target\.",
+                re.IGNORECASE | re.DOTALL,
+            ),
+            "Snowflake MERGE cannot place WHERE between USING source and ON",
+        )
+
     def test_cost_mart_preserves_policy_and_completeness_boundaries(self) -> None:
         cost = self.read("dbt/finops_analytics/models/marts/finops_daily_cost.sql")
 
@@ -66,10 +78,116 @@ class DbtFinOpsContractTests(unittest.TestCase):
         self.assertIn("ref('stg_account_usage__metering_daily_history')", cost)
         self.assertNotRegex(cost, r"(?i)(attention|threshold|0\.30|\b25\b)")
 
-    def test_operational_task_graph_remains_unchanged_by_dbt(self) -> None:
+    def test_dbt_task_overlay_adds_one_warehouse_node_without_resuming_graph(self) -> None:
         graph = self.read("sql/30_tasks/30_finops_task_graph.sql")
+        overlay = self.read(
+            "sql/30_tasks/33_integrate_finops_dbt_analytics.sql"
+        )
+        rollback = self.read(
+            "sql/30_tasks/34_remove_finops_dbt_analytics.sql"
+        )
+        objects = self.read("sql/00_setup/01_finops_objects.sql")
+        lifecycle = self.read(
+            "sql/20_procedures/20_finops_run_lifecycle.sql"
+        )
+
         self.assertNotRegex(graph, r"(?i)\bdbt\b")
         self.assertIn("serverless", graph.lower())
+        self.assertEqual(
+            overlay.count("CREATE OR REPLACE TASK FINOPS_DBT_ANALYTICS"),
+            1,
+        )
+        self.assertIn("WAREHOUSE = FINOPS_DBT_WAREHOUSE", overlay)
+        self.assertRegex(
+            overlay,
+            r"(?is)FINOPS_DBT_ANALYTICS.*?AFTER\s+FINOPS_ROOT_TASK.*?"
+            r"CALL SP_FINOPS_RUN_DBT_ANALYTICS",
+        )
+        self.assertRegex(
+            overlay,
+            r"(?is)FINOPS_REPORT_TASK.*?AFTER.*?FINOPS_DBT_ANALYTICS.*?AS",
+        )
+        self.assertNotRegex(overlay, r"(?i)\bRESUME\b")
+        self.assertLess(
+            overlay.index("CREATE OR REPLACE TASK FINOPS_DBT_ANALYTICS"),
+            overlay.index("CONFIG_VALUE = TO_VARIANT(TRUE)"),
+        )
+        self.assertIn("MERGE INTO FINOPS_CONFIG", overlay)
+        self.assertIn("WHEN NOT MATCHED THEN INSERT", overlay)
+        self.assertIn(
+            "('DBT_ANALYTICS', 'ENABLED', 'false', 'BOOLEAN'",
+            objects,
+        )
+        self.assertIn("V_DBT_ANALYTICS_ENABLED", lifecycle)
+        self.assertIn("('DBT_ANALYTICS')", lifecycle)
+        self.assertIn("MODULE_COUNT = 6 + IFF(:V_DBT_ANALYTICS_ENABLED, 1, 0)", lifecycle)
+        self.assertLess(
+            rollback.index("CONFIG_VALUE = TO_VARIANT(FALSE)"),
+            rollback.index("DROP TASK IF EXISTS FINOPS_DBT_ANALYTICS"),
+        )
+        self.assertNotRegex(rollback, r"(?i)\bRESUME\b")
+
+        base_tasks = (
+            "FINOPS_ROOT_TASK",
+            "FINOPS_CHECK_COST",
+            "FINOPS_CHECK_ERRORS",
+            "FINOPS_CHECK_WAREHOUSE",
+            "FINOPS_CHECK_QUERIES",
+            "FINOPS_CHECK_AI",
+            "FINOPS_CHECK_OTHER_COSTS",
+            "FINOPS_REPORT_TASK",
+            "FINOPS_ALERT_TASK",
+            "FINOPS_FINALIZER",
+        )
+        for task_name in base_tasks:
+            with self.subTest(task_name=task_name, script="overlay"):
+                self.assertIn(f"ALTER TASK {task_name} SUSPEND", overlay)
+            with self.subTest(task_name=task_name, script="rollback"):
+                self.assertIn(f"ALTER TASK {task_name} SUSPEND", rollback)
+        self.assertIn("ALTER TASK FINOPS_DBT_ANALYTICS SUSPEND", rollback)
+
+    def test_scheduled_dbt_execution_uses_dynamic_native_environment(self) -> None:
+        environment = self.read("dbt/finops_analytics/env.yml")
+        profile = self.read("dbt/finops_analytics/dbt_projects_profiles.yml")
+        wrapper = self.read(
+            "sql/20_procedures/30_finops_dbt_analytics.sql"
+        )
+        grants = self.read(
+            "sql/00_setup/05_finops_dbt_task_integration_grants.sql"
+        )
+
+        for contract in (
+            "DBT_FINOPS_DBT_ROLE: \"{{ select CURRENT_ROLE() }}\"",
+            "DBT_FINOPS_DBT_WAREHOUSE: \"{{ select CURRENT_WAREHOUSE() }}\"",
+        ):
+            with self.subTest(environment_contract=contract):
+                self.assertIn(contract, environment)
+        self.assertIn('account: "not needed"', profile)
+        self.assertIn('user: "not needed"', profile)
+
+        for contract in (
+            "EXECUTE AS OWNER",
+            "SP_FINOPS_MARK_MODULE_START",
+            "EXECUTE DBT PROJECT FINOPS_DEV.FINOPS.FINOPS_DBT_PROJECT",
+            "ENVIRONMENT = ''prod''",
+            "WRITEBACK = FALSE",
+            "SP_FINOPS_COMPLETE_MODULE",
+            "SP_FINOPS_FAIL_MODULE",
+            "RAISE",
+        ):
+            with self.subTest(wrapper_contract=contract):
+                self.assertIn(contract, wrapper)
+
+        self.assertIn(
+            "GRANT USAGE ON WAREHOUSE FINOPS_DBT_WAREHOUSE "
+            "TO ROLE FINOPS_TASK_OWNER",
+            grants,
+        )
+        self.assertIn(
+            "GRANT CREATE PROCEDURE ON SCHEMA FINOPS_DEV.FINOPS "
+            "TO ROLE FINOPS_DBT_ROLE",
+            grants,
+        )
 
     def test_warehouse_extension_preserves_attribution_and_freshness(self) -> None:
         warehouse = self.read(
