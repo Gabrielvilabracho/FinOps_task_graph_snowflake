@@ -54,7 +54,7 @@ FINOPS_FINALIZER (runs after the graph completes or a child fails)
 
 ## Quick path
 
-1. Review [architecture](docs/architecture.md), [official evidence](docs/official-snowflake-evidence.md), the [FinOps Framework research](docs/finops-framework-research.md), the [Tokenomics Foundation research](docs/tokenomics-foundation-research.md), and the [dbt analytics guide](docs/operations/dbt-finops-analytics.md).
+1. Start with the educational guide to [Snowflake Tasks and Task Graphs](docs/snowflake-tasks-and-task-graphs.md), then review [architecture](docs/architecture.md), [official evidence](docs/official-snowflake-evidence.md), the [FinOps Framework research](docs/finops-framework-research.md), the [Tokenomics Foundation research](docs/tokenomics-foundation-research.md), and the [dbt analytics guide](docs/operations/dbt-finops-analytics.md).
 2. Run the one-time authorized owner bootstrap from `03_finops_task_owner_grants.sql`; optional read/monitor grants remain separate in `02_finops_grants.sql`.
 3. Run `./scripts/deploy.sh <snowflake-connection-name>` with the confirmed combined deployment and single task-owner role; it targets `FINOPS_DEV.FINOPS` and keeps the graph suspended.
 4. Validate with `sql/90_validation/90_validate_deployment.sql`.
