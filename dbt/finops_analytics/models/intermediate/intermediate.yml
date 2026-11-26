@@ -26,3 +26,34 @@ models:
       - name: is_attribution_window_complete
         description: True after the documented eight-hour query-attribution publication boundary; it does not imply attribution must exist.
         data_tests: [not_null]
+
+  - name: int_finops_warehouse_state_intervals
+    description: Resume-to-suspend lifecycle spans bounded by warehouse events; estimates operational span rather than exact metering or physical on-time.
+    columns:
+      - name: warehouse_id
+        description: Stable warehouse identifier.
+        data_tests: [not_null]
+      - name: estimated_on_start
+        description: RESUME_WAREHOUSE event timestamp used as the lower estimate boundary.
+        data_tests: [not_null]
+      - name: estimated_on_end
+        description: Next SUSPEND_WAREHOUSE event timestamp used as the upper estimate boundary.
+        data_tests: [not_null]
+      - name: interval_evidence
+        description: Constant EVENT_BOUNDED_ESTIMATE warning that the span is not exact billed or physical on-time.
+        data_tests: [not_null]
+
+  - name: int_finops_query_performance_periods
+    description: Weekly and monthly query performance aggregated directly from durable statement rows, never from daily or lower-period percentiles.
+    columns:
+      - name: period_type
+        description: WEEK or MONTH.
+        data_tests: [not_null]
+      - name: period_start_date
+        description: Monday for ISO-style weeks or first calendar day for months.
+        data_tests: [not_null]
+      - name: p90_elapsed_time_ms
+        description: 90th percentile computed from statement-level elapsed times in the complete period.
+      - name: is_source_complete
+        description: True only when retained history covers the period start and the source watermark covers its end.
+        data_tests: [not_null]

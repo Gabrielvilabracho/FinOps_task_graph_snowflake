@@ -7,7 +7,9 @@ with queries as (
 
 source_state as (
 
-    select max(end_time) as source_watermark
+    select
+        min(analysis_date) as source_first_analysis_date,
+        max(end_time) as source_watermark
     from queries
 
 ),
@@ -57,6 +59,7 @@ publication as (
 
     select
         daily.*,
+        source_state.source_first_analysis_date,
         source_state.source_watermark,
         dateadd(minute, 45, dateadd(day, 1,
             to_timestamp_tz(to_char(daily.analysis_date, 'YYYY-MM-DD') || ' 00:00:00 +00:00')))
@@ -71,6 +74,7 @@ final as (
     select
         publication.*,
         coalesce(current_timestamp() >= expected_complete_at
+            and source_first_analysis_date < analysis_date
             and source_watermark >= dateadd(day, 1,
                 to_timestamp_tz(to_char(analysis_date, 'YYYY-MM-DD') || ' 00:00:00 +00:00')),
             false) as is_source_complete
