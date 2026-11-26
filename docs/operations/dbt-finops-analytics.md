@@ -1,6 +1,6 @@
 # dbt FinOps analytics
 
-This slice adds descriptive Cost and Warehouse models without changing the operational Task Graph. dbt transforms and tests account metadata; procedures own approved anomaly rules and durable run persistence; the existing tasks, report, and email continue to use those persisted results.
+This project provides descriptive Cost, Warehouse, and Query Performance models without changing the operational Task Graph. dbt transforms and tests account metadata; procedures own approved anomaly rules and durable run persistence; the existing tasks, report, and email continue to use those persisted results.
 
 ## Models and sources
 
@@ -8,8 +8,13 @@ The project lives in `dbt/finops_analytics` and reads two documented sources:
 
 - `SNOWFLAKE.ACCOUNT_USAGE.METERING_DAILY_HISTORY` supplies account-level raw and billed credits. The mart keeps both values explicit and never converts credits to currency.
 - `SNOWFLAKE.ACCOUNT_USAGE.WAREHOUSE_METERING_HISTORY` supplies hourly warehouse usage and query-attributed compute. Query attribution excludes idle time and can be null, so the mart leaves the idle estimate null when attribution is incomplete.
+- `SNOWFLAKE.ACCOUNT_USAGE.QUERY_HISTORY` supplies statement duration and queue evidence. Query text and bind values are intentionally excluded from staging.
+- `SNOWFLAKE.ACCOUNT_USAGE.QUERY_ATTRIBUTION_HISTORY` supplies delayed query-level compute attribution without idle time.
+- `SNOWFLAKE.ACCOUNT_USAGE.WAREHOUSE_LOAD_HISTORY` and `WAREHOUSE_EVENTS_HISTORY` supply five-minute load and lifecycle evidence without proving exact idle intervals by themselves.
 
 `finops_daily_cost` uses a 365-day date spine. A date becomes complete only after its expected publication time and after a later source date proves publication advanced beyond it; only then can a missing aggregate become a mature zero. Otherwise its values remain null. `finops_warehouse_daily` has one row per observed UTC date and warehouse and waits eight hours for query-attribution publication. Each mart exposes publication evidence and an `is_source_complete` flag.
+
+`int_finops_query_history` incrementally preserves statement-level history with a two-day late-arrival lookback. `finops_query_performance_daily` groups those raw statements by UTC date, warehouse, and query type, exposes six exclusive duration buckets, and calculates P50, P90, and P99 directly from statement rows. It keeps non-warehouse and client-generated statements visible rather than silently discarding them.
 
 ## Responsibility boundary
 
@@ -24,7 +29,7 @@ The live object is `FINOPS_DEV.FINOPS.FINOPS_DBT_PROJECT`, owned by `FINOPS_DBT_
 The reproducible administrative baseline lives in `sql/00_setup/04_finops_dbt_bootstrap.sql` and provisions:
 
 1. A user-managed warehouse for dbt execution.
-2. A profile role with imported access to `SNOWFLAKE`, usage on target database/schemas, and create privileges for dbt relations.
+2. A profile role with imported `USAGE_VIEWER` access for metering/load evidence, imported `GOVERNANCE_VIEWER` access for query history, usage on target database/schemas, and create privileges for dbt relations.
 3. A calling role with usage on the dbt project object and permission to use the profile role.
 4. Separate read grants for consumers of the resulting marts.
 

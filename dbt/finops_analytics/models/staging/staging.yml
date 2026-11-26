@@ -23,3 +23,49 @@ models:
       - name: warehouse_id
         description: Stable Snowflake warehouse identifier.
         data_tests: [not_null]
+
+  - name: stg_account_usage__query_history
+    description: Statement-level performance projection without query text, bind values, anomaly thresholds or policy classification.
+    columns:
+      - name: query_id
+        description: Stable Snowflake statement identifier.
+        data_tests: [not_null, unique]
+      - name: start_time
+        description: Statement start timestamp retained with source LTZ semantics.
+        data_tests: [not_null]
+      - name: total_elapsed_time_ms
+        description: Total elapsed time in milliseconds.
+        data_tests: [not_null]
+
+  - name: stg_account_usage__query_attribution_history
+    description: Query-level compute attribution that excludes idle time and can lag query history by up to eight hours.
+    columns:
+      - name: query_id
+        description: Stable statement identifier used to join query history.
+        data_tests: [not_null, unique]
+      - name: warehouse_id
+        description: Stable warehouse identifier.
+        data_tests: [not_null]
+
+  - name: stg_account_usage__warehouse_load_history
+    description: Five-minute warehouse running, queued and blocked load ratios without inferred idle intervals.
+    columns:
+      - name: start_time
+        description: Beginning of the five-minute interval.
+        data_tests: [not_null]
+      - name: warehouse_id
+        description: Stable warehouse identifier.
+        data_tests: [not_null]
+
+  - name: stg_account_usage__warehouse_events_history
+    description: Raw warehouse and cluster lifecycle evidence without inferred completion or idle intervals.
+    columns:
+      - name: event_timestamp
+        description: Timestamp when the source event was triggered.
+        data_tests: [not_null]
+      - name: warehouse_id
+        description: Stable warehouse identifier.
+        data_tests: [not_null]
+      - name: event_name
+        description: Source warehouse or cluster lifecycle event name.
+        data_tests: [not_null]
