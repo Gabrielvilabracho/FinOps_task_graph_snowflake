@@ -158,6 +158,7 @@ class DbtFinOpsContractTests(unittest.TestCase):
         for percentile in ("0.50", "0.90", "0.99"):
             with self.subTest(percentile=percentile):
                 self.assertIn(f"percentile_cont({percentile})", model)
+        self.assertEqual(model.count("as number(38, 0)"), 3)
 
         for bucket in (
             "queries_le_1_second",
@@ -237,6 +238,7 @@ class DbtFinOpsContractTests(unittest.TestCase):
             "warehouse_idle_stays_null_without_complete_event_and_load_evidence",
             marts,
         )
+        self.assertIn("event_bounded_on_seconds: null", marts)
 
     def test_weekly_and_monthly_percentiles_derive_from_raw_query_history(self) -> None:
         periods = self.read(
@@ -257,6 +259,7 @@ class DbtFinOpsContractTests(unittest.TestCase):
         self.assertNotIn("ref('finops_query_performance_daily')", periods)
         for percentile in ("0.50", "0.90", "0.99"):
             self.assertIn(f"percentile_cont({percentile})", periods)
+        self.assertEqual(periods.count("as number(38, 0)"), 3)
         self.assertIn("period_type = 'WEEK'", weekly)
         self.assertIn("period_type = 'MONTH'", monthly)
         self.assertIn("monthly_percentile_uses_raw_queries_not_weekly_averages", marts)

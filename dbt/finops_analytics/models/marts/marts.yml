@@ -156,7 +156,7 @@ unit_tests:
         rows: []
     expect:
       rows:
-        - {analysis_date: '2026-11-17', warehouse_id: 1, warehouse_name: NO_BOUNDARY_WH, estimated_idle_seconds: null, idle_evidence_state: INSUFFICIENT_EVENT_BOUNDARY}
+        - {analysis_date: '2026-11-17', warehouse_id: 1, warehouse_name: NO_BOUNDARY_WH, event_bounded_on_seconds: null, estimated_idle_seconds: null, idle_evidence_state: INSUFFICIENT_EVENT_BOUNDARY}
         - {analysis_date: '2026-11-17', warehouse_id: 2, warehouse_name: PARTIAL_LOAD_WH, event_bounded_on_seconds: 3600, estimated_idle_seconds: null, idle_evidence_state: INSUFFICIENT_LOAD_COVERAGE}
 
   - name: daily_query_grain_survives_warehouse_rename_and_lowercase_status
