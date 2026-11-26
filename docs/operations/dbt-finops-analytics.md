@@ -4,7 +4,7 @@ This project provides descriptive Cost, Warehouse, and Query Performance models 
 
 ## Models and sources
 
-The project lives in `dbt/finops_analytics` and reads two documented sources:
+The project lives in `dbt/finops_analytics` and reads six documented Account Usage views:
 
 - `SNOWFLAKE.ACCOUNT_USAGE.METERING_DAILY_HISTORY` supplies account-level raw and billed credits. The mart keeps both values explicit and never converts credits to currency.
 - `SNOWFLAKE.ACCOUNT_USAGE.WAREHOUSE_METERING_HISTORY` supplies hourly warehouse usage and query-attributed compute. Query attribution excludes idle time and can be null, so the mart leaves the idle estimate null when attribution is incomplete.
@@ -65,7 +65,7 @@ The decision is deliberately **no UDTF** until a caller needs a parameterized re
 
 ## Verification boundary
 
-Repository tests verify structure, safe warehouse defaults, and ownership boundaries without credentials. Authorized live validation deployed and compiled the native project, built five models, ran 17 data tests and two unit tests, and produced 365 Cost rows plus four Warehouse rows. `FINOPS_DBT_WAREHOUSE` returned to `SUSPENDED`; all ten operational tasks remained suspended. Future source freshness and production behavior still require ongoing observation rather than inference from this first build.
+Repository tests verify structure, safe warehouse defaults, and ownership boundaries without credentials. Authorized live validation deployed and parsed the native project, then built the selected query-performance and warehouse-utilization lineage: 71 model, data-test, and unit-test nodes passed with warnings treated as errors. The durable query base held 36,794 statements across 2026-11-20 through 2026-11-26; the daily, weekly, and monthly marts held 296, 174, and 114 grouped rows. Weekly and monthly rows correctly remained incomplete because retained source history began after their period boundaries. Warehouse utilization held 21 rows: six event-and-load estimates and 15 null idle values with insufficient event boundaries. A native `dbt show` returned representative daily query rows. After the validation commands stopped, `FINOPS_DBT_WAREHOUSE` returned to `SUSPENDED` with its unchanged 60-second auto-suspend setting. Future source freshness and production behavior still require ongoing observation rather than inference from this first build.
 
 ## References
 

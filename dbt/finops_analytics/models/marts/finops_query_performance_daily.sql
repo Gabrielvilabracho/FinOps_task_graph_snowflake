@@ -29,11 +29,14 @@ daily as (
             as unsuccessful_query_count,
         sum(total_elapsed_time_ms) as total_elapsed_time_ms,
         avg(total_elapsed_time_ms) as average_elapsed_time_ms,
-        percentile_cont(0.50) within group (order by total_elapsed_time_ms)
+        cast(round(percentile_cont(0.50) within group (order by total_elapsed_time_ms), 0)
+            as number(38, 0))
             as p50_elapsed_time_ms,
-        percentile_cont(0.90) within group (order by total_elapsed_time_ms)
+        cast(round(percentile_cont(0.90) within group (order by total_elapsed_time_ms), 0)
+            as number(38, 0))
             as p90_elapsed_time_ms,
-        percentile_cont(0.99) within group (order by total_elapsed_time_ms)
+        cast(round(percentile_cont(0.99) within group (order by total_elapsed_time_ms), 0)
+            as number(38, 0))
             as p99_elapsed_time_ms,
         sum(coalesce(queued_provisioning_time_ms, 0)
             + coalesce(queued_repair_time_ms, 0)
