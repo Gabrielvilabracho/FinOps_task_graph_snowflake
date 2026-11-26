@@ -30,3 +30,41 @@ sources:
             description: Warehouse name at the time of metering.
           - name: credits_attributed_compute_queries
             description: Compute credits attributed to query execution; excludes idle time and can be null.
+      - name: query_history
+        description: Statement-level execution, queue, retry and warehouse context retained for 365 days with publication latency up to 45 minutes.
+        columns:
+          - name: query_id
+            description: Stable Snowflake statement identifier.
+          - name: start_time
+            description: Statement start timestamp in the session local time zone; models normalize reporting boundaries to UTC.
+          - name: total_elapsed_time
+            description: Total statement elapsed time in milliseconds.
+          - name: execution_time
+            description: Statement execution time in milliseconds.
+      - name: query_attribution_history
+        description: Query-level warehouse compute attribution retained for 365 days with publication latency up to eight hours; excludes idle time and very short queries.
+        columns:
+          - name: query_id
+            description: Stable statement identifier used to join query history.
+          - name: warehouse_id
+            description: Stable warehouse identifier for attributed compute.
+          - name: credits_attributed_compute
+            description: Compute credits attributed to the query; excludes warehouse idle time.
+      - name: warehouse_load_history
+        description: Five-minute warehouse running, queued and blocked load ratios with publication latency up to three hours.
+        columns:
+          - name: start_time
+            description: Beginning of the five-minute UTC interval.
+          - name: warehouse_id
+            description: Stable warehouse identifier.
+          - name: avg_running
+            description: Running query load ratio for the interval.
+      - name: warehouse_events_history
+        description: Warehouse and cluster lifecycle events retained for 365 days with publication latency up to three hours; one operation can emit multiple related events.
+        columns:
+          - name: timestamp
+            description: Timestamp when the event was triggered.
+          - name: warehouse_id
+            description: Stable warehouse identifier.
+          - name: event_name
+            description: Warehouse or cluster lifecycle event name.

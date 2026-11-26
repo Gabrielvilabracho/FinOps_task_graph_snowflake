@@ -50,6 +50,7 @@ class DbtFinOpsContractTests(unittest.TestCase):
             "CREATE ROLE IF NOT EXISTS FINOPS_DBT_ROLE",
             "GRANT CREATE DBT PROJECT ON SCHEMA FINOPS_DEV.FINOPS",
             "GRANT DATABASE ROLE SNOWFLAKE.USAGE_VIEWER",
+            "GRANT DATABASE ROLE SNOWFLAKE.GOVERNANCE_VIEWER",
         ):
             with self.subTest(contract=contract):
                 self.assertIn(contract, bootstrap)
@@ -79,6 +80,105 @@ class DbtFinOpsContractTests(unittest.TestCase):
         self.assertRegex(warehouse, r"(?i)dateadd\(hour,\s*8,")
         self.assertIn("count(credits_attributed_compute_queries) = count(*)", warehouse)
         self.assertNotRegex(warehouse, r"(?i)(attention|threshold|0\.30|\b25\b)")
+
+    def test_query_and_warehouse_sources_have_explicit_staging_contracts(self) -> None:
+        sources = self.read(
+            "dbt/finops_analytics/models/sources/account_usage.yml"
+        )
+        staging = self.read("dbt/finops_analytics/models/staging/staging.yml")
+
+        models = {
+            "query_history": "stg_account_usage__query_history.sql",
+            "query_attribution_history": (
+                "stg_account_usage__query_attribution_history.sql"
+            ),
+            "warehouse_load_history": (
+                "stg_account_usage__warehouse_load_history.sql"
+            ),
+            "warehouse_events_history": (
+                "stg_account_usage__warehouse_events_history.sql"
+            ),
+        }
+
+        for source_name, filename in models.items():
+            with self.subTest(source=source_name):
+                self.assertIn(f"- name: {source_name}", sources)
+                model_name = filename.removesuffix(".sql")
+                self.assertIn(f"- name: {model_name}", staging)
+                sql = self.read(
+                    f"dbt/finops_analytics/models/staging/{filename}"
+                )
+                self.assertIn(
+                    f"source('snowflake_account_usage', '{source_name}')",
+                    sql,
+                )
+
+        query_history = self.read(
+            "dbt/finops_analytics/models/staging/"
+            "stg_account_usage__query_history.sql"
+        )
+        self.assertNotIn("query_text", query_history.lower())
+        self.assertNotIn("bind_values", query_history.lower())
+
+    def test_durable_query_base_reprocesses_late_attribution_safely(self) -> None:
+        model = self.read(
+            "dbt/finops_analytics/models/intermediate/"
+            "int_finops_query_history.sql"
+        )
+        intermediate = self.read(
+            "dbt/finops_analytics/models/intermediate/intermediate.yml"
+        )
+
+        for contract in (
+            "materialized='incremental'",
+            "unique_key='query_id'",
+            "incremental_strategy='merge'",
+            "ref('stg_account_usage__query_history')",
+            "ref('stg_account_usage__query_attribution_history')",
+            "dateadd(day, -2",
+            "dateadd(hour, 8",
+            "attribution_state",
+            "is_query_history_complete",
+            "is_attribution_window_complete",
+        ):
+            with self.subTest(contract=contract):
+                self.assertIn(contract, model)
+
+        self.assertIn("- name: int_finops_query_history", intermediate)
+        self.assertNotIn("query_text", model.lower())
+        self.assertNotIn("bind_values", model.lower())
+
+    def test_daily_query_performance_uses_raw_queries_for_buckets_and_percentiles(self) -> None:
+        model = self.read(
+            "dbt/finops_analytics/models/marts/"
+            "finops_query_performance_daily.sql"
+        )
+        marts = self.read("dbt/finops_analytics/models/marts/marts.yml")
+
+        for percentile in ("0.50", "0.90", "0.99"):
+            with self.subTest(percentile=percentile):
+                self.assertIn(f"percentile_cont({percentile})", model)
+
+        for bucket in (
+            "queries_le_1_second",
+            "queries_1_to_5_seconds",
+            "queries_5_to_30_seconds",
+            "queries_30_to_60_seconds",
+            "queries_1_to_5_minutes",
+            "queries_gt_5_minutes",
+        ):
+            with self.subTest(bucket=bucket):
+                self.assertIn(bucket, model)
+
+        self.assertIn("ref('int_finops_query_history')", model)
+        self.assertIn("- name: finops_query_performance_daily", marts)
+        self.assertIn(
+            "daily_query_grain_survives_warehouse_rename_and_lowercase_status",
+            marts,
+        )
+        self.assertIn("max_by(warehouse_name, end_time)", model)
+        self.assertIn("upper(execution_status)", model)
+        self.assertNotIn("avg(p", model.lower())
 
     def test_warehouse_name_preserves_missing_source_values(self) -> None:
         warehouse = self.read(

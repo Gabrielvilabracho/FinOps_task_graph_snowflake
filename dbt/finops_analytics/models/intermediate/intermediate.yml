@@ -7,3 +7,22 @@ models:
       - name: analysis_date
         description: UTC date available for complete-versus-missing source evaluation.
         data_tests: [not_null, unique]
+
+  - name: int_finops_query_history
+    description: Durable statement-level query performance and optional compute attribution, incrementally reprocessing two days for late Account Usage publication.
+    columns:
+      - name: query_id
+        description: Stable Snowflake statement identifier and incremental merge key.
+        data_tests: [not_null, unique]
+      - name: analysis_date
+        description: UTC query start date used by daily, weekly and monthly marts.
+        data_tests: [not_null]
+      - name: attribution_state
+        description: OBSERVED when attribution exists, PENDING inside the eight-hour publication window, otherwise UNAVAILABLE rather than zero.
+        data_tests: [not_null]
+      - name: is_query_history_complete
+        description: True after the documented 45-minute query-history publication boundary.
+        data_tests: [not_null]
+      - name: is_attribution_window_complete
+        description: True after the documented eight-hour query-attribution publication boundary; it does not imply attribution must exist.
+        data_tests: [not_null]

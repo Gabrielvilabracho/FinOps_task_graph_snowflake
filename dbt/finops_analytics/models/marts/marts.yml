@@ -49,7 +49,43 @@ models:
         description: True only after the eight-hour query-attribution publication delay and a covering source watermark.
         data_tests: [not_null]
 
+  - name: finops_query_performance_daily
+    description: Daily query counts, duration buckets and raw-query percentiles by warehouse and query type; includes separate client-generated and user-query counts.
+    columns:
+      - name: analysis_date
+        description: UTC query start date.
+        data_tests: [not_null]
+      - name: warehouse_key
+        description: Stable warehouse identifier rendered as text, or NO_WAREHOUSE for statements that do not use a warehouse.
+        data_tests: [not_null]
+      - name: query_type
+        description: Snowflake statement type; UNKNOWN remains explicit when supplied by the source.
+      - name: query_count
+        description: Number of source statements in the daily warehouse and query-type group.
+        data_tests: [not_null]
+      - name: p50_elapsed_time_ms
+        description: Median total elapsed milliseconds computed from statement-level rows in this group.
+      - name: p90_elapsed_time_ms
+        description: 90th percentile total elapsed milliseconds computed from statement-level rows in this group.
+      - name: p99_elapsed_time_ms
+        description: 99th percentile total elapsed milliseconds computed from statement-level rows in this group.
+      - name: is_source_complete
+        description: True only after the documented 45-minute query-history boundary and a covering source watermark.
+        data_tests: [not_null]
+
 unit_tests:
+  - name: daily_query_grain_survives_warehouse_rename_and_lowercase_status
+    description: Keep one stable warehouse-id grain and treat lowercase Snowflake success status as successful.
+    model: finops_query_performance_daily
+    given:
+      - input: ref('int_finops_query_history')
+        rows:
+          - {analysis_date: '2026-11-17', warehouse_id: 1, warehouse_name: OLD_NAME, query_type: SELECT, execution_status: success, end_time: '2026-11-17 01:00:01 +00:00', total_elapsed_time_ms: 1000, queued_provisioning_time_ms: 0, queued_repair_time_ms: 0, queued_overload_time_ms: 0, transaction_blocked_time_ms: 0, is_client_generated_statement: false}
+          - {analysis_date: '2026-11-17', warehouse_id: 1, warehouse_name: NEW_NAME, query_type: SELECT, execution_status: success, end_time: '2026-11-17 02:00:02 +00:00', total_elapsed_time_ms: 2000, queued_provisioning_time_ms: 0, queued_repair_time_ms: 0, queued_overload_time_ms: 0, transaction_blocked_time_ms: 0, is_client_generated_statement: false}
+    expect:
+      rows:
+        - {analysis_date: '2026-11-17', warehouse_key: '1', warehouse_id: 1, warehouse_name: NEW_NAME, query_type: SELECT, query_count: 2, client_generated_query_count: 0, user_query_count: 2, unsuccessful_query_count: 0, total_elapsed_time_ms: 3000, average_elapsed_time_ms: 1500, p50_elapsed_time_ms: 1500, p90_elapsed_time_ms: 1900, p99_elapsed_time_ms: 1990, total_queue_time_ms: 0, queries_le_1_second: 1, queries_1_to_5_seconds: 1, queries_5_to_30_seconds: 0, queries_30_to_60_seconds: 0, queries_1_to_5_minutes: 0, queries_gt_5_minutes: 0, source_rows: 2}
+
   - name: daily_cost_keeps_raw_and_billed_credits_distinct
     description: Preserve raw usage separately from account-level cloud-services adjustments.
     model: finops_daily_cost
