@@ -236,6 +236,8 @@ EXECUTE DBT PROJECT FINOPS_DEV.FINOPS.FINOPS_DBT_PROJECT
 
 Check the returned `SUCCESS` value and any exception. The session-variable form worked in the original account; direct function expressions inside `ENV_VARS` did not. Destination support must still be validated. `ENV_VARS` values appear in query text/history: use only non-secret identifiers here, never credentials. The existing native profile is not a complete authenticated local dbt Core profile.
 
+Only after that build succeeds, review the optional operational overlay. Apply `05_finops_dbt_task_integration_grants.sql` through an authorized administrative session, then run `scripts/deploy_dbt_task_integration.sh` for the destination connection. The helper uses `env.yml` SQL context values, installs one warehouse-backed dbt node, validates eleven suspended tasks, and never activates the graph. Keep destination identifiers in the profile/environment aligned before using it. Roll back a still-suspended overlay with `34_remove_finops_dbt_analytics.sql`.
+
 With the existing dbt schema configuration, relations resolve to:
 
 - `FINOPS_DEV.FINOPS_FINOPS_STAGING`

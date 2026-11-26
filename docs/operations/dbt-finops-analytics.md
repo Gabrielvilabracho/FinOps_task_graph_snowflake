@@ -24,7 +24,7 @@ The project lives in `dbt/finops_analytics` and reads six documented Account Usa
 
 The marts contain no attention status, anomaly threshold, or delivery decision. The existing `FINOPS_CLASSIFY_COST` helper retains the strict `>25` credit and `>30%` growth rules, and Warehouse remains informational until a rule is approved.
 
-The current Task Graph remains serverless and unchanged. Snowflake requires a user-managed warehouse for a task that runs `EXECUTE DBT PROJECT`; therefore this analytics-first slice does not insert dbt execution into `FINOPS_ROOT_TASK` or its children.
+The base Task Graph remains serverless. The optional integration overlay adds one `FINOPS_DBT_ANALYTICS` child using `FINOPS_DBT_WAREHOUSE`; all six existing analysis children remain serverless and unchanged. The wrapper records `DBT_ANALYTICS` module state and re-raises failures so the finalizer can report them. The overlay changes report fan-in but never resumes the graph.
 
 ## Native Snowflake project
 
@@ -36,6 +36,16 @@ The reproducible administrative baseline lives in `sql/00_setup/04_finops_dbt_bo
 2. A profile role with imported `USAGE_VIEWER` access for metering/load evidence, imported `GOVERNANCE_VIEWER` access for query history, usage on target database/schemas, and create privileges for dbt relations.
 3. A calling role with usage on the dbt project object and permission to use the profile role.
 4. Separate read grants for consumers of the resulting marts.
+
+The optional Task Graph integration additionally requires `05_finops_dbt_task_integration_grants.sql`. It grants the graph owner use of the dedicated warehouse and lets `FINOPS_DBT_ROLE` own only the dbt execution wrapper. The wrapper receives use of the three lifecycle procedures; the graph owner receives use of the wrapper. Role ownership is not merged or transferred.
+
+After those administrative grants are explicitly approved, install the suspended overlay with:
+
+```bash
+./scripts/deploy_dbt_task_integration.sh <snowflake-connection-name>
+```
+
+The helper deploys the project with the `prod` environment from `env.yml`, creates the dbt-role-owned wrapper, adds one graph node, extends report convergence, and runs the 11-task structural validation. It does not resume any task. Before activation, rollback is `sql/30_tasks/34_remove_finops_dbt_analytics.sql`; it first disables the seventh module, restores the original report fan-in, and then drops the optional task.
 
 The approved warehouse is `X-SMALL`, auto-resumes on demand, and auto-suspends after 60 seconds. The deployed native project uses dbt Core 1.9.4 and dbt-snowflake 1.9.2. Its selected Cost/Warehouse build completed with 24 passes, zero warnings, and zero errors. dbt has no automatic schedule, and the operational Task Graph remains separate and suspended until explicitly activated.
 

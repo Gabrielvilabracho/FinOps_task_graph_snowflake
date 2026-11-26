@@ -48,6 +48,16 @@ files. This avoids repeated OAuth authorization while preserving numeric order.
 
 Do not run `31_resume_finops_task_graph.sql` until validation passes and the notification configuration is reviewed.
 
+### Optional dbt graph integration
+
+The base deployment remains a ten-task serverless graph. After the native dbt project has passed its own build, an authorized administrator may apply `05_finops_dbt_task_integration_grants.sql`. Then install the optional suspended overlay:
+
+```bash
+./scripts/deploy_dbt_task_integration.sh <snowflake-connection-name>
+```
+
+This deploys the `prod` dbt environment, creates the `FINOPS_DBT_ROLE`-owned execution wrapper, adds one `FINOPS_DBT_ANALYTICS` task on `FINOPS_DBT_WAREHOUSE`, extends report fan-in, and validates exactly eleven suspended tasks. It does not activate the graph. If validation or ownership is wrong, keep the root suspended and apply `sql/30_tasks/34_remove_finops_dbt_analytics.sql`; do not improvise grants, transfer ownership, or resume a partial graph.
+
 ## Alert configuration
 
 Alerting is disabled by default. Configure values without storing credentials:

@@ -22,6 +22,7 @@ class RepositoryContractTests(unittest.TestCase):
             "docs/operations/runbook.md",
             "sql/00_setup/01_finops_objects.sql",
             "sql/00_setup/02_finops_grants.sql",
+            "sql/00_setup/05_finops_dbt_task_integration_grants.sql",
             "sql/10_core/10_finops_cost_policy.sql",
             "sql/10_core/11_finops_status_precedence.sql",
             "sql/20_procedures/20_finops_run_lifecycle.sql",
@@ -34,10 +35,15 @@ class RepositoryContractTests(unittest.TestCase):
             "sql/20_procedures/27_finops_report.sql",
             "sql/20_procedures/28_finops_alert.sql",
             "sql/20_procedures/29_finops_finalizer.sql",
+            "sql/20_procedures/30_finops_dbt_analytics.sql",
             "sql/30_tasks/30_finops_task_graph.sql",
             "sql/30_tasks/31_resume_finops_task_graph.sql",
             "sql/30_tasks/32_suspend_finops_task_graph.sql",
+            "sql/30_tasks/33_integrate_finops_dbt_analytics.sql",
+            "sql/30_tasks/34_remove_finops_dbt_analytics.sql",
             "sql/90_validation/90_validate_deployment.sql",
+            "sql/90_validation/91_validate_dbt_task_integration.sql",
+            "scripts/deploy_dbt_task_integration.sh",
             "tests/sql/02_metric_contract_test.sql",
             "tests/sql/03_status_precedence_test.sql",
             "tests/sql/04_metric_completeness_invariant_test.sql",
@@ -147,12 +153,21 @@ class RepositoryContractTests(unittest.TestCase):
 
     def test_runtime_contains_no_external_orchestrator(self) -> None:
         runtime_directories = ("10_core", "20_procedures", "30_tasks")
-        sql_text = "\n".join(
-            path.read_text(encoding="utf-8")
+        approved_native_dbt_files = {
+            ROOT / "sql/20_procedures/30_finops_dbt_analytics.sql",
+            ROOT / "sql/30_tasks/33_integrate_finops_dbt_analytics.sql",
+            ROOT / "sql/30_tasks/34_remove_finops_dbt_analytics.sql",
+        }
+        runtime_files = [
+            path
             for directory in runtime_directories
             for path in (ROOT / "sql" / directory).rglob("*.sql")
-        )
-        self.assertNotRegex(sql_text, r"(?i)\b(airflow|dbt)\b")
+        ]
+        for path in runtime_files:
+            sql_text = path.read_text(encoding="utf-8")
+            self.assertNotRegex(sql_text, r"(?i)\bairflow\b")
+            if path not in approved_native_dbt_files:
+                self.assertNotRegex(sql_text, r"(?i)\bdbt\b")
 
     def test_documentation_marks_event_driven_as_future(self) -> None:
         architecture = self.read("docs/architecture.md")

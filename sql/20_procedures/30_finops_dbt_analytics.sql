@@ -1,0 +1,54 @@
+USE ROLE FINOPS_DBT_ROLE;
+USE DATABASE FINOPS_DEV;
+USE SCHEMA FINOPS;
+
+CREATE OR REPLACE PROCEDURE SP_FINOPS_RUN_DBT_ANALYTICS(P_RUN_ID STRING)
+RETURNS OBJECT
+LANGUAGE SQL
+EXECUTE AS OWNER
+AS
+$$
+DECLARE
+  V_DBT_COMMAND STRING DEFAULT
+    'EXECUTE DBT PROJECT FINOPS_DEV.FINOPS.FINOPS_DBT_PROJECT '
+    || 'ARGS = ''build --select +finops_query_performance_daily '
+    || '+finops_warehouse_utilization_daily '
+    || '+finops_query_performance_weekly '
+    || '+finops_query_performance_monthly --quiet --warn-error'' '
+    || 'ENVIRONMENT = ''prod'' WRITEBACK = FALSE';
+BEGIN
+  CALL SP_FINOPS_MARK_MODULE_START(:P_RUN_ID, 'DBT_ANALYTICS');
+
+  EXECUTE IMMEDIATE :V_DBT_COMMAND;
+
+  CALL SP_FINOPS_COMPLETE_MODULE(
+    :P_RUN_ID,
+    'DBT_ANALYTICS',
+    'NORMAL',
+    OBJECT_CONSTRUCT(
+      'project', 'FINOPS_DEV.FINOPS.FINOPS_DBT_PROJECT',
+      'environment', 'prod',
+      'warehouse', 'FINOPS_DBT_WAREHOUSE',
+      'writeback', FALSE
+    )
+  );
+
+  RETURN OBJECT_CONSTRUCT(
+    'run_id', P_RUN_ID,
+    'module', 'DBT_ANALYTICS',
+    'status', 'NORMAL'
+  );
+EXCEPTION
+  WHEN OTHER THEN
+    CALL SP_FINOPS_FAIL_MODULE(
+      :P_RUN_ID,
+      'DBT_ANALYTICS',
+      :SQLCODE::STRING,
+      :SQLERRM
+    );
+    RAISE;
+END;
+$$;
+
+GRANT USAGE ON PROCEDURE SP_FINOPS_RUN_DBT_ANALYTICS(STRING)
+  TO ROLE FINOPS_TASK_OWNER;
