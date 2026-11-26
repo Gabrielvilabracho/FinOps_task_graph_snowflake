@@ -180,6 +180,87 @@ class DbtFinOpsContractTests(unittest.TestCase):
         self.assertIn("upper(execution_status)", model)
         self.assertNotIn("avg(p", model.lower())
 
+    def test_warehouse_utilization_requires_event_and_load_evidence_for_idle_time(self) -> None:
+        intervals = self.read(
+            "dbt/finops_analytics/models/intermediate/"
+            "int_finops_warehouse_state_intervals.sql"
+        )
+        utilization = self.read(
+            "dbt/finops_analytics/models/marts/"
+            "finops_warehouse_utilization_daily.sql"
+        )
+        marts = self.read("dbt/finops_analytics/models/marts/marts.yml")
+
+        for contract in (
+            "ref('stg_account_usage__warehouse_events_history')",
+            "lead(event_timestamp)",
+            "RESUME_WAREHOUSE",
+            "SUSPEND_WAREHOUSE",
+            "EVENT_BOUNDED_ESTIMATE",
+        ):
+            with self.subTest(interval_contract=contract):
+                self.assertIn(contract, intervals)
+
+        for contract in (
+            "ref('stg_account_usage__warehouse_load_history')",
+            "ref('int_finops_warehouse_state_intervals')",
+            "event_bounded_on_seconds",
+            "active_observed_interval_seconds",
+            "estimated_idle_seconds",
+            "INSUFFICIENT_EVENT_BOUNDARY",
+            "INSUFFICIENT_LOAD_COVERAGE",
+            "ESTIMATED_FROM_EVENT_AND_LOAD",
+        ):
+            with self.subTest(utilization_contract=contract):
+                self.assertIn(contract, utilization)
+
+        self.assertIn("- name: finops_warehouse_utilization_daily", marts)
+        self.assertIn("Not exact billed or physical idle time", marts)
+
+    def test_query_and_warehouse_daily_marts_have_behavioral_data_tests(self) -> None:
+        required_tests = (
+            "finops_query_performance_daily_unique.sql",
+            "finops_query_performance_daily_bucket_reconciliation.sql",
+            "int_finops_query_history_nonnegative_durations.sql",
+            "finops_warehouse_utilization_daily_unique.sql",
+            "finops_warehouse_utilization_daily_nonnegative.sql",
+            "finops_warehouse_utilization_daily_evidence_nullability.sql",
+        )
+
+        for filename in required_tests:
+            with self.subTest(test=filename):
+                sql = self.read(f"dbt/finops_analytics/tests/{filename}")
+                self.assertIn("{{ ref(", sql)
+
+        marts = self.read("dbt/finops_analytics/models/marts/marts.yml")
+        self.assertIn(
+            "warehouse_idle_stays_null_without_complete_event_and_load_evidence",
+            marts,
+        )
+
+    def test_weekly_and_monthly_percentiles_derive_from_raw_query_history(self) -> None:
+        periods = self.read(
+            "dbt/finops_analytics/models/intermediate/"
+            "int_finops_query_performance_periods.sql"
+        )
+        weekly = self.read(
+            "dbt/finops_analytics/models/marts/"
+            "finops_query_performance_weekly.sql"
+        )
+        monthly = self.read(
+            "dbt/finops_analytics/models/marts/"
+            "finops_query_performance_monthly.sql"
+        )
+        marts = self.read("dbt/finops_analytics/models/marts/marts.yml")
+
+        self.assertIn("ref('int_finops_query_history')", periods)
+        self.assertNotIn("ref('finops_query_performance_daily')", periods)
+        for percentile in ("0.50", "0.90", "0.99"):
+            self.assertIn(f"percentile_cont({percentile})", periods)
+        self.assertIn("period_type = 'WEEK'", weekly)
+        self.assertIn("period_type = 'MONTH'", monthly)
+        self.assertIn("monthly_percentile_uses_raw_queries_not_weekly_averages", marts)
+
     def test_warehouse_name_preserves_missing_source_values(self) -> None:
         warehouse = self.read(
             "dbt/finops_analytics/models/marts/finops_warehouse_daily.sql"

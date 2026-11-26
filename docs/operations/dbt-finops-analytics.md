@@ -16,6 +16,10 @@ The project lives in `dbt/finops_analytics` and reads two documented sources:
 
 `int_finops_query_history` incrementally preserves statement-level history with a two-day late-arrival lookback. `finops_query_performance_daily` groups those raw statements by UTC date, warehouse, and query type, exposes six exclusive duration buckets, and calculates P50, P90, and P99 directly from statement rows. It keeps non-warehouse and client-generated statements visible rather than silently discarding them.
 
+`finops_warehouse_utilization_daily` combines the existing warehouse-credit mart with five-minute load ratios and event-bounded resume-to-suspend spans. Running, queued, provisioning, and blocked evidence remain separate. Estimated idle seconds stay null unless event boundaries and load coverage are sufficient, and even then remain an estimate rather than exact billed or physical idle time.
+
+`finops_query_performance_weekly` and `finops_query_performance_monthly` derive from the durable statement base. Their percentiles are recalculated from raw query rows; monthly P90 is never an average of weekly P90 values. A period remains incomplete when retained history starts after the period boundary.
+
 ## Responsibility boundary
 
 The marts contain no attention status, anomaly threshold, or delivery decision. The existing `FINOPS_CLASSIFY_COST` helper retains the strict `>25` credit and `>30%` growth rules, and Warehouse remains informational until a rule is approved.

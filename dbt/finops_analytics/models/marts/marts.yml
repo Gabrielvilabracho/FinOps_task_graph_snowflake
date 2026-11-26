@@ -73,7 +73,92 @@ models:
         description: True only after the documented 45-minute query-history boundary and a covering source watermark.
         data_tests: [not_null]
 
+  - name: finops_warehouse_utilization_daily
+    description: Daily warehouse credits, load ratios and event-bounded lifecycle estimates. Not exact billed or physical idle time and not guaranteed savings.
+    columns:
+      - name: analysis_date
+        description: UTC evidence date.
+        data_tests: [not_null]
+      - name: warehouse_id
+        description: Stable warehouse identifier.
+        data_tests: [not_null]
+      - name: event_bounded_on_seconds
+        description: Resume-to-suspend event span split by UTC day; null without both lifecycle boundaries and not exact physical on-time.
+      - name: active_observed_interval_seconds
+        description: Total five-minute load intervals with running-query evidence; not summed query execution seconds.
+      - name: queued_load_seconds
+        description: Queue-load ratio multiplied by observed interval seconds.
+      - name: estimated_idle_seconds
+        description: Event-bounded span less active observed intervals only when load coverage is sufficient. Not exact billed or physical idle time.
+      - name: idle_evidence_state
+        description: States whether event boundaries or load coverage are insufficient, or the estimate uses both sources.
+        data_tests: [not_null]
+      - name: is_utilization_source_complete
+        description: True after the three-hour publication boundary for warehouse load and event evidence; does not manufacture absent events.
+        data_tests: [not_null]
+
+  - name: finops_query_performance_weekly
+    description: Weekly query counts, duration buckets and P50/P90/P99 computed directly from durable statement rows.
+    columns:
+      - name: period_start_date
+        description: Monday starting the reporting week.
+        data_tests: [not_null]
+      - name: is_source_complete
+        description: False when retained source history does not cover the complete week or publication has not matured.
+        data_tests: [not_null]
+
+  - name: finops_query_performance_monthly
+    description: Monthly query counts, duration buckets and P50/P90/P99 computed directly from durable statement rows, never by averaging weekly percentiles.
+    columns:
+      - name: period_start_date
+        description: First calendar day of the reporting month.
+        data_tests: [not_null]
+      - name: is_source_complete
+        description: False when retained source history does not cover the complete month or publication has not matured.
+        data_tests: [not_null]
+
 unit_tests:
+  - name: monthly_percentile_uses_raw_queries_not_weekly_averages
+    description: Monthly P90 must be calculated from all statement rows rather than averaging weekly P90 values.
+    model: int_finops_query_performance_periods
+    given:
+      - input: ref('int_finops_query_history')
+        rows:
+          - {analysis_date: '2026-11-02', query_id: q1, warehouse_id: 1, warehouse_name: TEST_WH, query_type: SELECT, execution_status: success, end_time: '2026-11-02 01:00:00 +00:00', total_elapsed_time_ms: 1000, queued_provisioning_time_ms: 0, queued_repair_time_ms: 0, queued_overload_time_ms: 0, transaction_blocked_time_ms: 0, is_client_generated_statement: false}
+          - {analysis_date: '2026-11-03', query_id: q2, warehouse_id: 1, warehouse_name: TEST_WH, query_type: SELECT, execution_status: success, end_time: '2026-11-03 01:00:00 +00:00', total_elapsed_time_ms: 2000, queued_provisioning_time_ms: 0, queued_repair_time_ms: 0, queued_overload_time_ms: 0, transaction_blocked_time_ms: 0, is_client_generated_statement: false}
+          - {analysis_date: '2026-11-09', query_id: q3, warehouse_id: 1, warehouse_name: TEST_WH, query_type: SELECT, execution_status: success, end_time: '2026-11-09 01:00:00 +00:00', total_elapsed_time_ms: 3000, queued_provisioning_time_ms: 0, queued_repair_time_ms: 0, queued_overload_time_ms: 0, transaction_blocked_time_ms: 0, is_client_generated_statement: false}
+          - {analysis_date: '2026-11-10', query_id: q4, warehouse_id: 1, warehouse_name: TEST_WH, query_type: SELECT, execution_status: success, end_time: '2026-11-10 01:00:00 +00:00', total_elapsed_time_ms: 10000, queued_provisioning_time_ms: 0, queued_repair_time_ms: 0, queued_overload_time_ms: 0, transaction_blocked_time_ms: 0, is_client_generated_statement: false}
+    expect:
+      rows:
+        - {period_type: WEEK, period_start_date: '2026-11-02', warehouse_key: '1', warehouse_id: 1, warehouse_name: TEST_WH, query_type: SELECT, query_count: 2, p90_elapsed_time_ms: 1900}
+        - {period_type: WEEK, period_start_date: '2026-11-09', warehouse_key: '1', warehouse_id: 1, warehouse_name: TEST_WH, query_type: SELECT, query_count: 2, p90_elapsed_time_ms: 9300}
+        - {period_type: MONTH, period_start_date: '2026-11-01', warehouse_key: '1', warehouse_id: 1, warehouse_name: TEST_WH, query_type: SELECT, query_count: 4, p90_elapsed_time_ms: 7900}
+
+  - name: warehouse_idle_stays_null_without_complete_event_and_load_evidence
+    description: Missing event boundaries or incomplete five-minute load coverage must not manufacture idle seconds.
+    model: finops_warehouse_utilization_daily
+    given:
+      - input: ref('int_finops_date_spine')
+        rows:
+          - {analysis_date: '2026-11-17'}
+      - input: ref('finops_warehouse_daily')
+        rows:
+          - {analysis_date: '2026-11-17', warehouse_id: 1, warehouse_name: NO_BOUNDARY_WH}
+          - {analysis_date: '2026-11-17', warehouse_id: 2, warehouse_name: PARTIAL_LOAD_WH}
+      - input: ref('stg_account_usage__warehouse_load_history')
+        rows:
+          - {start_time: '2026-11-17 00:00:00 +00:00', end_time: '2026-11-17 00:05:00 +00:00', warehouse_id: 1, warehouse_name: NO_BOUNDARY_WH, avg_running: 0, avg_queued_load: 0, avg_queued_provisioning: 0, avg_blocked: 0}
+          - {start_time: '2026-11-17 00:00:00 +00:00', end_time: '2026-11-17 00:05:00 +00:00', warehouse_id: 2, warehouse_name: PARTIAL_LOAD_WH, avg_running: 0, avg_queued_load: 0, avg_queued_provisioning: 0, avg_blocked: 0}
+      - input: ref('int_finops_warehouse_state_intervals')
+        rows:
+          - {warehouse_id: 2, warehouse_name: PARTIAL_LOAD_WH, estimated_on_start: '2026-11-17 00:00:00 +00:00', estimated_on_end: '2026-11-17 01:00:00 +00:00', event_bounded_on_seconds: 3600, interval_evidence: EVENT_BOUNDED_ESTIMATE}
+      - input: ref('stg_account_usage__warehouse_events_history')
+        rows: []
+    expect:
+      rows:
+        - {analysis_date: '2026-11-17', warehouse_id: 1, warehouse_name: NO_BOUNDARY_WH, estimated_idle_seconds: null, idle_evidence_state: INSUFFICIENT_EVENT_BOUNDARY}
+        - {analysis_date: '2026-11-17', warehouse_id: 2, warehouse_name: PARTIAL_LOAD_WH, event_bounded_on_seconds: 3600, estimated_idle_seconds: null, idle_evidence_state: INSUFFICIENT_LOAD_COVERAGE}
+
   - name: daily_query_grain_survives_warehouse_rename_and_lowercase_status
     description: Keep one stable warehouse-id grain and treat lowercase Snowflake success status as successful.
     model: finops_query_performance_daily
